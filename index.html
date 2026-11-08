@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>بشار الالوسي لخدمات الانترنت والاتصالات والرياضة</title>
-<!-- Standalone build v6s: channels play direct without server; auto-detects full server mode -->
+<!-- Standalone build v8s++: smooth live-latency controller (يحل تأخير الثواني بدون قفزات) + زر المباشر + تجديد اتصال صامت بدون وميض + 81 قناة بترتيب: الوان ثم beIN ثم TOD + قنوات الوان بثلاث دقات (HD/SD/4K — كل دقة سلاّة اتصال مستقلة) + إعادة محاولة تلقائية عند انشغال السيرفر بدل رسالة الخطأ + خاتم مائي ثابت صغير بحجم اسم القناة فوق الشاشة + ربط الجهاز نهائياً (يوزر واحد بجهاز واحد بدون خروج) + عدّاد سرعة حقيقي بعقرب ومقياس (بنق/تنزيل/رفع) + متجر: كاميرات مراقبة وصحن بوربيم -->
     <!-- PWA: تثبيت كتطبيق على الهاتف + إشعارات هاتف حقيقية -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#3b0066">
@@ -81,6 +81,95 @@
         .server-tab:hover, .server-tab.active { background: #00ff88; color: #110022; border-color: #00ff88; }
         .player-status { background: #120024; color: #ffd700; font-size: 12px; padding: 8px 10px; border-top: 1px solid #4d0085; text-align: center; min-height: 15px; font-weight: bold; }
 
+        /* ======== خاتم مائي ضد النحرق — غلاف ثابت صغير فوق القناة بحجم اسم القناة ولا يتحرك ======== */
+        .tv-watermark {
+            position: absolute; z-index: 6; pointer-events: none;
+            top: 8px; right: 10px;
+            color: rgba(255,255,255,0.78); font-weight: bold;
+            font-size: 13px; font-family: 'Tajawal', sans-serif;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.85);
+            white-space: nowrap;
+            background: rgba(0,0,0,0.38);
+            padding: 3px 10px; border-radius: 6px;
+        }
+        /* داخل ملء الشاشة: ينزل شوية حتى ما يتعارض مع زر الخروج بالأعلى */
+        .fs-mode .tv-watermark { top: 62px; right: 10px; }
+
+        /* ======== أزرار الطبقة العلوية للتلفاز: ملء الشاشة + المشاركة على التلفاز ======== */
+        .tv-topbar { position: absolute; z-index: 8; top: 6px; left: 6px; display: flex; gap: 5px; }
+        .tv-top-btn {
+            background: rgba(0,0,0,0.55); color: #fff; border: 1px solid rgba(255,255,255,0.28);
+            border-radius: 6px; padding: 5px 9px; font-size: 14px; cursor: pointer; line-height: 1.2;
+            font-family: 'Tajawal', sans-serif; font-weight: bold; transition: 0.15s;
+        }
+        .tv-top-btn:hover { background: rgba(124,31,184,0.85); border-color: #00ff88; }
+
+        /* ======== وضع ملء الشاشة (تصفح القنوات من داخل الشاشة) ======== */
+        .tv-container.fs-mode {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99990;
+            padding-top: 0; width: 100vw; height: 100vh; max-width: 100vw; border-radius: 0;
+        }
+        .tv-container.fs-mode video { width: 100vw; height: 100vh; }
+        .tv-container.fs-mode .tv-topbar { display: none; }
+        .fs-topbar {
+            position: absolute; z-index: 9; top: 0; left: 0; right: 0; display: none;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.82), rgba(0,0,0,0));
+            padding: 8px 10px 22px; align-items: center; gap: 8px; transition: opacity 0.3s;
+        }
+        .fs-mode .fs-topbar { display: flex; }
+        .fs-topbar.hidden-ui { opacity: 0; pointer-events: none; }
+        .fs-ch-name { flex: 1; color: #fff; font-weight: bold; font-size: 15px; text-shadow: 0 1px 3px #000; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .fs-btn {
+            background: rgba(20,0,40,0.75); color: #fff; border: 1px solid #7a1fb8; border-radius: 6px;
+            padding: 7px 12px; font-size: 13px; font-weight: bold; cursor: pointer; font-family: 'Tajawal', sans-serif; white-space: nowrap;
+        }
+        .fs-btn:active { background: #00ff88; color: #110022; }
+        .fs-chlist {
+            position: absolute; z-index: 10; top: 0; bottom: 0; left: 0; width: min(78vw, 340px);
+            background: rgba(10,0,22,0.94); border-left: 1px solid #7a1fb8; display: none;
+            flex-direction: column; padding: 10px; box-sizing: border-box;
+        }
+        .fs-mode .fs-chlist.open { display: flex; }
+        .fs-chlist input {
+            background: #2a004a; color: #fff; border: 1px solid #7a1fb8; border-radius: 6px;
+            padding: 8px 10px; font-size: 13px; font-family: 'Tajawal', sans-serif; margin-bottom: 8px; outline: none;
+        }
+        .fs-chlist-items { flex: 1; overflow-y: auto; }
+        .fs-ch-item {
+            display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px;
+            color: #eee; font-size: 13px; cursor: pointer; border-bottom: 1px solid rgba(122,31,184,0.25);
+        }
+        .fs-ch-item:hover { background: rgba(122,31,184,0.4); }
+        .fs-ch-item.active { background: #00ff88; color: #110022; font-weight: bold; }
+        .fs-ch-num { background: #ffd700; color: #110022; border-radius: 5px; min-width: 26px; text-align: center; font-size: 11px; font-weight: bold; padding: 2px 4px; }
+
+        /* ======== نافذة المشاركة على شاشة التلفاز (DLNA) ======== */
+        .cast-modal {
+            position: fixed; z-index: 99999; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.72); display: none; align-items: center; justify-content: center; padding: 16px;
+        }
+        .cast-modal.open { display: flex; }
+        .cast-box {
+            background: linear-gradient(160deg, #2a004a, #150026); border: 2px solid #8c2ee0; border-radius: 12px;
+            width: min(92vw, 400px); max-height: 82vh; overflow-y: auto; padding: 16px; box-sizing: border-box;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        .cast-box h4 { margin: 0 0 6px; color: #ffd700; text-align: center; font-size: 16px; }
+        .cast-hint { color: #bbb; font-size: 11.5px; text-align: center; margin-bottom: 10px; }
+        .cast-dev {
+            display: flex; align-items: center; gap: 8px; background: #2a004a; border: 1px solid #7a1fb8;
+            border-radius: 8px; padding: 10px; margin-bottom: 7px; color: #fff; font-size: 14px; cursor: pointer; font-weight: bold;
+        }
+        .cast-dev:hover { border-color: #00ff88; background: rgba(122,31,184,0.5); }
+        .cast-msg { color: #ffd700; font-size: 13px; text-align: center; padding: 14px 6px; font-weight: bold; }
+        .cast-msg.err { color: #ff6b6b; }
+        .cast-actions { display: flex; gap: 8px; margin-top: 10px; }
+        .cast-actions button {
+            flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #7a1fb8; cursor: pointer;
+            font-family: 'Tajawal', sans-serif; font-weight: bold; font-size: 13px; background: #2a004a; color: #fff;
+        }
+        .cast-actions button.green { background: #00ff88; color: #110022; border-color: #00ff88; }
+
         /* ======== شريط اختيار الدقة (عالية / متوسطة / ضعيفة) ======== */
         .quality-bar { display: flex; gap: 5px; flex-wrap: wrap; background: #120024; padding: 8px 10px; border-top: 1px solid #4d0085; align-items: center; justify-content: center; }
         .quality-title { font-size: 12px; color: #00e5ff; font-weight: bold; margin-left: 5px; }
@@ -91,6 +180,8 @@
         .channel-btn span.badge.ext { background: #00e5ff; color: #110022; }
         .server-tab.ext { border-color: #00e5ff; color: #00e5ff; }
         .server-tab.ext.active { background: #00e5ff; color: #110022; border-color: #00e5ff; }
+        .server-tab.live-sync-tab { border-color: #ff4d4d; color: #ff8080; background: #26060c; }
+        .server-tab.live-sync-tab:active { background: #ff4d4d; color: #fff; }
 
         /* ======== البحث عن قناة بالاسم ======== */
         .ch-head { color: #00ff88; font-size: 13px; font-weight: bold; text-align: center; padding-bottom: 8px; border-bottom: 1px solid #4d0085; }
@@ -103,9 +194,7 @@
         /* ========================================================= */
 
         .speedtest-section { margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px; text-align: center; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; }
-        .speed-circle { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #00ff88; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px auto; background: #110022; box-shadow: 0 0 12px rgba(0,255,136,0.3); cursor: pointer; transition: 0.3s; position: relative; }
-        .speed-circle span { font-size: 9px; color: #aaa; text-transform: uppercase; }
-        .speed-circle strong { font-size: 20px; color: #00ff88; margin-top: 2px; }
+        .speed-gauge { cursor: pointer; -webkit-tap-highlight-color: transparent; }
         .speed-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
         .speed-detail-box { background: rgba(255,255,255,0.08); padding: 6px; border-radius: 6px; font-size: 11px; }
         .speed-detail-box span { display: block; color: #ccc; font-size: 9px; }
@@ -215,14 +304,48 @@
 
                 <!-- شاشة العرض الرئيسية والسيرفرات -->
                 <div class="player-main">
-                    <div class="tv-container">
+                    <div class="tv-container" id="tvContainer">
                         <video id="tvPlayer" controls autoplay playsinline></video>
+                        <!-- خاتم مائي ضد النحرق — غلاف ثابت صغير فوق القناة ولا يتحرك -->
+                        <div class="tv-watermark" id="tvWatermark">بشار الالوسي</div>
+                        <!-- أزرار الطبقة العلوية: ملء الشاشة + المشاركة على التلفاز -->
+                        <div class="tv-topbar" id="tvTopbar">
+                            <button class="tv-top-btn" title="ملء الشاشة مع تصفح القنوات" onclick="toggleFsMode(event)">⛶</button>
+                            <button class="tv-top-btn" title="مشاركة القناة على شاشة التلفاز" onclick="openCastModal(event)">📺</button>
+                        </div>
+                        <!-- شريط ملء الشاشة: اسم القناة + تصفح القنوات من داخل الشاشة -->
+                        <div class="fs-topbar" id="fsTopbar">
+                            <button class="fs-btn" onclick="toggleFsMode(event)">✕</button>
+                            <div class="fs-ch-name" id="fsChName">—</div>
+                            <button class="fs-btn" onclick="prevChannel(event)">◀ السابق</button>
+                            <button class="fs-btn" onclick="nextChannel(event)">التالي ▶</button>
+                            <button class="fs-btn" id="fsListBtn" onclick="toggleFsList(event)">📺 القنوات</button>
+                            <button class="fs-btn" onclick="openCastModal(event)">📲 التلفاز</button>
+                        </div>
+                        <!-- قائمة القنوات داخل ملء الشاشة — اختيار قناة ثانية بدون الخروج من الشاشة -->
+                        <div class="fs-chlist" id="fsChlist">
+                            <input type="text" id="fsChSearch" placeholder="🔍 ابحث عن قناة..." oninput="renderFsChannels(this.value)">
+                            <div class="fs-chlist-items" id="fsChlistItems"></div>
+                        </div>
                     </div>
                     <div class="player-status" id="playerStatus"></div>
                     <div class="quality-bar" id="qualityBar" style="display:none;"></div>
                     <div class="servers-bar" id="serversBar"><!-- تُبنى السيرفرات تلقائياً لكل قناة --></div>
                 </div>
 
+            </div>
+
+            <!-- نافذة المشاركة على شاشة التلفاز -->
+            <div class="cast-modal" id="castModal" onclick="if(event.target===this) closeCastModal()">
+                <div class="cast-box">
+                    <h4>📺 مشاركة القناة على شاشة التلفاز</h4>
+                    <div class="cast-hint" id="castHint">يجري البحث عن تلفازات متصلة بنفس شبكة الواي فاي... تأكد أن التلفاز مشغّل ومتصل بالشبكة</div>
+                    <div id="castBody"><div class="cast-msg">📡 جاري البحث عن التلفازات...</div></div>
+                    <div class="cast-actions">
+                        <button onclick="closeCastModal()">إغلاق</button>
+                        <button class="green" onclick="castShareFallback()">🔗 مشاركة الرابط بتطبيق ثاني</button>
+                    </div>
+                </div>
             </div>
 
             <div class="payment-box">
@@ -232,15 +355,37 @@
             </div>
 
             <div class="speedtest-section">
-                <div style="color: #00ff88; font-size: 14px; font-weight: bold; margin-bottom: 4px;">⚡ اختبار سرعة الإنترنت</div>
-                <div class="speed-circle" onclick="runSpeedTest()">
-                    <span id="circleLabel">انقر للبدء</span>
-                    <strong id="circleVal">GO</strong>
+                <div style="color: #00ff88; font-size: 14px; font-weight: bold; margin-bottom: 6px;">⚡ اختبار سرعة الإنترنت — فعلي (بنق + تنزيل + رفع)</div>
+                <div class="speed-gauge" onclick="runSpeedTest()">
+                    <svg id="speedGauge" viewBox="0 0 320 196" style="width:100%; max-width:340px; display:block; margin:auto;">
+                        <defs>
+                            <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0" stop-color="#19c8e6"/>
+                                <stop offset="0.55" stop-color="#19c8e6"/>
+                                <stop offset="0.75" stop-color="#f5a623"/>
+                                <stop offset="1" stop-color="#e63946"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M 30 160 A 130 130 0 0 1 290 160" fill="none" stroke="#1d2a42" stroke-width="16" stroke-linecap="round"/>
+                        <path d="M 30 160 A 130 130 0 0 1 290 160" fill="none" stroke="url(#gaugeGrad)" stroke-width="9" stroke-linecap="round"/>
+                        <g id="gaugeTicks"></g>
+                        <g id="needleG" transform="rotate(0 160 160)">
+                            <line x1="160" y1="160" x2="52" y2="160" stroke="#e63946" stroke-width="5" stroke-linecap="round"/>
+                        </g>
+                        <circle cx="160" cy="160" r="11" fill="#e63946" stroke="#0e1526" stroke-width="3"/>
+                        <text id="gaugeVal" x="160" y="122" text-anchor="middle" font-size="34" font-weight="bold" fill="#ffffff" font-family="Tajawal, sans-serif">0,00</text>
+                        <text x="160" y="142" text-anchor="middle" font-size="12" fill="#9fb3d1">Mbps</text>
+                        <text id="gaugeLabel" x="160" y="188" text-anchor="middle" font-size="13" font-weight="bold" fill="#ffd700" font-family="Tajawal, sans-serif">انقر للبدء</text>
+                    </svg>
+                    <svg id="speedHistory" viewBox="0 0 320 46" style="width:100%; max-width:340px; display:block; margin:auto; opacity:0.85;">
+                        <rect x="2" y="2" width="316" height="42" rx="6" fill="rgba(255,255,255,0.06)"/>
+                        <polyline id="histLine" fill="none" stroke="#8fa3bf" stroke-width="2" points=""/>
+                    </svg>
                 </div>
                 <div class="speed-details">
-                    <div class="speed-detail-box"><span>الاستجابة</span><b id="pingVal" style="color:#00ff88">— ms</b></div>
-                    <div class="speed-detail-box"><span>التنزيل</span><b id="downloadVal" style="color:#00ff88">— Mbps</b></div>
                     <div class="speed-detail-box"><span>الرفع</span><b id="uploadVal" style="color:#00ff88">— Mbps</b></div>
+                    <div class="speed-detail-box"><span>التنزيل</span><b id="downloadVal" style="color:#00ff88">— Mbps</b></div>
+                    <div class="speed-detail-box"><span>البنق</span><b id="pingVal" style="color:#00ff88">— ms</b></div>
                 </div>
             </div>
 
@@ -400,7 +545,41 @@
         ═══════════════════════════════════════════════════════════════ */
         /* let وليس const: المدير يقدر يستبدل القائمة كاملة من لوحة الإدارة ← 📡 روابط القنوات ← 📥 استيراد ملف خارجي */
         let allChannels = [
-            /* ⭐ قنوات beIN Sport أولاً بالترتيب (beIN SPORTS 1 = رقم 1) — بث مباشر TS من المصدر الجديد mdmfista + روابط احتياطية */
+            /* ⭐ الترتيب: الوان سبورت أولاً ثم beIN Sport ثم TOD ثم العالمية — 81 قناة
+               (الترتيب بطلب المدير: الوان تشتغل أفضل شي عند المشتركين)
+               💡 كل قناة الوان عندها 3 دقات (HD/SD/4K) وكل دقة عندها سلاّة اتصال مستقلة على السيرفر —
+               إذا السيرفر رجع 409 (مشغول) التطبيق يجرب الدقة الثانية تلقائياً ثم الثالثة ثم يعيد المحاولة */
+            /* ═══ الوان سبورت — بالبداية (تشغل أفضل وثابت) ═══ */
+            { name: "الوان سبورت 1", icon: "🎨", quals: ["HD", "SD", "4K"], urls: [
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409796.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409794.m3u8"
+            ] },
+            { name: "الوان سبورت 2", icon: "🎨", quals: ["HD", "SD", "4K"], urls: [
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409799.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409797.m3u8"
+            ] },
+            { name: "الوان سبورت 3", icon: "🎨", quals: ["HD", "SD", "4K"], urls: [
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409802.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409800.m3u8"
+            ] },
+            { name: "الوان سبورت 4", icon: "🎨", quals: ["HD", "SD", "4K"], urls: [
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409805.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409803.m3u8"
+            ] },
+            { name: "الوان سبورت 5", icon: "🎨", quals: ["HD", "SD", "4K"], urls: [
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409808.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409806.m3u8"
+            ] },
+            { name: "الوان سبورت 6", icon: "🎨", quals: ["HD", "4K"], urls: [
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8",
+                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409809.m3u8"
+            ] },
+            /* ═══ قنوات beIN Sport (1-9 ثم NEWS وGLOBAL وXTRA وMAX) ═══ */
             { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
                 "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=ts",
                 "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242255&extension=ts",
@@ -595,24 +774,7 @@
                 "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/306443.m3u8",
                 "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/27074.m3u8"
             ] },
-            { name: "الوان سبورت 1", icon: "🎨", quals: ["رئيسي"], urls: [
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8"
-            ] },
-            { name: "الوان سبورت 2", icon: "🎨", quals: ["رئيسي"], urls: [
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8"
-            ] },
-            { name: "الوان سبورت 3", icon: "🎨", quals: ["رئيسي"], urls: [
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8"
-            ] },
-            { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: [
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"
-            ] },
-            { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: [
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"
-            ] },
-            { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: [
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"
-            ] },
+            /* ═══ قنوات TOD EVENTS ═══ */
             { name: "TOD EVENTS 1", icon: "🎟️", quals: ["EVENT 1", "بديل 1"], urls: [
                 "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=1744949&extension=ts",
                 "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/414833.m3u8"
@@ -705,6 +867,7 @@
             { name: "TOD EVENTS 26", icon: "🎟️", quals: ["EVENT 26"], urls: [
                 "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=1744974&extension=ts"
             ] },
+            /* ═══ القنوات الرياضية العالمية ═══ */
             { name: "الكويت الرياضية KTV Sport", icon: "🇰🇼", quals: ["رئيسي"], urls: [
                 "https://kwtspta.cdn.mangomolo.com/sp/smil:sp.stream.smil/chunklist.m3u8"
             ] },
@@ -778,6 +941,7 @@
         let currentChannelIndex = 0, currentServerIndex = 0, serverAttempts = 0;
         let hlsInstance = null, tsInstance = null, nativeTried = -1;
         let tsSeq = 0, tsReconnectAt = 0, tsReconnectCount = 0, tsWatchdog = null;
+        let tsLatencyTimer = null;
         let qualityMap = {}, currentQuality = 'auto';
         /* ─── دقة البداية: HD ثم SD + تفضيل المستخدم محفوظ — التنقل بين الدقات يدوي (للنت الضعيف) ─── */
         const QPKEY = 'bashar_pref_qual_v1';
@@ -838,6 +1002,7 @@
         }
 
         function selectChannel(i) {
+            resetChanRetry();
             currentChannelIndex = i; currentServerIndex = pickStartServer(allChannels[i]); serverAttempts = 0; nativeTried = -1; playMode = 0;
             currentQuality = 'auto'; qualityMap = {};
             document.getElementById('qualityBar').style.display = 'none';
@@ -850,7 +1015,24 @@
                 return;
             }
             setStatus('⏳ جاري الاتصال بقناة: ' + ch.name);
+            syncFsUi();
             playCurrent();
+        }
+
+        /* 🔴 زر المباشر: رجوع فوري إلى لحظة البث الحالية */
+        function syncToLive() {
+            try {
+                const v = document.getElementById('tvPlayer');
+                if (!v) return;
+                let target = null;
+                if (typeof Hls !== 'undefined' && hlsInstance && hlsInstance.liveSyncPosition) target = hlsInstance.liveSyncPosition;
+                if (target === null && v.buffered && v.buffered.length) target = v.buffered.end(v.buffered.length - 1) - 0.6;
+                if (target !== null && target > 0) {
+                    v.currentTime = target;
+                    playVideo(v);
+                    setStatus('🔴 رجعت على لحظة المباشر الحالية');
+                }
+            } catch (e) {}
         }
 
         function renderServerTabs() {
@@ -863,10 +1045,12 @@
                 const label = (hasQ && ch.quals[i]) ? ch.quals[i] : 'S' + (i + 1);
                 html += `<div class="server-tab${i === currentServerIndex ? ' active' : ''}" title="${label}" onclick="switchServer(${i}, this)">${label}</div>`;
             });
+            html += '<div class="server-tab live-sync-tab" title="ارجع فوراً إلى لحظة البث الحالية" onclick="syncToLive()">🔴 المباشر</div>';
             bar.innerHTML = html;
         }
 
         function switchServer(i, el) {
+            resetChanRetry();
             currentServerIndex = i; serverAttempts = 0; nativeTried = -1; playMode = 0;
             const chSw = allChannels[currentChannelIndex]; if (chSw && chSw.quals && chSw.quals[i]) setPrefQualLabel(chSw.quals[i]);
             currentQuality = 'auto'; qualityMap = {};
@@ -877,6 +1061,14 @@
             playCurrent(false);
         }
 
+        /* إعادة محاولة تلقائية قبل رسالة الفشل: السيرفرات المشتركة ترجع 409 مشغول (سلاّة الاتصال مأخوذة)
+           وغالباً تتفرج بعد ثواني — فنجرب كل الدقات ثم نعيد الجولة مرتين قبل ما نظهر الخطأ للمشترك */
+        const CHAN_RETRIES = 2;
+        let chanRetryCount = 0, chanRetryTimer = null;
+        function resetChanRetry() {
+            if (chanRetryTimer) { clearTimeout(chanRetryTimer); chanRetryTimer = null; }
+            chanRetryCount = 0;
+        }
         function tryNextServer() {
             const ch = allChannels[currentChannelIndex];
             if (!ch) return;
@@ -885,18 +1077,161 @@
             if (serverAttempts >= urls.length) {
                 const hasHttp = urls.some(function (u) { return /^http:\/\//i.test(u); });
                 const mixed = !SERVER_OK && location.protocol === 'https:' && hasHttp;
-                setStatus(mixed
-                    ? '🔒 المتصفح يحجب الروابط غير الآمنة (http). الحل: اضغط أيقونة القفل 🔒 بجانب عنوان الصفحة ← إعدادات الموقع ← المحتوى غير الآمن ← «اسمح» ثم أعد تحميل الصفحة — أو افتح الموقع برابط http://'
-                    : (proxyDead ? '❌ تعذّر تشغيل القناة — حدّث روابط القنوات من لوحة الإدارة أو جرّب قناة ثانية' : '❌ تعذّر تشغيل القناة حالياً — جرب مرة ثانية بعد شوية أو اختر قناة ثانية'));
+                /* حجب المتصفح للروابط غير الآمنة ما ينفع معه إعادة محاولة — نظهر الحل مباشرة */
+                if (mixed) {
+                    setStatus('🔒 المتصفح يحجب الروابط غير الآمنة (http). الحل: اضغط أيقونة القفل 🔒 بجانب عنوان الصفحة ← إعدادات الموقع ← المحتوى غير الآمن ← «اسمح» ثم أعد تحميل الصفحة — أو افتح الموقع برابط http://');
+                    return;
+                }
+                if (chanRetryCount < CHAN_RETRIES) {
+                    chanRetryCount++;
+                    setStatus('🔄 السيرفر مشغول حالياً — جاري إعادة المحاولة تلقائياً (' + chanRetryCount + ' من ' + CHAN_RETRIES + ')...');
+                    chanRetryTimer = setTimeout(function () {
+                        chanRetryTimer = null;
+                        if (allChannels[currentChannelIndex] !== ch) return; /* المستخدم غير القناة */
+                        serverAttempts = 0;
+                        currentServerIndex = pickStartServer(ch);
+                        playMode = 0;
+                        nativeTried = -1;
+                        renderServerTabs();
+                        playCurrent(false);
+                    }, 3500);
+                    return;
+                }
+                /* نفذت كل المحاولات — رسالة واضحة حسب الوضع */
+                resetChanRetry();
+                setStatus(proxyDead && SERVER_OK
+                    ? '❌ تعذّر تشغيل القناة — سيرفر البث ما استجاب. حدّث روابط القنوات من لوحة الإدارة أو جرّب قناة ثانية'
+                    : '❌ القناة مشغولة حالياً أو السيرفر ما استجاب — جرب مرة ثانية بعد شوية أو اختر قناة ثانية');
                 return;
             }
             currentServerIndex = (currentServerIndex + 1) % urls.length;
             playMode = 0;
             nativeTried = -1;
             renderServerTabs();
-            setStatus('⚠️ السيرفر ما استجاب — جاري تجربة السيرفر ' + (currentServerIndex + 1) + '...');
+            setStatus('⚠️ السيرفر ما استجاب — جاري تجربة الدقة التالية (' + (currentServerIndex + 1) + ' من ' + urls.length + ')...');
             playCurrent(false);
         }
+
+        /* ═══════════ ملء الشاشة مع تصفح القنوات من داخل الشاشة ═══════════ */
+        let fsUiTimer = null;
+        function toggleFsMode(ev) {
+            if (ev) ev.stopPropagation();
+            const c = document.getElementById('tvContainer');
+            if (!c) return;
+            if (c.classList.contains('fs-mode')) exitFsMode(); else enterFsMode();
+        }
+        function enterFsMode() {
+            const c = document.getElementById('tvContainer');
+            if (!c) return;
+            c.classList.add('fs-mode');
+            try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function () {}); } catch (e) {}
+            syncFsUi();
+            armFsUiHide();
+        }
+        function exitFsMode() {
+            const c = document.getElementById('tvContainer');
+            if (!c) return;
+            c.classList.remove('fs-mode');
+            document.getElementById('fsChlist').classList.remove('open');
+            try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e) {}
+            if (fsUiTimer) { clearTimeout(fsUiTimer); fsUiTimer = null; }
+        }
+        function syncFsUi() {
+            const ch = allChannels[currentChannelIndex];
+            const el = document.getElementById('fsChName');
+            if (el && ch) el.innerText = '📺 ' + ch.name + ((ch.quals && ch.quals[currentServerIndex]) ? ' — ' + ch.quals[currentServerIndex] : '');
+        }
+        function armFsUiHide() {
+            if (fsUiTimer) clearTimeout(fsUiTimer);
+            const bar = document.getElementById('fsTopbar');
+            if (!bar) return;
+            bar.classList.remove('hidden-ui');
+            fsUiTimer = setTimeout(function () { bar.classList.add('hidden-ui'); }, 4000);
+        }
+        /* لمسة على الشاشة تُظهر الشريط من جديد داخل ملء الشاشة */
+        document.getElementById('tvContainer').addEventListener('click', function () {
+            if (document.getElementById('tvContainer').classList.contains('fs-mode')) armFsUiHide();
+        });
+        function toggleFsList(ev) {
+            if (ev) ev.stopPropagation();
+            const list = document.getElementById('fsChlist');
+            list.classList.toggle('open');
+            if (list.classList.contains('open')) {
+                renderFsChannels(document.getElementById('fsChSearch').value || '');
+                armFsUiHide();
+            }
+        }
+        function renderFsChannels(term) {
+            term = (term || '').trim().toLowerCase();
+            const box = document.getElementById('fsChlistItems');
+            box.innerHTML = '';
+            allChannels.forEach(function (ch, i) {
+                if (term && ch.name.toLowerCase().indexOf(term) < 0) return;
+                const d = document.createElement('div');
+                d.className = 'fs-ch-item' + (i === currentChannelIndex ? ' active' : '');
+                d.innerHTML = '<span class="fs-ch-num">' + (i + 1) + '</span><span>' + (ch.icon || '📡') + ' ' + ch.name + '</span>';
+                d.onclick = function () { selectChannel(i); document.getElementById('fsChlist').classList.remove('open'); };
+                box.appendChild(d);
+            });
+            if (!box.children.length) box.innerHTML = '<div class="fs-ch-item">لا توجد قنوات مطابقة</div>';
+        }
+        function nextChannel(ev) { if (ev) ev.stopPropagation(); if (!allChannels.length) return; selectChannel((currentChannelIndex + 1) % allChannels.length); armFsUiHide(); }
+        function prevChannel(ev) { if (ev) ev.stopPropagation(); if (!allChannels.length) return; selectChannel((currentChannelIndex - 1 + allChannels.length) % allChannels.length); armFsUiHide(); }
+        /* زر ESC يخرج من ملء الشاشة (للسطح المكتب) */
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && document.getElementById('tvContainer').classList.contains('fs-mode')) exitFsMode();
+        });
+
+        /* ═══════════ المشاركة على شاشة التلفاز — DLNA داخل التطبيق + مشاركة الرابط كبديل ═══════════ */
+        function openCastModal(ev) {
+            if (ev) ev.stopPropagation();
+            document.getElementById('castModal').classList.add('open');
+            const body = document.getElementById('castBody');
+            if (typeof BasharCast !== 'undefined' && BasharCast && BasharCast.searchTvs) {
+                body.innerHTML = '<div class="cast-msg">📡 جاري البحث عن التلفازات...</div>';
+                try { BasharCast.searchTvs(); } catch (e) { body.innerHTML = '<div class="cast-msg err">⚠️ ما قدرنا نشغّل البحث — استخدم «مشاركة الرابط» تحت</div>'; }
+            } else {
+                body.innerHTML = '<div class="cast-msg">هذه الميزة تشتغل داخل تطبيق الهاتف — بالنسخة الويب استخدم «مشاركة الرابط» وافتحه بتطبيق التلفاز أو VLC</div>';
+            }
+        }
+        function closeCastModal() { document.getElementById('castModal').classList.remove('open'); }
+        function castShareFallback() {
+            const ch = allChannels[currentChannelIndex];
+            const url = (ch && ch.urls) ? ch.urls[currentServerIndex] : '';
+            if (!url) { alert('اختر قناة أولاً'); return; }
+            if (typeof BasharCast !== 'undefined' && BasharCast && BasharCast.shareLink) {
+                try { BasharCast.shareLink(url, ch ? ch.name : 'بشار الالوسي'); closeCastModal(); return; } catch (e) {}
+            }
+            if (navigator.share) { navigator.share({ title: ch ? ch.name : 'بشار الالوسي', url: url }).catch(function () {}); }
+            else { try { navigator.clipboard.writeText(url); alert('نمنا الرابط بالحافظة — الصقه بتطبيق التلفاز أو VLC'); } catch (e) { prompt('انسخ الرابط يدوياً:', url); } }
+        }
+        function castToDevice(i) {
+            const ch = allChannels[currentChannelIndex];
+            const url = (ch && ch.urls) ? ch.urls[currentServerIndex] : '';
+            if (!url || typeof BasharCast === 'undefined' || !BasharCast.sendToTv) return;
+            try {
+                BasharCast.sendToTv(url, ch ? ch.name : '', String(i));
+                document.getElementById('castBody').innerHTML = '<div class="cast-msg">⏳ جاري الإرسال إلى التلفاز...</div>';
+            } catch (e) {}
+        }
+        /* استدعاءات ترجع من التطبيق (MainActivity → BasharCast) */
+        window.__castDevices = function (json) {
+            let list = [];
+            try { list = JSON.parse(json); } catch (e) { list = []; }
+            const body = document.getElementById('castBody');
+            if (!body || !document.getElementById('castModal').classList.contains('open')) return;
+            if (!list.length) {
+                body.innerHTML = '<div class="cast-msg err">ما لقينا تلفاز على الشبكة 😕<br><span style="font-size:11px;color:#bbb;">تأكد أن التلفاز والهاتف على نفس شبكة الواي فاي وأن التلفاز يدعم AllShare / DLNA — أو استخدم «مشاركة الرابط» مع تطبيق التلفاز أو VLC</span></div>';
+                return;
+            }
+            let html = '';
+            list.forEach(function (d, i) { html += '<div class="cast-dev" onclick="castToDevice(' + i + ')">📺 ' + d.name + '</div>'; });
+            body.innerHTML = html;
+        };
+        window.__castResult = function (msg) {
+            const el = document.getElementById('castHint');
+            if (el) el.innerText = msg;
+        };
 
         // عند فشل طريقة التشغيل: بروكسي السيرفر → رابط مباشر → مشغل أصلي → السيرفر التالي
         // بث TS الخام: بروكسي السيرفر → رابط مباشر → السيرفر التالي (المشغل الأصلي ما يشتغل على TS حي)
@@ -922,13 +1257,13 @@
             if (playMode < maxMode) { playMode++; playCurrent(); }
             else { tryNextServer(); }
         }
-        /* إعادة اتصال تلقائية لبث TS: بروكسي Vercel يقطع البث المستمر عند حد مدة التنفيذ — نشبك من جديد بسلاسة */
+        /* إعادة اتصال تلقائية لبث TS: بروكسي Vercel يقطع البث المستمر عند حد مدة التنفيذ — نشبك من جديد بسلاسة
+           تجديد صامت: بدون أي رسالة أو وميض على الشاشة — المشترك ما يحس بإعادة الاتصال */
         function tsReconnect(ci, si, pm) {
             const now = Date.now();
             if (now - tsReconnectAt > 30000) tsReconnectCount = 0;
             tsReconnectAt = now;
             if (++tsReconnectCount > 6) { tsReconnectCount = 0; tryNextServer(); return; }
-            setStatus('♻️ تجديد الاتصال بالبث المباشر...');
             setTimeout(function() {
                 if (currentChannelIndex === ci && currentServerIndex === si && playMode === pm) playCurrent();
             }, 700);
@@ -988,6 +1323,7 @@
             if (hlsInstance) { try { hlsInstance.destroy(); } catch(e) {} hlsInstance = null; }
             if (tsWatchdog) { try { clearInterval(tsWatchdog); } catch(e) {} tsWatchdog = null; }
             if (tsInstance) { try { tsInstance.pause(); } catch(e) {} try { tsInstance.unload(); } catch(e) {} try { tsInstance.detachMediaElement(); } catch(e) {} try { tsInstance.destroy(); } catch(e) {} tsInstance = null; }
+            if (tsLatencyTimer) { try { clearInterval(tsLatencyTimer); } catch(e) {} tsLatencyTimer = null; }
             const mySeq = ++tsSeq;
             let hadMedia = false;
             /* ═══ بث TS الخام (mdmfista وغيره): مشغل mpegts — البروكسي أولاً (HTTPS آمن) ثم الرابط المباشر ═══ */
@@ -995,7 +1331,7 @@
                 const src = (playMode === 1) ? (SERVER_OK ? proxiedUrl(url) : url) : url;
                 if (playMode !== 2 && typeof mpegts !== 'undefined' && mpegts.getFeatureList && mpegts.getFeatureList().mseLivePlayback) {
                     tsInstance = mpegts.createPlayer({ type: 'mpegts', isLive: true, url: src, cors: true },
-                        { enableStashBuffer: false, liveBufferLatencyChasing: true, liveBufferLatencyMaxLatency: 10, liveBufferLatencyMinRemain: 0.5, lazyLoad: false, autoCleanupSourceBuffer: true });
+                        { enableStashBuffer: false, liveBufferLatencyChasing: false, lazyLoad: false, autoCleanupSourceBuffer: true });
                     tsInstance.attachMediaElement(video);
                     tsInstance.load();
                     tsInstance.on(mpegts.Events.MEDIA_INFO, function() {
@@ -1025,6 +1361,19 @@
                         else if (++stalls >= 3) { stalls = 0; if (hadMedia) tsReconnect(currentChannelIndex, currentServerIndex, playMode); else tryNativeOrNext(); }
                         lastT = v.currentTime;
                     }, 5000);
+                    /* متحكّم التأخير السلس: يلحق البث الحي تدريجياً بدون قفزات محسوسة */
+                    tsLatencyTimer = setInterval(function() {
+                        if (tsSeq !== mySeq) { try { clearInterval(tsLatencyTimer); } catch(e) {} return; }
+                        const v2 = document.getElementById('tvPlayer');
+                        if (!v2 || v2.paused || !v2.buffered || !v2.buffered.length) return;
+                        const end = v2.buffered.end(v2.buffered.length - 1);
+                        const lag = end - v2.currentTime;
+                        try {
+                            if (lag > 6) { v2.currentTime = end - 1; v2.playbackRate = 1; }
+                            else if (lag > 2.2) { v2.playbackRate = 1.15; }
+                            else if (v2.playbackRate !== 1) { v2.playbackRate = 1; }
+                        } catch (e) {}
+                    }, 1500);
                     return;
                 }
                 video.src = src;
@@ -1033,7 +1382,7 @@
             }
             const src = (playMode === 0) ? (SERVER_OK ? proxiedUrl(url) : url) : url;
             if (playMode !== 2 && typeof Hls !== 'undefined' && Hls.isSupported()) {
-                hlsInstance = new Hls({ autoStartLoad: true, startLevel: -1, manifestLoadingTimeOut: 8000, manifestLoadingMaxRetry: 1, manifestLoadingRetryDelay: 500, levelLoadingTimeOut: 10000, fragLoadingTimeOut: 15000 });
+                hlsInstance = new Hls({ autoStartLoad: true, startLevel: -1, manifestLoadingTimeOut: 8000, manifestLoadingMaxRetry: 1, manifestLoadingRetryDelay: 500, levelLoadingTimeOut: 10000, fragLoadingTimeOut: 15000, liveSyncDurationCount: 2, liveMaxLatencyDurationCount: 5, maxLiveSyncPlaybackRate: 1.5, maxBufferLength: 12, backBufferLength: 45 });
                 hlsInstance.loadSource(src);
                 hlsInstance.attachMedia(video);
                 hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
@@ -1228,7 +1577,11 @@
             }
         }
 
-/* ═══ قفل الجهاز الواحد — كل يوزر مشترك يشتغل بجهاز واحد فقط حتى ما يصير لود ═══ */
+/* ═══ ربط الجهاز نهائياً — اليوزر يشتغل بجهاز واحد فقط وبشكل دائم ═══
+   أول جهاز يسجل دخول باليوزر يصير مربوط به نهائياً: الحساب يظل مفتوح دائماً
+   بدون طلب يوزر وباسورد مرة ثانية، وما يشتغل اليوزر بأي جهاز ثاني.
+   الربط يفك فقط بتسجيل خروج من التطبيق، أو لما الإدارة تفكه من لوحة المشتركين
+   أو تغير اليوزر/الباسورد من زر التعديل. */
         const DKEY = 'bashar_device_id_v1';
         let MY_DEVICE = '';
         function getMyDevice() {
@@ -1240,47 +1593,23 @@
             }
             return MY_DEVICE;
         }
-        const SESSION_TIMEOUT_MS = 10 * 60 * 1000;   /* إذا الجهاز الثاني سكّر التطبيق: القفل يتحرر بعد 10 دقائق */
-        const SESSION_HB_MS = 3 * 60 * 1000;         /* نبض كل 3 دقائق طالما التطبيق مفتوح */
-        let sessionTimer = null, sessionDocId = null;
-        function sessionActiveElsewhere(x) {
-            if (!x || !x.dev || x.dev === getMyDevice()) return false;
-            const hb = (typeof x.hb === 'number') ? x.hb : 0;
-            return (Date.now() - hb) < SESSION_TIMEOUT_MS;
+        /* هل الحساب مربوط بجهاز آخر غير جهازنا؟ */
+        function isBoundElsewhere(x) {
+            const bound = String((x && x.dev) || '').trim();
+            return !!bound && bound !== getMyDevice();
         }
-        async function claimSession(docId) {
-            sessionDocId = docId;
+        /* تسجيل ربط الجهاز بالحساب — ينعمل بأول دخول ويظل نهائياً */
+        async function bindDevicePermanently(docId) {
+            if (!db || !docId) return;
             try { await db.collection('subscribers').doc(docId).update({ dev: getMyDevice(), hb: Date.now() }); } catch (e) {}
-            if (sessionTimer) clearInterval(sessionTimer);
-            sessionTimer = setInterval(heartbeatSession, SESSION_HB_MS);
         }
-        async function heartbeatSession() {
-            if (!sessionDocId || !db) return;
+        /* فك الربط — فقط عند تسجيل خروج صريح من نفس الجهاز أو من لوحة الإدارة */
+        async function unbindDevice(docId) {
+            if (!db || !docId) return;
             try {
-                const d = await db.collection('subscribers').doc(sessionDocId).get();
-                if (!d.exists) return;
-                const x = d.data();
-                if (x.dev && x.dev !== getMyDevice()) { forceLogout('🔓 حسابك انفتح بجهاز ثاني — تم تسجيل خروجك من هذا الجهاز'); return; }
-                if (!x.dev) { await db.collection('subscribers').doc(sessionDocId).update({ dev: getMyDevice(), hb: Date.now() }); return; }
-                await db.collection('subscribers').doc(sessionDocId).update({ hb: Date.now() });
+                const d = await db.collection('subscribers').doc(docId).get();
+                if (d.exists && String(d.data().dev || '') === getMyDevice()) await db.collection('subscribers').doc(docId).update({ dev: '', hb: 0 });
             } catch (e) {}
-        }
-        function forceLogout(msg) {
-            if (sessionTimer) { clearInterval(sessionTimer); sessionTimer = null; }
-            sessionDocId = null;
-            clearLoginSession();
-            alert(msg);
-            location.reload();
-        }
-        async function releaseSession() {
-            if (sessionTimer) { clearInterval(sessionTimer); sessionTimer = null; }
-            if (sessionDocId && db) {
-                const rid = sessionDocId; sessionDocId = null;
-                try {
-                    const d = await db.collection('subscribers').doc(rid).get();
-                    if (d.exists && d.data().dev === getMyDevice()) await db.collection('subscribers').doc(rid).update({ dev: '', hb: 0 });
-                } catch (e) {}
-            }
         }
 
         async function login() {
@@ -1320,13 +1649,13 @@
                     }
 
                     if(found) {
-                        if (sessionActiveElsewhere(found)) {
-                            const leftMin = Math.max(1, Math.ceil((SESSION_TIMEOUT_MS - (Date.now() - ((typeof found.hb === 'number') ? found.hb : 0))) / 60000));
+                        if (isBoundElsewhere(found)) {
                             msgBox.style.color = '#ff4d4d';
-                            msgBox.innerText = '⛔ هذا اليوزر شغال بجهاز ثاني — سجل خروج من الجهاز الثاني أو انتظر ' + leftMin + ' دقيقة وجرب مرة ثانية';
+                            msgBox.innerText = '⛔ هذا اليوزر مربوط بجهاز هاتف آخر نهائياً — ما ينجح يدخل من هذا الجهاز. لازم تسجيل خروج من الجهاز الأول، أو الإدارة تفك الربط من لوحة المشتركين (زر 🔓 فك الجهاز).';
                             return;
                         }
-                        saveLoginSession(user, pass);
+                        saveLoginSession(user, pass, found.id);
+                        bindDevicePermanently(found.id);
                         enterAsSubscriber(found);
                     } else {
                         msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ خطأ في يوزر أو باسورد المشترك';
@@ -1352,7 +1681,7 @@
             document.getElementById('resExp').innerText = found.exp_date || '—';
             document.getElementById('resDebt').innerText = found.debt || '0';
 
-            loadUserStore(); claimSession(found.id); startNotifListener(found.username);
+            loadUserStore(); bindDevicePermanently(found.id); startNotifListener(found.username);
             initPhoneNotifications();
             loadCustomPlaylist().then(function(custom) {
                 const rb = document.getElementById('resetPlaylistBtn');
@@ -1364,9 +1693,9 @@
             selectChannel(currentChannelIndex);
         }
 
-        /* ═══ تذكّر المشترك: أول مرة يطلب اليوزر والباسورد، وبعدها التطبيق يفتح مباشرة بدون إعادة تسجيل ═══ */
+        /* ═══ تذكّر المشترك نهائياً: أول مرة يطلب اليوزر والباسورد، وبعدها التطبيق يفتح مباشرة للأبد بدون إعادة تسجيل ═══ */
         const SKEY = 'bashar_login_session_v1';
-        function saveLoginSession(u, p) { try { safeStore.setItem(SKEY, JSON.stringify({ u: String(u || ''), p: String(p || '') })); } catch (e) {} }
+        function saveLoginSession(u, p, id) { try { safeStore.setItem(SKEY, JSON.stringify({ u: String(u || ''), p: String(p || ''), id: String(id || '') })); } catch (e) {} }
         function clearLoginSession() { try { safeStore.removeItem(SKEY); } catch (e) {} }
         async function tryAutoLogin() {
             let s = null;
@@ -1379,7 +1708,7 @@
                 const snap = await db.collection('subscribers').where('username', '==', s.u).get();
                 snap.forEach(d => { const x = { id: d.id, ...d.data() }; if (String(x.password) === String(s.p)) found = x; });
                 if (!found) { clearLoginSession(); msgBox.style.display = 'none'; return; }
-                if (sessionActiveElsewhere(found)) { clearLoginSession(); msgBox.style.display = 'none'; return; }
+                if (isBoundElsewhere(found)) { clearLoginSession(); msgBox.style.display = 'none'; return; }
                 enterAsSubscriber(found);
             } catch (err) { try { msgBox.style.display = 'none'; } catch (e2) {} }
         }
@@ -1652,10 +1981,27 @@
             if(db) {
                 if(docId) {
                     const snap = await db.collection('subscribers').where('username', '==', docId).get();
-                    snap.forEach(async d => { await d.ref.update(data); });
+                    snap.forEach(async d => {
+                        const old = d.data() || {};
+                        /* إذا الإدارة غيّرت اليوزر أو الباسورد — انفك ربط الجهاز القديم تلقائياً */
+                        if (String(old.username) !== data.username || String(old.password) !== data.password) { data.dev = ''; data.hb = 0; }
+                        await d.ref.update(data);
+                    });
                 } else await db.collection('subscribers').add(data);
                 alert('✅ تم الحفظ'); resetUserForm(); loadAllUsers();
             }
+        }
+
+        /* فك ربط الجهاز من لوحة الإدارة — المشترك يكدر يدخل من جهاز ثاني بأول دخول */
+        async function unbindUserDevice(username) {
+            if (!confirm('فك ربط الجهاز عن ' + username + '؟ بعدها بيكدر يدخل من أي جهاز ثاني ويصير مربوط به.')) return;
+            if (!db) return;
+            try {
+                const snap = await db.collection('subscribers').where('username', '==', username).get();
+                snap.forEach(async d => { await d.ref.update({ dev: '', hb: 0 }); });
+                loadAllUsers();
+                alert('✅ تم فك ربط الجهاز عن ' + username);
+            } catch (e) { alert('⚠️ صار خطأ بالاتصال بالسحابة'); }
         }
 
         function resetUserForm() {
@@ -1706,13 +2052,14 @@
                 }
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><b>${u.username}</b><br>${badge}</td>
+                    <td><b>${u.username}</b><br>${badge}${u.dev ? ' <span style="color:#e67e22; font-size:10px;">📱 مربوط بجهاز</span>' : ''}</td>
                     <td>${u.name || '—'}</td> <td style="direction:ltr;">${u.phone || '—'}</td>
                     <td>${u.start_date || '—'}</td> <td>${u.exp_date || '—'}</td> <td style="color:red; font-weight:bold;">${u.debt || 0}</td>
                     <td style="font-weight:bold;">${u.status || 'متصل'}</td>
                     <td>
                         <button class="btn-action btn-edit" onclick="editUserPrompt('${u.username}')">تعديل</button>
                         <button class="btn-action btn-wa" onclick="sendWhatsApp('${u.username}')" title="إرسال الإشعار على واتساب المشترك">واتساب</button>
+                        ${u.dev ? '<button class="btn-action" style="background:#e67e22 !important;" onclick="unbindUserDevice(\'' + u.username + '\')" title="فك ربط الجهاز — المشترك يكدر يدخل من أي جهاز ثاني بأول دخول">🔓 فك الجهاز</button>' : ''}
                         <button class="btn-action btn-del" onclick="deleteUser('${u.username}')">حذف</button>
                     </td>`;
                 tbody.appendChild(tr);
@@ -1757,8 +2104,17 @@
         const PKEY = 'bashar_store_prods_v22';
         const defaultProducts = [
             {name: 'راوترات', desc: 'راوترات منزلية وأنظمة تغطية', price: 'متوفر', icon: '🌐'},
-            {name: 'يوبي إس (Mini UPS)', desc: 'يبقي الإنترنت شغالاً', price: 'متوفر', icon: '🔋'}
+            {name: 'يوبي إس (Mini UPS)', desc: 'يبقي الإنترنت شغالاً', price: 'متوفر', icon: '🔋'},
+            {name: 'كاميرات مراقبة', desc: 'كاميرات داخلية وخارجية مع التركيب', price: 'متوفر', icon: '📹'},
+            {name: 'صحن بوربيم (PowerBeam)', desc: 'أطباق بوربيم للوصلات اللاسلكية بعيدة المدى', price: 'متوفر', icon: '📡'}
         ];
+        /* ترقية المتجر: إذا الجهاز محفوظ عنده القائمة الافتراضية القديمة (بدون تخصيص) — استبدلها بالجديدة */
+        (function migrateStoreDefaults() {
+            try {
+                const cur = safeStore.getItem(PKEY);
+                if (!cur || cur === JSON.stringify(defaultProducts.slice(0, 2))) safeStore.setItem(PKEY, JSON.stringify(defaultProducts));
+            } catch (e) {}
+        })();
         function getProducts() {
             let prods = JSON.parse(safeStore.getItem(PKEY) || '[]');
             if(prods.length === 0) { safeStore.setItem(PKEY, JSON.stringify(defaultProducts)); return defaultProducts; }
@@ -1786,12 +2142,182 @@
             let prods = getProducts(); prods.splice(index, 1); safeStore.setItem(PKEY, JSON.stringify(prods)); loadAdminStore();
         }
 
-        function runSpeedTest() {
-            const valEl = document.getElementById('circleVal'); const downEl = document.getElementById('downloadVal');
-            let currentVal = 0, target = (Math.random() * 30 + 15).toFixed(1);
-            let intv = setInterval(() => { currentVal += (target - currentVal) * 0.2; valEl.innerText = currentVal.toFixed(1); }, 250);
-            setTimeout(() => { clearInterval(intv); valEl.innerText = target; downEl.innerText = target + " Mbps"; }, 3000);
+        /* ═══ عدّاد السرعة الحقيقي — مقياس بعقرب مثل عدّاد السيارة: بنق ثم تنزيل ثم رفع ═══
+           القياس فعلي عبر سيرفرات Cloudflare (مصدر عدّاد السرعة المعروف) — مو أرقام تخمين */
+        const SPEED_SCALE = [0, 1, 5, 10, 20, 30, 50, 75, 100];   /* درجات المقياس بالميجا */
+        let speedBusy = false, needleAngle = 0, needleTarget = 0, needleAnim = null, speedSamples = [];
+
+        function speedPct(v) {
+            if (!isFinite(v) || v <= 0) return 0;
+            if (v >= SPEED_SCALE[SPEED_SCALE.length - 1]) return 1;
+            for (let i = 0; i < SPEED_SCALE.length - 1; i++) {
+                const a = SPEED_SCALE[i], b = SPEED_SCALE[i + 1];
+                if (v >= a && v <= b) return (i + (v - a) / (b - a)) / (SPEED_SCALE.length - 1);
+            }
+            return 1;
         }
+        function fmtSpeed(v) { return (isFinite(v) ? v.toFixed(2) : '0.00').replace('.', ','); }
+
+        /* رسم درجات المقياس 0M،1M،5M،10M،20M،30M،50M،75M،100M على القوس */
+        function buildGaugeTicks() {
+            const g = document.getElementById('gaugeTicks'); if (!g) return;
+            const cx = 160, cy = 160, r1 = 117, r2 = 129, rl = 145;
+            let html = '';
+            SPEED_SCALE.forEach(function (val, i) {
+                const ang = Math.PI * (1 - i / (SPEED_SCALE.length - 1));
+                const ca = Math.cos(ang), sa = Math.sin(ang);
+                html += '<line x1="' + (cx + r1 * ca).toFixed(1) + '" y1="' + (cy - r1 * sa).toFixed(1) + '" x2="' + (cx + r2 * ca).toFixed(1) + '" y2="' + (cy - r2 * sa).toFixed(1) + '" stroke="#cfd8e6" stroke-width="2.5"/>';
+                html += '<text x="' + (cx + rl * ca).toFixed(1) + '" y="' + (cy - rl * sa + 4).toFixed(1) + '" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#9fb3d1">' + val + 'M</text>';
+            });
+            g.innerHTML = html;
+        }
+
+        /* حركة العقرب — تنعيم نحو القيمة الهدف */
+        function setNeedle(v) { needleTarget = speedPct(v) * 180; if (!needleAnim) animateNeedle(); }
+        function animateNeedle() {
+            needleAnim = requestAnimationFrame(function () {
+                needleAngle += (needleTarget - needleAngle) * 0.12;
+                const g = document.getElementById('needleG');
+                if (Math.abs(needleTarget - needleAngle) <= 0.4) {
+                    needleAngle = needleTarget;
+                    if (g) g.setAttribute('transform', 'rotate(' + needleAngle.toFixed(2) + ' 160 160)');
+                    needleAnim = null; return;
+                }
+                if (g) g.setAttribute('transform', 'rotate(' + needleAngle.toFixed(2) + ' 160 160)');
+                animateNeedle();
+            });
+        }
+
+        /* الرسم البياني المصغر تحت العدّاد — تاريخ السرعة أثناء الفحص */
+        function drawHistory() {
+            const line = document.getElementById('histLine'); if (!line) return;
+            if (!speedSamples.length) { line.setAttribute('points', ''); return; }
+            const maxV = Math.max.apply(null, speedSamples) || 1;
+            const pts = speedSamples.map(function (v, i) {
+                return (i / Math.max(1, speedSamples.length - 1) * 312 + 4).toFixed(1) + ',' + (43 - (v / maxV) * 36).toFixed(1);
+            }).join(' ');
+            line.setAttribute('points', pts);
+        }
+
+        /* البنق — زمن وصول أصغر حزمة (4 محاولات، ناخذ الأقل) */
+        async function pingOnce(url, noCors) {
+            const t0 = performance.now();
+            const ac = new AbortController(); const kill = setTimeout(function () { ac.abort(); }, 4000);
+            try {
+                await fetch(url + (url.indexOf('?') > -1 ? '&' : '?') + 'r=' + Math.random(), { cache: 'no-store', mode: noCors ? 'no-cors' : 'cors', signal: ac.signal });
+                return performance.now() - t0;
+            } finally { clearTimeout(kill); }
+        }
+        async function measurePing() {
+            const targets = [
+                function () { return pingOnce('https://speed.cloudflare.com/__down?bytes=0', false); },
+                function () { return pingOnce('https://www.google.com/generate_204', true); }
+            ];
+            for (let t = 0; t < targets.length; t++) {
+                let best = Infinity;
+                for (let i = 0; i < 4; i++) { try { best = Math.min(best, await targets[t]()); } catch (e) {} }
+                if (isFinite(best)) return Math.round(best);
+            }
+            return NaN;
+        }
+
+        /* التنزيل — نطلب ملف 25MB ونقيس البايتات الواصلة (إذا النت بطيء نقطع بعد 8 ثواني ونحسب اللي وصل) */
+        async function measureDownload(onLive) {
+            const MAX_MS = 8000, BYTES = 25 * 1024 * 1024;
+            const ac = new AbortController(); const kill = setTimeout(function () { ac.abort(); }, MAX_MS);
+            const t0 = performance.now();
+            let bytes = 0, live = 0;
+            try {
+                const res = await fetch('https://speed.cloudflare.com/__down?bytes=' + BYTES + '&r=' + Math.random(), { cache: 'no-store', signal: ac.signal });
+                const reader = res.body.getReader();
+                while (true) {
+                    const rd = await reader.read();
+                    if (rd.done) break;
+                    bytes += rd.value.length;
+                    live = bytes * 8 / (performance.now() - t0) / 1000;
+                    if (onLive) onLive(live);
+                    if (performance.now() - t0 >= MAX_MS) { ac.abort(); break; }
+                }
+            } catch (e) { if (bytes < 50 * 1024) { clearTimeout(kill); throw e; } }
+            clearTimeout(kill);
+            const mbps = bytes * 8 / (performance.now() - t0) / 1000;
+            if (bytes < 50 * 1024) throw new Error('download-failed');
+            return mbps;
+        }
+        /* بديل إذا سيرفر السرعة محجوب: ملفات CDN المعروفة */
+        async function measureDownloadFallback(onLive) {
+            const t0 = performance.now(); let bytes = 0;
+            for (let i = 0; i < 4; i++) {
+                const res = await fetch('https://unpkg.com/hls.js@1.5.13/dist/hls.min.js?r=' + Math.random() + '_' + i, { cache: 'no-store' });
+                const buf = await res.arrayBuffer();
+                bytes += buf.byteLength;
+                if (onLive) onLive(bytes * 8 / (performance.now() - t0) / 1000);
+                if (performance.now() - t0 > 5000) break;
+            }
+            if (bytes < 50 * 1024) throw new Error('download-failed');
+            return bytes * 8 / (performance.now() - t0) / 1000;
+        }
+
+        /* الرفع — نبضة صغيرة أولاً لتخمين السرعة، بعدين حجم مناسب ياخذ حوالي 5 ثواني */
+        async function uploadOnce(bytes, url) {
+            const body = new Uint8Array(bytes);
+            const t0 = performance.now();
+            await fetch(url, { method: 'POST', body: body, cache: 'no-store' });
+            return bytes * 8 / (performance.now() - t0) / 1000;
+        }
+        async function measureUpload() {
+            try {
+                const probe = await uploadOnce(512 * 1024, 'https://speed.cloudflare.com/__up');
+                const target = Math.round(Math.min(16 * 1024 * 1024, Math.max(1024 * 1024, probe / 8 * 5 * 1000000)));
+                return await uploadOnce(target, 'https://speed.cloudflare.com/__up');
+            } catch (e) {
+                return await uploadOnce(1024 * 1024, 'https://httpbin.org/post');
+            }
+        }
+
+        async function runSpeedTest() {
+            if (speedBusy) return;
+            speedBusy = true;
+            const valEl = document.getElementById('gaugeVal'), lbl = document.getElementById('gaugeLabel');
+            const upEl = document.getElementById('uploadVal'), downEl = document.getElementById('downloadVal'), pingEl = document.getElementById('pingVal');
+            upEl.innerText = '— Mbps'; downEl.innerText = '— Mbps'; pingEl.innerText = '— ms';
+            speedSamples = []; drawHistory(); setNeedle(0);
+            valEl.textContent = '0,00';
+            lbl.textContent = 'جاري الفحص...';
+            try {
+                /* 1) البنق */
+                lbl.textContent = 'جاري قياس البنق...';
+                const p = await measurePing();
+                pingEl.innerText = isFinite(p) ? p + ' ms' : '— ms';
+                /* 2) التنزيل — العقرب يتحرك مع السرعة الحية */
+                lbl.textContent = 'جاري قياس التنزيل...';
+                let down = NaN;
+                try {
+                    down = await measureDownload(function (live) {
+                        speedSamples.push(live); if (speedSamples.length > 140) speedSamples.shift();
+                        drawHistory(); setNeedle(live); valEl.textContent = fmtSpeed(live);
+                    });
+                } catch (e1) {
+                    down = await measureDownloadFallback(function (live) {
+                        speedSamples.push(live); if (speedSamples.length > 140) speedSamples.shift();
+                        drawHistory(); setNeedle(live); valEl.textContent = fmtSpeed(live);
+                    });
+                }
+                speedSamples.push(down); drawHistory();
+                valEl.textContent = fmtSpeed(down); setNeedle(down);
+                downEl.innerText = fmtSpeed(down) + ' Mbps';
+                /* 3) الرفع */
+                lbl.textContent = 'جاري قياس الرفع...';
+                let up = NaN;
+                try { up = await measureUpload(); } catch (e2) {}
+                upEl.innerText = isFinite(up) ? fmtSpeed(up) + ' Mbps' : '— Mbps';
+                lbl.textContent = '✅ خلص الفحص — انقر للإعادة';
+            } catch (err) {
+                lbl.textContent = '⚠️ ما كو اتصال بالسيرفر — تأكد من النت وجرب مرة ثانية';
+            }
+            speedBusy = false;
+        }
+        buildGaugeTicks();
 
         document.addEventListener('click', function(e) {
             const p = document.getElementById('notifPanel');
@@ -1808,7 +2334,9 @@
 
         function logout() {
             stopNotifListener();
-            releaseSession();
+            let s = null;
+            try { s = JSON.parse(safeStore.getItem(SKEY) || 'null'); } catch (e) {}
+            if (s && s.id) unbindDevice(s.id);   /* فك الربط النهائي عن الجهاز — اليوزر يشتغل بجهاز ثاني بعدها */
             clearLoginSession();
             setTimeout(function () { location.reload(); }, 700);
         }
