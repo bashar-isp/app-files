@@ -6,15 +6,9 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   async redirects() {
-    return {
-      /* الصفحة الرئيسية / تتحول تلقائياً إلى التطبيق /app.html
-         (beforeFiles = قبل أي ملفات قديمة بالمستودع — حتى ما تعارض الصفحات القديمة) */
-      beforeFiles: [
-        { source: "/", destination: "/app.html", permanent: false },
-      ],
-      afterFiles: [],
-      fallback: [],
-    };
+    return [
+      { source: "/", destination: "/app.html", permanent: false }
+    ];
   },
 };
 
