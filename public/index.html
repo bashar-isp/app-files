@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="referrer" content="no-referrer">
     <title>بشار الالوسي لخدمات الانترنت</title>
     <!-- ═══ v1.10.1: دعم الآيفون — يتنصب كتطبيق من Safari ← مشاركة ← Add to Home Screen ═══ -->
     <meta name="theme-color" content="#3b0066">
@@ -1237,7 +1238,7 @@
 
         // عند فشل طريقة التشغيل: بروكسي السيرفر → رابط مباشر → مشغل أصلي → السيرفر التالي
         // بث TS الخام: بروكسي السيرفر → رابط مباشر → السيرفر التالي (المشغل الأصلي ما يشتغل على TS حي)
-        var playMode = 0; // 0 = عبر بروكسي السيرفر /api/hls، 1 = رابط مباشر، 2 = مشغل أصلي (native)
+        var playMode = 1; /* مباشر أولاً — البروكسي احتياطي */ // 0 = عبر بروكسي السيرفر /api/hls، 1 = رابط مباشر، 2 = مشغل أصلي (native)
         function proxiedUrl(u) { return '/api/hls?url=' + encodeURIComponent(u); }
         /* بث TS الخام (روابط extension=ts أو /live/play/) يحتاج مشغل mpegts وليس HLS — روابط extension=m3u8 تشتغل hls */
         function isTsUrl(u) {
