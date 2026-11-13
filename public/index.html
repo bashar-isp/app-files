@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>بشار الالوسي لخدمات الانترنت</title>
-    <!-- ═══ v1.10.1: دعم الآيفون — يتنصب كتطبيق من Safari ← مشاركة ← Add to Home Screen ═══ -->
+    <!-- ═══ دعم الآيفون والأندرويد كتطبيق ويب ═══ -->
     <meta name="theme-color" content="#3b0066">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,17 +15,17 @@
     <link rel="apple-touch-icon" href="/icon-192.png">
     <script>
         /* ═══════════ 🔄 التحديث التلقائي عبر GitHub (OTA) ═══════════ */
-        var OTA_USER = 'bashar-isp';     /* ← حسابك على GitHub */
-        var OTA_REPO = 'bashar-app';   /* اسم المستودع */
-        var OTA_BRANCH = 'main';       /* الفرع */
-        var OTA_VERSION = '1.0.0';
+        var OTA_USER = 'bashar-isp';     /* حسابك على GitHub */
+        var OTA_REPO = 'bashar-app';     /* اسم المستودع */
+        var OTA_BRANCH = 'main';         /* الفرع */
+        var OTA_VERSION = '1.0.5';
         var OTA_KEY = 'bashar_ota_v1';
         var OTA_FLAG = 'bashar_ota_boot_v1';
         var OTA_REJECT = 'bashar_ota_reject_v1';
         (function () {
             function vNum(v) { var m = String(v || '').match(/(\d+)\.(\d+)\.(\d+)/); return m ? ((+m[1]) * 1000000) + ((+m[2]) * 1000) + (+m[3]) : 0; }
             function otaBase() { return 'https://raw.githubusercontent.com/' + OTA_USER + '/' + OTA_REPO + '/' + OTA_BRANCH + '/'; }
-            function otaValid(code) { return code && code.length > 20000 && String(code).indexOf('</html>') > -1 && String(code).indexOf('بشار الالوسي') > -1; }
+            function otaValid(code) { return code && code.length > 10000 && String(code).indexOf('</html>') > -1 && String(code).indexOf('بشار الالوسي') > -1; }
             var st = null, flag = null, isWritten = false;
             try { st = JSON.parse(localStorage.getItem(OTA_KEY) || 'null'); } catch (e) {}
             try { flag = localStorage.getItem(OTA_FLAG); } catch (e) {}
@@ -55,14 +55,14 @@
             try { if (!flag || vNum(flag) < vNum(OTA_VERSION)) localStorage.setItem(OTA_FLAG, OTA_VERSION); } catch (e) {}
             var runningStoredV = (st && String(flag) === String(st.v)) ? String(st.v) : null;
             window.otaCheckNow = function (silent) {
-                if (!OTA_USER) { if (!silent) alert('خطوة ناقصة: اكتب اسم حسابك'); return Promise.resolve(); }
+                if (!OTA_USER) return Promise.resolve();
                 return fetch(otaBase() + 'version.json?t=' + Date.now(), { cache: 'no-store' })
                     .then(function (r) { return r.json(); })
                     .then(function (j) {
-                        if (!j || !j.version) { if (!silent) alert('⚠️ ملف version.json غير سليم'); return; }
+                        if (!j || !j.version) return;
                         var rej = null; try { rej = localStorage.getItem(OTA_REJECT); } catch (e) {}
-                        if (rej && String(j.version) === rej) { if (!silent) alert('⚠️ نسخة سابقة فشت'); return; }
-                        if (String(j.version) === runningStoredV) { if (!silent) alert('✅ التطبيق محدّث لآخر إصدار (' + OTA_VERSION + ')'); return; }
+                        if (rej && String(j.version) === rej) return;
+                        if (String(j.version) === runningStoredV) return;
                         if (vNum(j.version) > vNum(OTA_VERSION)) {
                             return fetch(otaBase() + 'app.html?t=' + Date.now(), { cache: 'no-store' })
                                 .then(function (r) { return r.text(); })
@@ -71,11 +71,11 @@
                                         try { localStorage.setItem(OTA_KEY, JSON.stringify({ v: j.version, code: code, at: Date.now() })); } catch (e) {}
                                         if (!silent) alert('✅ وصل تحديث جديد (' + j.version + ')');
                                         location.reload();
-                                    } else if (!silent) alert('⚠️ ملف التحديث غير سليم');
+                                    }
                                 });
-                        } else if (!silent) alert('✅ التطبيق محدّث لآخر إصدار (' + OTA_VERSION + ')');
+                        }
                     })
-                    .catch(function () { if (!silent) alert('ما كدرت أوصل للـ GitHub — تأكد من الإنترنت'); });
+                    .catch(function () {});
             };
             setTimeout(function () { try { window.otaCheckNow(true); } catch (e) {} }, 5000);
         })();
@@ -109,33 +109,15 @@
         .brand-text { text-align:center; }
         .brand-name { font-size:26px; font-weight:bold; line-height:1.3; background:linear-gradient(to left, #02f586, #0bc3db 55%, #cec729); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; }
         .brand-sub { color:#fff; font-size:14px; font-weight:bold; margin-top:1px; }
-        .ch-fam { font-size:8px; color:#ffd700; background:#2a004a; border:1px solid #7a1fb8; padding:3px 5px; border-radius:4px; font-weight:bold; flex:0 0 auto; white-space:nowrap; }
-        .payment-box { background: rgba(0,0,0,0.3); border: 1px solid #7a1fb8; border-radius: 8px; padding: 10px; margin-top: 15px; text-align: right; }
-        .payment-title { color: #00ff88; font-size: 14px; font-weight: bold; margin-bottom: 6px; text-align: center; }
-        .main-apps { display: flex; justify-content: center; align-items: stretch; gap: 14px; margin: 2px 0 14px; }
+        .main-apps { display: flex; justify-content: center; align-items: stretch; gap: 14px; margin: 12px 0 14px; }
         .big-tile { flex: 1 1 0; max-width: 265px; background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(0,0,0,0.38)); border: 2px solid rgba(255,255,255,0.22); border-radius: 18px; padding: 16px 10px 13px; text-align: center; cursor: pointer; transition: transform .15s, border-color .15s, box-shadow .15s; }
         .big-tile:active { transform: scale(0.96); }
         .big-tile:hover { border-color: #ffd700; box-shadow: 0 0 14px rgba(255,215,0,0.25); }
         .big-tile.tile-cinema { border-color: rgba(255,82,82,0.45); }
         .big-tile.tile-sports { border-color: rgba(255,215,0,0.4); }
-        .tile-imgbox { height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 9px; }
-        .tile-imgbox .tile-logo { height: 110px; width: 110px; object-fit: cover; border-radius: 26px; background: #17092b; box-shadow: 0 6px 18px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.28); display: block; }
+        .tile-imgbox { height: 90px; display: flex; align-items: center; justify-content: center; margin-bottom: 9px; font-size: 48px; }
         .tile-label { font-size: 18px; font-weight: bold; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
         .tile-sub { font-size: 11.5px; color: #c9b8e8; margin-top: 3px; }
-        .pay-card { position: relative; border-radius: 16px; padding: 14px 16px; color: #fff; cursor: pointer; overflow: hidden; box-shadow: 0 10px 22px rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.18); margin-top: 12px; }
-        .pay-card.mc { background: linear-gradient(135deg,#23233f 0%,#3a1d51 55%,#571f44 100%); }
-        .pay-card.zain { background: linear-gradient(135deg,#5a0e13 0%,#8f1420 55%,#c81e34 100%); }
-        .pay-top { display: flex; justify-content: space-between; align-items: center; }
-        .pay-brand { font-weight: 900; font-size: 15px; letter-spacing: .5px; }
-        .mc-mark { direction: ltr; }
-        .mc-mark i { display: inline-block; width: 19px; height: 19px; border-radius: 50%; background: #eb001b; }
-        .mc-mark i+i { background: #f79e1b; margin-left: -8px; opacity: .92; }
-        .zain-mark { background: rgba(255,255,255,.22); padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .pay-chip { width: 40px; height: 29px; border-radius: 6px; margin-top: 12px; background: linear-gradient(135deg,#ffe08a,#d3a017); position: relative; }
-        .pay-num { direction: ltr; text-align: center; font-family: 'Courier New',monospace; font-size: 21px; font-weight: bold; letter-spacing: 3px; margin: 10px 0 8px; }
-        .pay-foot { display: flex; justify-content: space-between; font-size: 11.5px; color: rgba(255,255,255,.85); }
-        .pay-under { text-align: center; color: #ffd700; font-weight: bold; font-size: 13.5px; margin-top: 7px; }
-        #payToast { position: fixed; z-index: 99999; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0f3d1e; color: #00ff88; border: 1px solid #00ff88; border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: bold; display: none; }
         .tv-platform { display: flex; flex-direction: column; gap: 12px; background-color: #1a0033; border: 2px solid #7a1fb8; padding: 10px; border-radius: 12px; margin-top: 15px; margin-bottom: 15px; }
         @media(min-width: 768px) {
             .tv-platform { flex-direction: row; }
@@ -145,16 +127,15 @@
         .channels-sidebar { background: #120024; border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 6px; border: 1px solid #4d0085; overflow-y: auto; max-height: 520px;}
         .channel-btn { background: #2a004a; color: #fff; border: 2px solid #4d0085; padding: 9px 10px; text-align: right; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
         .channel-btn.active { background: #8c2ee0; border-color: #00e5ff; }
-        .ch-num { min-width: 42px; height: 27px; display: flex; align-items: center; justify-content: center; background: #ffd700; color: #110022; border-radius: 7px; font-weight: bold; font-size: 12px; }
+        .ch-num { min-width: 34px; height: 26px; display: flex; align-items: center; justify-content: center; background: #ffd700; color: #110022; border-radius: 7px; font-weight: bold; font-size: 12px; }
         .ch-line { display: flex; align-items: center; gap: 7px; min-width: 0; flex: 1; }
-        .ch-logo { width: 24px; height: 24px; border-radius: 5px; background: #fff; object-fit: contain; }
         .ch-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .player-main { background: #000; border-radius: 8px; overflow: hidden; border: 1px solid #4d0085; }
         .tv-container { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
         .tv-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; }
         .live-brand { position: absolute; top: 8px; right: 10px; z-index: 6; pointer-events: none; background: linear-gradient(135deg, rgba(140,46,224,0.93), rgba(77,0,133,0.93)); border: 1px solid rgba(233,192,11,0.5); border-radius: 9px; padding: 4px 12px 5px; text-align: center; }
-        .live-brand .lb-name { color: #fff; font-size: 13px; font-weight: bold; }
-        .tv-fs-btn { position: absolute; top: 10px; left: 10px; z-index: 7; width: 38px; height: 38px; border-radius: 9px; border: 1px solid rgba(233,192,11,0.55); background: rgba(29,0,51,0.72); color: #ffd700; font-size: 19px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .live-brand .lb-name { color: #fff; font-size: 12px; font-weight: bold; }
+        .tv-fs-btn { position: absolute; top: 10px; left: 10px; z-index: 7; width: 36px; height: 36px; border-radius: 9px; border: 1px solid rgba(233,192,11,0.55); background: rgba(29,0,51,0.72); color: #ffd700; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .servers-bar { display: flex; gap: 5px; flex-wrap: wrap; background: #120024; padding: 10px; border-top: 1px solid #4d0085; align-items: center; }
         .servers-title { font-size: 12px; color: #ffd700; font-weight: bold; }
         .server-tab { flex: 1; min-width: 52px; padding: 6px 5px; background: #2a004a; color: #fff; border: 1px solid #7a1fb8; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; }
@@ -165,83 +146,30 @@
         .ch-count { color: #ffd700; font-size: 10px; text-align: center; margin-bottom: 4px; }
         #channelsList { display: flex; flex-direction: column; gap: 6px; }
         .no-ch { text-align: center; color: #888; font-size: 12px; padding: 10px; }
-        .speedtest-section { margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); text-align: center; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; }
-        .speed-title { color: #00ff88; font-size: 14px; font-weight: bold; margin-bottom: 6px; }
-        .speed-gauge-wrap { position: relative; width: 216px; height: 216px; margin: 8px auto; }
-        #speedGauge { width: 100%; height: 100%; display: block; }
-        #speedNeedle { transform-origin: 100px 100px; transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1); }
-        .speed-go { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 96px; height: 96px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #1c0b33, #0d0022); border: 3px solid #00ff88; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        .speed-go span { font-size: 9px; color: #aaa; }
-        .speed-go strong { font-size: 22px; color: #00ff88; margin-top: 2px; }
-        .speed-details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
-        .speed-detail-box { background: rgba(255,255,255,0.08); padding: 7px 6px; border-radius: 6px; font-size: 11px; }
-        .speed-detail-box span { display: block; color: #ccc; font-size: 9px; }
-        .store-section { margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px; text-align: right; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-        .product-card { background-color: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; text-align: center; border: 1px solid #7a1fb8; }
-        .product-img-box { width: 100%; height: 60px; background: #2a004a; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 6px; }
-        .btn-buy { background-color: #25d366; color: white; padding: 5px; border-radius: 4px; font-size: 11px; text-decoration: none; font-weight: bold; display: block; margin-top: 4px; }
         .dashboard-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 15px; margin-bottom: 12px; }
-        .dash-card { padding: 10px 6px; border-radius: 8px; text-align: center; color: white; font-weight: bold; cursor: pointer; }
+        .dash-card { padding: 10px 6px; border-radius: 8px; text-align: center; color: white; font-weight: bold; }
         .dash-card h4 { margin: 0 0 4px 0; font-size: 11px; opacity: 0.9; }
         .dash-card p { margin: 0; font-size: 16px; }
         .card-total { background-color: #3b528a; }
         .card-active { background-color: #2e7d32; }
-        .card-expiring { background-color: #f57f17; color: #fff; }
-        .card-expired { background-color: #c62828; }
-        .card-debt { background-color: #455a64; }
         .table-container { overflow-x: auto; border-radius: 8px; margin-top: 10px; }
         table { width: 100%; border-collapse: collapse; background-color: #fff; color: #333; font-size: 12px; text-align: center; white-space: nowrap; }
         th, td { padding: 8px; border: 1px solid #ddd; }
         th { background-color: #8c2ee0; color: white; }
-        .btn-action { padding: 4px 6px; font-size: 11px; margin: 2px; border-radius: 4px; cursor: pointer; color: white; border: none; font-weight: bold; }
-        .btn-edit { background-color: #8c2ee0 !important; }
-        .btn-wa { background-color: #25d366 !important; }
+        .btn-action { padding: 5px 8px; font-size: 11px; margin: 2px; border-radius: 4px; cursor: pointer; color: white; border: none; font-weight: bold; font-family: 'Tajawal', sans-serif; }
+        .btn-unlink { background-color: #ff9800 !important; color: #110022 !important; }
         .btn-del { background-color: #dc3545 !important; }
         .badge-active { background-color: #00ff88; color: #110022; padding: 2px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; }
-        .badge-expired { background-color: #dc3545; color: #ffffff; padding: 2px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; }
-        .product-price { color: #00ff88; font-weight: bold; font-size: 13px; margin: 4px 0; }
-        #notifBell { position: fixed; top: 14px; left: 14px; z-index: 9998; width: 46px; height: 46px; border-radius: 50%; background: #8c2ee0; border: 2px solid #00ff88; font-size: 20px; display: none; align-items: center; justify-content: center; cursor: pointer; }
-        #notifBadge { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; background: #dc3545; color: #fff; border-radius: 10px; font-size: 11px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
-        #notifPanel { display: none; position: fixed; top: 68px; left: 14px; z-index: 9998; width: 300px; max-width: 88vw; max-height: 55vh; overflow-y: auto; background: #2a004a; border: 2px solid #8c2ee0; border-radius: 10px; }
-        .notif-head { display: flex; justify-content: space-between; align-items: center; padding: 9px 10px; border-bottom: 1px solid #4d0085; color: #00ff88; font-weight: bold; font-size: 13px; background: #2a004a; }
-        .notif-item { padding: 9px 10px; border-bottom: 1px solid #3b1060; font-size: 12px; color: #fff; }
-        .notif-item.unread { background: #3b0066; border-right: 3px solid #00ff88; }
-        .notif-time { display: block; color: #00e5ff; font-size: 10px; margin-top: 3px; }
-        .notif-empty { padding: 14px; text-align: center; color: #888; font-size: 12px; }
-        #notifToast { display: none; position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 320px; max-width: 92vw; background: #2a004a; border: 2px solid #00ff88; border-radius: 10px; padding: 11px 12px; font-size: 12px; color: #fff; cursor: pointer; }
-        .matches-section { background: #1a0033; border: 2px solid #7a1fb8; border-radius: 12px; padding: 10px; margin-bottom: 12px; }
-        .m-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-        .m-title { color: #00ff88; font-weight: bold; font-size: 15px; }
-        .m-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .m-meta { color: #00e5ff; font-size: 10px; font-weight: bold; }
-        .m-refresh { background: #8c2ee0; color: #fff; border: none; border-radius: 6px; padding: 6px 10px; font-family: 'Tajawal'; font-size: 11px; font-weight: bold; cursor: pointer; }
-        .m-filters { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
-        .mfilter { background: #2a004a; color: #fff; border: 1px solid #7a1fb8; border-radius: 14px; padding: 4px 12px; font-size: 11px; font-weight: bold; cursor: pointer; }
-        .mfilter.active { background: #00ff88; color: #110022; }
-        .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 8px; }
-        .match-card { background: #120024; border: 1px solid #4d0085; border-radius: 10px; padding: 9px; cursor: pointer; }
-        .m-tour { color: #ffd700; font-size: 10px; font-weight: bold; margin-bottom: 6px; }
-        .m-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-        .m-team { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; font-size: 12px; font-weight: bold; }
-        .m-logo { width: 28px; height: 28px; object-fit: contain; background: #fff; border-radius: 5px; }
-        .m-mid { flex: 0 0 auto; text-align: center; }
-        .m-time { color: #00e5ff; font-size: 14px; font-weight: bold; }
-        .m-score { color: #fff; font-size: 15px; font-weight: bold; }
-        .m-stat { font-size: 9px; color: #aaa; margin-top: 2px; }
-        .m-foot { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-top: 7px; padding-top: 6px; border-top: 1px solid #2a004a; }
-        .m-ch { color: #d9b3ff; font-size: 10px; font-weight: bold; }
-        .m-play { background: #00ff88; color: #110022; border-radius: 5px; padding: 3px 8px; font-size: 10px; font-weight: bold; }
-        .m-loading { grid-column: 1/-1; text-align: center; color: #ffd700; font-size: 12px; padding: 14px; }
-        #matchMsg { background: #120024; border: 2px solid #8c2ee0; border-radius: 8px; padding: 9px; font-size: 12px; color: #fff; margin-bottom: 8px; }
-        .m-src { color: #777; font-size: 9px; text-align: center; margin-top: 8px; }
+        .badge-locked { background-color: #ff9800; color: #110022; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .badge-free { background-color: #28a745; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
         #userPanel, #adminPanel { display: none; }
-        #messageBox { text-align: center; margin-top: 10px; font-weight: bold; display: none; }
+        #messageBox { text-align: center; margin-top: 10px; font-weight: bold; display: none; padding: 8px; border-radius: 6px; }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- ترويسة التطبيق -->
         <div class="brand-header">
             <div class="brand-icon"><span class="brand-dot"></span><span class="brand-play"></span></div>
             <div class="brand-text">
@@ -250,6 +178,7 @@
             </div>
         </div>
 
+        <!-- ═══════════ شاشة تسجيل الدخول ═══════════ -->
         <div id="loginSection" style="max-width:380px; margin:auto;">
             <div class="role-switch">
                 <button type="button" class="role-btn active" id="btnUserRole" onclick="setRole('user')">👤 مشترك</button>
@@ -257,53 +186,136 @@
             </div>
             <input type="text" id="username" placeholder="يوزر المشترك" onkeydown="if(event.key==='Enter'){event.preventDefault();login();}">
             <input type="password" id="password" placeholder="باسورد المشترك" onkeydown="if(event.key==='Enter'){event.preventDefault();login();}">
-            <label style="display:flex; align-items:center; gap:7px; color:#ffd700; font-size:12px; margin:-4px auto 12px; cursor:pointer; max-width:350px;"><input type="checkbox" id="rememberMe" checked style="width:16px; height:16px; margin:0;"> حفظ اليوزر والباسورد على هذا الجهاز</label>
-            <button class="btn-primary" onclick="login()">دخول إلى التطبيق</button>
-            <button type="button" class="btn-req" style="background:rgba(80,25,0,0.45); border-color:#ff9d5c; color:#ffc79c;" onclick="unlinkOtherDevice()">🔓 حسابي محجوز بجهاز ثاني؟ اضغط هنا لفك الارتباط</button>
+            <label style="display:flex; align-items:center; gap:7px; color:#ffd700; font-size:12px; margin:-4px auto 12px; cursor:pointer; max-width:350px;">
+                <input type="checkbox" id="rememberMe" checked style="width:16px; height:16px; margin:0;"> حفظ اليوزر والباسورد على هذا الجهاز
+            </label>
+            <button type="button" class="btn-primary" onclick="login()">دخول إلى التطبيق</button>
+
+            <!-- تم حذف زر فك الارتباط من هنا بناءً على طلبك ليكون حصرياً للمدير -->
+
             <button type="button" class="btn-req" onclick="openReqForm()">🆕 ما عندي يوزر — اطلب تفعيل اشتراك</button>
             <div id="reqForm" style="display:none; background:rgba(0,0,0,0.3); border:1px solid #00e5ff; border-radius:8px; padding:10px; margin-bottom:10px;">
                 <div style="color:#00e5ff; font-size:13px; font-weight:bold; text-align:center; margin-bottom:8px;">📨 طلب تفعيل اشتراك جديد</div>
-                <input type="text" id="req_name" placeholder="اسمك الكامل" onkeydown="if(event.key==='Enter'){event.preventDefault();sendActivateRequest();}">
-                <input type="tel" id="req_phone" placeholder="رقم هاتفك (مع واتساب)" style="direction:ltr; text-align:right;" onkeydown="if(event.key==='Enter'){event.preventDefault();sendActivateRequest();}">
-                <button class="btn-green" style="width:100%; padding:12px; font-size:15px; font-weight:bold;" onclick="sendActivateRequest()">📨 إرسال الطلب للمدير</button>
-            </div>
-            <div id="reqWaiting" style="display:none; background:rgba(0,40,0,0.35); border:1px solid #00ff88; border-radius:8px; padding:12px; margin-bottom:10px; text-align:center;">
-                <div style="font-size:24px;">⏳</div>
-                <div style="color:#00ff88; font-size:14px; font-weight:bold;">طلبك وصل للمدير — بانتظار الموافقة</div>
-                <div id="reqWaitingInfo" style="color:#ddd; font-size:12px; margin-top:4px;"></div>
-                <button type="button" class="btn-red" style="margin-top:10px; padding:6px; font-size:12px;" onclick="cancelMyRequest()">إلغاء طلبي</button>
+                <input type="text" id="req_name" placeholder="اسمك الكامل">
+                <input type="tel" id="req_phone" placeholder="رقم هاتفك (مع واتساب)" style="direction:ltr; text-align:right;">
+                <button type="button" class="btn-green" style="width:100%; padding:12px; font-size:15px; font-weight:bold;" onclick="sendActivateRequest()">📨 إرسال الطلب للمدير</button>
             </div>
             <div id="messageBox"></div>
-            <div style="text-align:center; color:#777; font-size:10px; margin-top:6px;">بشار الالوسي — الإصدار 1.0</div>
+            <div style="text-align:center; color:#777; font-size:10px; margin-top:6px;">بشار الالوسي — الإصدار 1.0.5</div>
         </div>
 
+        <!-- ═══════════ لوحة المشترك ═══════════ -->
         <div id="userPanel" class="result-box">
             <div id="userNotificationBanner" class="notification-banner">
                 👋 أهلاً بك في منصة بشار الرياضية — قنوات الوان سبورت و beIN Sport بجودات متعددة بدون تقطيع!
             </div>
-            <div id="notifBell" title="الإشعارات" onclick="toggleNotifPanel(event)">🔔<span id="notifBadge" style="display:none;">0</span></div>
-            <div id="notifPanel">
-                <div class="notif-head"><span>🔔 الإشعارات</span><button onclick="event.stopPropagation(); markAllNotifsRead()">تعليم الكل مقروء ✓</button></div>
-                <div id="notifList"><div class="notif-empty">ماكو إشعارات حالياً</div></div>
-            </div>
-            <div id="notifToast" onclick="this.style.display='none'"></div>
             <h3 style="text-align: center; color: #ffd700; margin-bottom: 10px; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 6px;" id="welcomeTitle">👤 أهلاً بك: —</h3>
             <div style="display: grid; grid-template-columns: 1fr; gap: 7px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-bottom: 10px;">
                 <div class="result-item">🟢 حالة الاشتراك: <span id="resStatusBadge"></span></div>
                 <div class="result-item">📅 بداية الاشتراك: <b id="resStart">—</b></div>
-                <div class="result-item">⏳ الانتهاء: <b id="resExp"></b></div>
-                <div class="result-item">💰 الديون: <b id="resDebt" style="color:#ff4d4d;"></b> دينار</div>
+                <div class="result-item">⏳ الانتهاء: <b id="resExp">—</b></div>
+                <div class="result-item">💰 الديون: <b id="resDebt" style="color:#ff4d4d;">0</b> دينار</div>
             </div>
+
             <div class="main-apps">
-                <div class="big-tile tile-cinema" onclick="goCinema(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
+                <div class="big-tile tile-cinema" onclick="goCinema()">
+                    <div class="tile-imgbox">🎬</div>
                     <div class="tile-label">سينمانا</div>
                     <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
                 </div>
-                <div class="big-tile tile-sports" onclick="openTV(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
+                <div class="big-tile tile-sports" onclick="openTV()">
+                    <div class="tile-imgbox">⚽</div>
+                    <div class="tile-label">البث المباشر</div>
+                    <div class="tile-sub">قنوات beIN Sport وألوان سبورت</div>
+                </div>
+            </div>
+
+            <!-- قسم التلفزيون المباشر -->
+            <div id="tvSection" style="display:block;">
+                <div class="tv-platform">
+                    <div class="channels-sidebar">
+                        <div class="ch-head">📺 قائمة القنوات الرياضية</div>
+                        <input type="text" class="ch-search" placeholder="🔍 ابحث عن قناة..." oninput="onSearchChannel(this.value)">
+                        <div class="ch-count" id="chCount"></div>
+                        <div id="channelsList"></div>
+                    </div>
+                    <div class="player-main">
+                        <div class="tv-container" id="tvContainer">
+                            <div class="live-brand"><div class="lb-name">بشار الالوسي</div></div>
+                            <button type="button" class="tv-fs-btn" onclick="toggleTVFullscreen()" title="ملء الشاشة">⛶</button>
+                            <video id="tvPlayer" controls playsinline></video>
+                        </div>
+                        <div class="servers-bar" id="serversBar"></div>
+                        <div class="player-status" id="playerStatus">اختر قناة لبدء المشاهدة</div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-red" onclick="logout()">🚪 تسجيل الخروج</button>
+        </div>
+
+        <!-- ═══════════ لوحة تحكم المدير (تحتوي على ميزة فك الارتباط الحصرية) ═══════════ -->
+        <div id="adminPanel" class="admin-box">
+            <h2>🛠️ لوحة تحكم المدير</h2>
+            <div class="dashboard-cards">
+                <div class="dash-card card-total">
+                    <h4>إجمالي المشتركين</h4>
+                    <p id="statTotal">0</p>
+                </div>
+                <div class="dash-card card-active">
+                    <h4>الأجهزة المرتبطة</h4>
+                    <p id="statLinked">0</p>
+                </div>
+            </div>
+
+            <!-- نموذج إضافة مشترك جديد -->
+            <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #7a1fb8;">
+                <h3 style="margin-top:0; color:#00ff88; font-size:15px;">➕ إضافة مشترك جديد</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px;">
+                    <input type="text" id="add_user" placeholder="يوزر المشترك (إجباري)">
+                    <input type="text" id="add_pass" placeholder="باسورد المشترك (إجباري)">
+                    <input type="text" id="add_name" placeholder="اسم المشترك">
+                    <input type="text" id="add_phone" placeholder="رقم الهاتف">
+                    <input type="date" id="add_start" title="تاريخ البداية">
+                    <input type="date" id="add_exp" title="تاريخ الانتهاء">
+                    <input type="number" id="add_debt" placeholder="الديون (دينار)" value="0">
+                    <select id="add_status">
+                        <option value="فعال">فعال</option>
+                        <option value="منتهي">منتهي</option>
+                    </select>
+                </div>
+                <button type="button" class="btn-green" style="width:100%; padding:12px; font-weight:bold; font-size:15px; margin-top:6px;" onclick="addNewUser()">💾 حفظ المشترك</button>
+            </div>
+
+            <!-- جدول المشتركين مع زر فك الارتباط للمدير فقط -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اليوزر</th>
+                            <th>الباسورد</th>
+                            <th>الاسم</th>
+                            <th>الهاتف</th>
+                            <th>الانتهاء</th>
+                            <th>الديون</th>
+                            <th>حالة الجهاز</th>
+                            <th>إجراءات المدير (فك الارتباط / حذف)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="8">جاري تحميل المشتركين...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="button" class="btn-red" onclick="logout()">🚪 خروج من لوحة المدير</button>
+        </div>
+    </div>
+
+    <!-- ═══════════ البرمجة الرئيسية الموحدة ═══════════ -->
     <script>
         if (window.__OTA_PENDING) { throw new Error('OTA-REPLACE-PENDING'); }
+
         var firebaseConfig = {
             apiKey: "AIsyCFV84WqJdfhmBWbn2KUNxOUwXTAERNHHE",
             authDomain: "start-in-production.firebaseapp.com",
@@ -313,539 +325,426 @@
             appId: "1:929663491292:web:46beb745d3dedc789ae819"
         };
         var db = null;
-        try { if (!firebase.apps.length) firebase.initializeApp(firebaseConfig); db = firebase.firestore(); } catch(e) {}
-
-        var allChannels = [
-            { name: "الوان سبورت 1", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8"] },
-            { name: "الوان سبورت 2", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8"] },
-            { name: "الوان سبورت 3", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8"] },
-            { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"] },
-            { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"] },
-            { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"] },
-            { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242255&extension=m3u8"
-            ] },
-            { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242254&extension=m3u8"
-            ] }
-        ];
-
-        var searchTerm = '';
-        var currentChannelIndex = 0, currentServerIndex = 0, serverAttempts = 0;
-        var hlsInstance = null, tsInstance = null, nativeTried = -1;
-        var tsSeq = 0, tsReconnectAt = 0, tsReconnectCount = 0, tsWatchdog = null;
-        var qualityMap = {}, currentQuality = 'auto';
-        var QPKEY = 'bashar_pref_qual_v1';
-        function qualCategory(label) {
-            const x = String(label || '').toLowerCase();
-            if (/4k|k4/.test(x)) return '4k';
-            if (/fhd/.test(x)) return 'fhd';
-            if (/hd/.test(x)) return 'hd';
-            if (/sd/.test(x)) return 'sd';
-            if (/hevc|h\.?265/.test(x)) return 'hevc';
-            return 'other';
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+        } catch(e) {
+            console.error("Firebase Init Error:", e);
         }
-        function prefQualLabel() { try { return safeStore.getItem(QPKEY) || ''; } catch (e) { return ''; } }
-        function setPrefQualLabel(lb) { try { safeStore.setItem(QPKEY, String(lb || '')); } catch (e) {} }
-        function pickStartServer(ch) {
-            const urls = (ch && ch.urls) || [];
-            if (urls.length < 2) return 0;
-            const quals = (ch && ch.quals) || [];
-            const pref = prefQualLabel();
-            if (pref) { const pi = quals.indexOf(pref); if (pi >= 0 && pi < urls.length) return pi; }
-            return 0;
-        }
-        function setStatus(msg) {
-            const el = document.getElementById('playerStatus');
-            if (el) el.innerText = msg || '';
-        }
-        function onSearchChannel(v) { searchTerm = (v || '').trim(); renderChannels(); }
-        var LOGO_BEIN = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAYAAAAJZ/BjAAAeYklEQVR42u1daXxV1bX/r73POXfKSJgFQWQykSQYZ9RgnWcFbpy17XvV16ogqK3V2pvbvlpbFQnigNW2ttVqDig+saVo1YsjSCAJJAyCMgdCyHync87e+304N8yBJIr9kvX73Q/JPWfvfdb4X2vtfS4FC2YrQCn00n+AiDQAIDAiYr38+A5JKQkFBU1jXjgqvoARfiMdlQWmRC97jiFJ4kyjZgn5sEa+azVGDJC09bXKe5YXF4e0SCTs9HLp2FEHj4MFs7cyxqClfBEHAJ+vDw8Gy3vjwTGktrY6DsDp4Lnm+iM3CMfjjWLRomm9LujYWgDtz/NuR95gMMiDwXLey8pvh7Tu3mCapgDMXs59S9RlCwghxABgSuFTt11f8PTDvaz7jgUQRqkCAIP8d3HmefjasY/mpBAt9bLxO3FBLp9tmVQApO4N9GZu36UF7JfCcQXFNW73wtX/RBDeR+mHNZMQQnSg26JvIqgej9cRs8IIy06uYMFgnju2CZgokQB6ulYKIshMlMtuP+/Np7yopuTPntORpR3NBwXzy76YUlAWv7Fobt+OGBDEkaBpiKXG7XKsCO2753AmSO53nccetd93HYI4kPGHXSv1HF7vnYOUOnJM7HiuKfmz59x8yovqG1hAW2rAD7kZMR2YJkLFH2hrmyuHOMLIYETJdMvY8cd1/90WiUCGQiFWW5vHTLPkCImeomDQZGGzRCACWVwc0vq3Dx4MIBNCijhn9QsrqCESgQOEKRgs54cbj0DqhoI5eULJWLh66tcp4SsFRaUoRdgsEbfkP9vfIpUnlAxIJnYNaafqp82SZBDl3ERJt5LRO4oG8yarbLxD1lYiqu+Y79jEAACkSCVsPwOASOR854b8svHB/LLna5uqtxDzfu0xjEpN42vbvLFdU/LL3p2SP+uGpa/00U2zRHSmZQqKQigl0ywRN4yflyr9SUFbWv7nPGjjW17pCtUZU43OS24IFsz8LFsyefmPR3JyDx+vQ9mDB7AcU0WoANZPHzb4MgCouDmkEUrVFg9ODBbNnJeGsI0bvG9zzfzr40p0BVJcUzr7NZX6oq3whAGh2kn/QNO9yDs/S4Pg5IwGoUBfH6LYAlDstS/MIEcwtNyaPm/k81wLLfUbWnVKphFD2K7aIPyVk8nlAVOjcOC/N0+/v6Wn0+eTxT596OCEoKCKQaj0zzxPMn/UUlKciYPSdStCGKchK27EWONJ6Wyn5FWfG6QFP35lCWKuD42bfuG88RWGEZVHRHTon/QdEBEPz+3Su3+YqSti5adyz2XCsRV4tfRoRzxDCth2ZsJRSkjPPSIMHXp5cWPY7ICyPxsDU9+r6orITORkljkxKn5ExnEntOgD4sLhrvO22CyIiApRtOaI/GfXzMoxBE6PJhk8Tou1hNva4j/ZzCQRA3Vw0d1B7YvcMQ0+boZRYPkgriq7NcKxAA1KEZUSlCugDQXGjK9pQo36nJqNqJqXj9z0qH4qZ8p1hWKg911D/w8X36m4uWjU3cOqN63x9T33l4wWkE5w5f4rR0z9b+iP7xWpaYvE6j4p1lqj33xL1qK93lW+9z1oJ15qG4p1T318k8o4A648o0m2Xz63q4v/vQnL1K28741j8T8u1p1z4n5vH5w/w+kP7xT59sO0+p2n5r7JvP71sOqH1t8qXfK840/cqaU/rQ+lK88u9f8z/z/7H/R/s5Jk3A6Z41aQAAAABJRU5ErkJggg==";
-        var LOGO_XTRA = "data:image/png;base64,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";
-        var CHANNEL_LOGOS = {
-            "beIN SPORTS 1": LOGO_BEIN,
-            "beIN SPORTS 2": LOGO_BEIN,
-            "beIN SPORTS 3": LOGO_BEIN,
-            "beIN SPORTS 4": LOGO_BEIN,
-            "beIN SPORTS 5": LOGO_BEIN,
-            "beIN SPORTS 6": LOGO_BEIN,
-            "beIN SPORTS 7": LOGO_BEIN,
-            "beIN SPORTS 8": LOGO_BEIN,
-            "beIN SPORTS 9": LOGO_BEIN,
-            "beIN SPORTS NEWS": LOGO_BEIN,
-            "beIN SPORTS GLOBAL": LOGO_BEIN,
-            "beIN SPORTS MAX 4": LOGO_BEIN,
-            "beIN SPORTS MAX 5": LOGO_BEIN,
-            "beIN SPORTS MAX 6": LOGO_BEIN,
-            "beIN SPORTS MAX 7": LOGO_BEIN,
-            "beIN SPORTS MAX 8": LOGO_BEIN,
-            "beIN SPORTS MAX 9": LOGO_BEIN,
-            "beIN SPORTS MAX 10": LOGO_BEIN,
-            "beIN SPORTS XTRA 1": LOGO_XTRA,
-            "beIN SPORTS XTRA 2": LOGO_XTRA,
-            "beIN SPORTS XTRA 3": LOGO_XTRA,
-            "beIN SPORTS XTRA 4": LOGO_XTRA,
-            "beIN SPORTS XTRA 5": LOGO_XTRA,
-            "beIN SPORTS XTRA 6": LOGO_XTRA,
-            "beIN SPORTS XTRA 7": LOGO_XTRA,
-            "beIN SPORTS XTRA 8": LOGO_XTRA,
-            "beIN SPORTS XTRA 9": LOGO_XTRA,
-            "beIN SPORTS XTRA Español": LOGO_XTRA,
-            "Eurosport": "data:image/png;base64,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" alt="سينمانا"></div>
-                    <div class="tile-label">سينمانا</div>
-                    <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
-                </div>
-                <div class="big-tile tile-sports" onclick="openTV(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
-    <script>
-        if (window.__OTA_PENDING) { throw new Error('OTA-REPLACE-PENDING'); }
-        var firebaseConfig = {
-            apiKey: "AIsyCFV84WqJdfhmBWbn2KUNxOUwXTAERNHHE",
-            authDomain: "start-in-production.firebaseapp.com",
-            projectId: "start-in-production",
-            storageBucket: "start-in-production.firebasestorage.app",
-            messagingSenderId: "929663491292",
-            appId: "1:929663491292:web:46beb745d3dedc789ae819"
-        };
-        var db = null;
-        try { if (!firebase.apps.length) firebase.initializeApp(firebaseConfig); db = firebase.firestore(); } catch(e) {}
 
-        var allChannels = [
-            { name: "الوان سبورت 1", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8"] },
-            { name: "الوان سبورت 2", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8"] },
-            { name: "الوان سبورت 3", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8"] },
-            { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"] },
-            { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"] },
-            { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"] },
-            { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242255&extension=m3u8"
-            ] },
-            { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242254&extension=m3u8"
-            ] }
-        ];
-
-        var searchTerm = '';
-        var currentChannelIndex = 0, currentServerIndex = 0, serverAttempts = 0;
-        var hlsInstance = null, tsInstance = null, nativeTried = -1;
-        var tsSeq = 0, tsReconnectAt = 0, tsReconnectCount = 0, tsWatchdog = null;
-        var qualityMap = {}, currentQuality = 'auto';
-        var QPKEY = 'bashar_pref_qual_v1';
-        function qualCategory(label) {
-            const x = String(label || '').toLowerCase();
-            if (/4k|k4/.test(x)) return '4k';
-            if (/fhd/.test(x)) return 'fhd';
-            if (/hd/.test(x)) return 'hd';
-            if (/sd/.test(x)) return 'sd';
-            if (/hevc|h\.?265/.test(x)) return 'hevc';
-            return 'other';
-        }
-        function prefQualLabel() { try { return safeStore.getItem(QPKEY) || ''; } catch (e) { return ''; } }
-        function setPrefQualLabel(lb) { try { safeStore.setItem(QPKEY, String(lb || '')); } catch (e) {} }
-        function pickStartServer(ch) {
-            const urls = (ch && ch.urls) || [];
-            if (urls.length < 2) return 0;
-            const quals = (ch && ch.quals) || [];
-            const pref = prefQualLabel();
-            if (pref) { const pi = quals.indexOf(pref); if (pi >= 0 && pi < urls.length) return pi; }
-            return 0;
-        }
-        function setStatus(msg) {
-            const el = document.getElementById('playerStatus');
-            if (el) el.innerText = msg || '';
-        }
-        function onSearchChannel(v) { searchTerm = (v || '').trim(); renderChannels(); }
-        var LOGO_BEIN = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAYAAAAJZ/BjAAAeYklEQVR42u1daXxV1bX/r73POXfKSJgFQWQykSQYZ9RgnWcFbpy17XvV16ogqK3V2pvbvlpbFQnigNW2ttVqDig+saVo1YsjSCAJJAyCMgdCyHync87e+304N8yBJIr9kvX73Q/JPWfvfdb4X2vtfS4FC2YrQCn00n+AiDQAIDAiYr38+A5JKQkFBU1jXjgqvoARfiMdlQWmRC97jiFJ4kyjZgn5sEa+azVGDJC09bXKe5YXF4e0SCTs9HLp2FEHj4MFs7cyxqClfBEHAJ+vDw8Gy3vjwTGktrY6DsDp4Lnm+iM3CMfjjWLRomm9LujYWgDtz/NuR95gMMiDwXLey8pvh7Tu3mCapgDMXs59S9RlCwghxABgSuFTt11f8PTDvaz7jgUQRqkCAIP8d3HmefjasY/mpBAt9bLxO3FBLp9tmVQApO4N9GZu36UF7JfCcQXFNW73wtX/RBDeR+mHNZMQQnSg26JvIqgej9cRs8IIy06uYMFgnju2CZgokQB6ulYKIshMlMtuP+/Np7yopuTPntORpR3NBwXzy76YUlAWv7Fobt+OGBDEkaBpiKXG7XKsCO2753AmSO53nccetd93HYI4kPGHXSv1HF7vnYOUOnJM7HiuKfmz59x8yovqG1hAW2rAD7kZMR2YJkLFH2hrmyuHOMLIYETJdMvY8cd1/90WiUCGQiFWW5vHTLPkCImeomDQZGGzRCACWVwc0vq3Dx4MIBNCijhn9QsrqCESgQOEKRgs54cbj0DqhoI5eULJWLH66tcp4SsFRaUoRdgsEbfkP9vfIpUnlAxIJnYNaafqp82SZBDl3ERJt5LRO4oG8yarbLxD1lYiqu+Y79jEAACkSCVsPwOASOR854b8svHB/LLna5uqtxDzfu0xjEpN42vbvLFdU/LL3p2SP+uGpa/00U2zRHSmZQqKQigl0ywRN4yflyr9SUFbWv7nPGjjW17pCtUZU43OS24IFsz8LFsyefmPR3JyDx+vQ9mDB7AcU0WoANZPHzb4MgCouDmkEUrVFg9ODBbNnJeGsI0bvG9zzfzr40p0BVJcUzr7NZX6oq3whAGh2kn/QNO9yDs/S4Pg5IwGoUBfH6LYAlDstS/MIEcwtNyaPm/k81wLLfUbWnVKphFD2K7aIPyVk8nlAVOjcOC/N0+/v6Wn0+eTxT596OCEoKCKQaj0zzxPMn/UUlKciYPSdStCGKchK27EWONJ6Wyn5FWfG6QFP35lCWKuD42bfuG88RWGEZVHRHTon/QdEBEPz+3Su3+YqSti5adyz2XCsRV4tfRoRzxDCth2ZsJRSkjPPSIMHXp5cWPY7ICyPxsDU9+r6orITORkljkxKn5ExnEntOgD4sLhrvO22CyIiApRtOaI/GfXzMoxBE6PJhk8Tou1hNva4j/ZzCQRA3Vw0d1B7YvcMQ0+boZRYPkgriq7NcKxAA1KEZUSlCugDQXGjK9pQo36nJqNqJqXj9z0qH4qZ8p1hWKg911D/w8X36m4uWjU3cOqN63x9T33l4wWkE5w5f4rR0z9b+iP7xWpaYvE6j4p1lqj33xL1qK93lW+9z1oJ15qG4p1T318k8o4A648o0m2Xz63q4v/vQnL1K28741j8T8u1p1z4n5vH5w/w+kP7xT59sO0+p2n5r7JvP71sOqH1t8qXfK840/cqaU/rQ+lK88u9f8z/z/7H/R/s5Jk3A6Z41aQAAAABJRU5ErkJggg==";
-        var LOGO_XTRA = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAAA4CAYAAAACRf2iAAABhWlDQ1BJQ0MgUHJvZmlsZQAAeJx9kb1Lw1AUxU9TRZGKoB1EFDK0TnZREcdahSJUCLVCqw4mL/2CJg1Jiouj4Fpw8GOx6uDirKuDqyAIfoD4B4iToouUeF9SaBHjhcf7cd49h/fuA4RGhWlWVxzQdNtMJxNiNrcq9rwigEGEMIaozCxjTpJS8K2ve+qmuovxLP++P6tfzVsMCIjEcWaYNvEG8cymbXDeJw6zkqwSnxNPmHRB4keuKx6/cS66LPDMsJlJzxOHicViBysdzEqmRjxNHFE1nfKFrMcq5y3OWqXGWvfkLwzl9ZVlrtMaRRKLWIIEEQpqKKMCGzHadVIspOk84eMfcf0SuRRylcHIsYAqNMiuH/wPfs/WKkxNekmhBND94jgfUaBnF2jWHef72HGaJ0DwGbjS2/5qA5j9JL3e1iJHwMA2cHHd1pQ94HIHGH4yZFN2pSAtoVAA3s/om3LA0C3Qt+bNrXWO0wcgQ7NK3QAHh8B4kbLXfd7d2zm3f3ta8/sBlPRytLVKj90AABj5SURBVHja7Zx3eFRl2sZ/76lT0wOhS4dQRFQQlCKLiKgIIooCltXPteIq1lUX2GYXV3BdZVcs2EBEEamKFKlSpQho6CWUJKRNppxz3u+PM5kkmAC734ewunNdc+WamXPOe87Tn/u534gb278kvQEDRRFIflkvIaVtR1VVGE6f15bcOW/w4MkqU6YwhSn2T3UPmi9o8LuJ15KU5kVKiRDiFyF8KSWqqvLyiFmsHjN/XLTJnUKU6JXnT0qJcVJH4ygp5ROloNUT5kChBCk1vYTSPLwS3xpuopluQY/ZfOY6NA2L/bRpD5BV82GEgcpT21c0ACsqI2UMuEBlb3gVN/A6fQARVHc51OFCjC03cvdNCFmKELoYavEEiA4xQFBARJCL3+XlUZZ/OlmomHrR7/9nN7uswO2tKWUQkjrH4pQ9ZgdtYQQGkKocGrfShWrcFxr3/dDPmPv+ZRDe45W+f5nmYhRsB2r6OZzX+5sar4Wlh22hRDaT7W+Uu1NCfAFzV9MHlBsNSYc2VkRqpSIn9TaatS0U8nqpZRI2/0sFAESnHi+UBRxwljrepBAKCBlPP4K4V6runUlCIVEmJASpOOAcEOyc5zzq10//ijV3atQBBJHSCkDCH7yGvCEruY4EkVVjvVbVESVJF1d+eo4EkURCFVU8S7i5zpOedKvZI3HCClRGFS6h8TajjyhEo69fnW/n9Yq7LjCt10BlpVEWTpjC2sXbafgYAmaodKoVS0uvLIVLTvWq1YYMi784qNlLJn+HRuW7uLokVI8PoMmbWtzUf9sGrXKrFppSfj8zdVsXrGHYY/0oG6TNIQQRMMWX374Ld99s4dYxKZ+83R6Dzmb2g1TalRC+fe7thzmnacX0LFnEy676VzgxL2OogqkU0n5SoUsjtWm4ziVkrqMG5fEsWUVg1WUimuelAKklPhTPKxbvIOXRnxGLGKR3akBTdpmEY1YbFq+m88nfkOnS5pz59OXkZTuS9xwueXPn7KBN0Z/gWM7tOhYl7qN0ygpDLNo2iamjl9Gn6Ed+PWo3himBgLycouZ/NLXHNx1lPQ6QW4d3Zujh0t57o5pbF65B1VTcBzJynmCLz5Ys8hXBtC2S8PEej/yHASz3lrNommb2LHxIN2uak0w1XfC0rq4oAyPz0A3NWIRi3Auxij/ooaQwjGM7KKoSD5USX9DEthyiESshYFVT8CeZidAnHUlpcRTDo6HpapX1terDjoPpM5j55mo++ftyLh7cnuGP9CA5w1/luI3LdjPugRk8OuBt/jx1GKmZgcQNTnt1OROemMuge7oy6N4upFQ614rZLJmxhb89NJMDOwr43ZuDMUwNK2Zj+nS3K4/noEnPLGTTit0kpfrwBgy8AZMj+4sIl8YY/+DnPPvZTQRTau7ihRAEU72YPh3HqlnwiqJgxWySa/m54+m+TB2/jB2bD1K/WTrX/fYipry8lCHDupHVMIWSogimR0M3Nd59ZiGNs2txXu9maLqK40jWfJXDwmmbMEwN23LwBQ3ueqYfs99Zw5ZVe/H6jUSOVWq6GdtymDpuKYPu7so9z/UjOcOP40gc28Gx3Q6xbZeGvDDr18StrNi/fP8NNzImBvQ0JITD+rZ2vJ+b+0+V9W+3c6uB19T4L+p6dY5t08j+13OqZfI9qg0A9k1nB2a8tN+0q5yQ+1vW4fF+uU5L10eT33q3w3GvY73r5A0f+P8488e3v7KBPqU0M7K566W9Gz7bW5Wj9sRvd1602P64d9l03O3fS7f9K+vD6qM6q9+978a3P63f2567S/u2/625j8T8u1p1z4n5vH5w/w+kP7xT59sO0+p2n5r7JvP71sOqH1t8qXfK840/cqaU/rQ+lK88u9f8z/z/7H/R/s5Jk3A6Z41aQAAAABJRU5ErkJggg==";
-        var CHANNEL_LOGOS = {
-            "beIN SPORTS 1": LOGO_BEIN,
-            "beIN SPORTS 2": LOGO_BEIN,
-            "beIN SPORTS 3": LOGO_BEIN,
-            "beIN SPORTS 4": LOGO_BEIN,
-            "beIN SPORTS 5": LOGO_BEIN,
-            "beIN SPORTS 6": LOGO_BEIN,
-            "beIN SPORTS 7": LOGO_BEIN,
-            "beIN SPORTS 8": LOGO_BEIN,
-            "beIN SPORTS 9": LOGO_BEIN,
-            "beIN SPORTS NEWS": LOGO_BEIN,
-            "beIN SPORTS GLOBAL": LOGO_BEIN,
-            "beIN SPORTS MAX 4": LOGO_BEIN,
-            "beIN SPORTS MAX 5": LOGO_BEIN,
-            "beIN SPORTS MAX 6": LOGO_BEIN,
-            "beIN SPORTS MAX 7": LOGO_BEIN,
-            "beIN SPORTS MAX 8": LOGO_BEIN,
-            "beIN SPORTS MAX 9": LOGO_BEIN,
-            "beIN SPORTS MAX 10": LOGO_BEIN,
-            "beIN SPORTS XTRA 1": LOGO_XTRA,
-            "beIN SPORTS XTRA 2": LOGO_XTRA,
-            "beIN SPORTS XTRA 3": LOGO_XTRA,
-            "beIN SPORTS XTRA 4": LOGO_XTRA,
-            "beIN SPORTS XTRA 5": LOGO_XTRA,
-            "beIN SPORTS XTRA 6": LOGO_XTRA,
-            "beIN SPORTS XTRA 7": LOGO_XTRA,
-            "beIN SPORTS XTRA 8": LOGO_XTRA,
-            "beIN SPORTS XTRA 9": LOGO_XTRA,
-            "beIN SPORTS XTRA Español": LOGO_XTRA,
-            "Eurosport": "data:image/png;base64,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" alt="سينمانا"></div>
-                    <div class="tile-label">سينمانا</div>
-                    <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
-                </div>
-                <div class="big-tile tile-sports" onclick="openTV(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
-    <script>
-        if (window.__OTA_PENDING) { throw new Error('OTA-REPLACE-PENDING'); }
-        var firebaseConfig = {
-            apiKey: "AIsyCFV84WqJdfhmBWbn2KUNxOUwXTAERNHHE",
-            authDomain: "start-in-production.firebaseapp.com",
-            projectId: "start-in-production",
-            storageBucket: "start-in-production.firebasestorage.app",
-            messagingSenderId: "929663491292",
-            appId: "1:929663491292:web:46beb745d3dedc789ae819"
-        };
-        var db = null;
-        try { if (!firebase.apps.length) firebase.initializeApp(firebaseConfig); db = firebase.firestore(); } catch(e) {}
-
-        var allChannels = [
-            { name: "الوان سبورت 1", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8"] },
-            { name: "الوان سبورت 2", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8"] },
-            { name: "الوان سبورت 3", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8"] },
-            { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"] },
-            { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"] },
-            { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"] },
-            { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242255&extension=m3u8"
-            ] },
-            { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242254&extension=m3u8"
-            ] }
-        ];
-
-        var searchTerm = '';
-        var currentChannelIndex = 0, currentServerIndex = 0, serverAttempts = 0;
-        var hlsInstance = null, tsInstance = null, nativeTried = -1;
-        var tsSeq = 0, tsReconnectAt = 0, tsReconnectCount = 0, tsWatchdog = null;
-        var qualityMap = {}, currentQuality = 'auto';
-        var QPKEY = 'bashar_pref_qual_v1';
-        function qualCategory(label) {
-            const x = String(label || '').toLowerCase();
-            if (/4k|k4/.test(x)) return '4k';
-            if (/fhd/.test(x)) return 'fhd';
-            if (/hd/.test(x)) return 'hd';
-            if (/sd/.test(x)) return 'sd';
-            if (/hevc|h\.?265/.test(x)) return 'hevc';
-            return 'other';
-        }
-        function prefQualLabel() { try { return safeStore.getItem(QPKEY) || ''; } catch (e) { return ''; } }
-        function setPrefQualLabel(lb) { try { safeStore.setItem(QPKEY, String(lb || '')); } catch (e) {} }
-        function pickStartServer(ch) {
-            const urls = (ch && ch.urls) || [];
-            if (urls.length < 2) return 0;
-            const quals = (ch && ch.quals) || [];
-            const pref = prefQualLabel();
-            if (pref) { const pi = quals.indexOf(pref); if (pi >= 0 && pi < urls.length) return pi; }
-            return 0;
-        }
-        function setStatus(msg) {
-            const el = document.getElementById('playerStatus');
-            if (el) el.innerText = msg || '';
-        }
-        function onSearchChannel(v) { searchTerm = (v || '').trim(); renderChannels(); }
-        var LOGO_BEIN = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAYAAAAJZ/BjAAAeYklEQVR42u1daXxV1bX/r73POXfKSJgFQWQykSQYZ9RgnWcFbpy17XvV16ogqK3V2pvbvlpbFQnigNW2ttVqDig+saVo1YsjSCAJJAyCMgdCyHync87e+304N8yBJIr9kvX73Q/JPWfvfdb4X2vtfS4FC2YrQCn00n+AiDQAIDAiYr38+A5JKQkFBU1jXjgqvoARfiMdlQWmRC97jiFJ4kyjZgn5sEa+azVGDJC09bXKe5YXF4e0SCTs9HLp2FEHj4MFs7cyxqClfBEHAJ+vDw8Gy3vjwTGktrY6DsDp4Lnm+iM3CMfjjWLRomm9LujYWgDtz/NuR95gMMiDwXLey8pvh7Tu3mCapgDMXs59S9RlCwghxABgSuFTt11f8PTDvaz7jgUQRqkCAIP8d3HmefjasY/mpBAt9bLxO3FBLp9tmVQApO4N9GZu36UF7JfCcQXFNW73wtX/RBDeR+mHNZMQQnSg26JvIqgej9cRs8IIy06uYMFgnju2CZgokQB6ulYKIshMlMtuP+/Np7yopuTPntORpR3NBwXzy76YUlAWv7Fobt+OGBDEkaBpiKXG7XKsCO2753AmSO53nccetd93HYI4kPGHXSv1HF7vnYOUOnJM7HiuKfmz59x8yovqG1hAW2rAD7kZMR2YJkLFH2hrmyuHOMLIYETJdMvY8cd1/90WiUCGQiFWW5vHTLPkCImeomDQZGGzRCACWVwc0vq3Dx4MIBNCijhn9QsrqCESgQOEKRgs54cbj0DqhoI5eULJWLh66tcp4SsFRaUoRdgsEbfkP9vfIpUnlAxIJnYNaafqp82SZBDl3ERJt5LRO4oG8yarbLxD1lYiqu+Y79jEAACkSCVsPwOASOR854b8svHB/LLna5uqtxDzfu0xjEpN42vbvLFdU/LL3p2SP+uGpa/00U2zRHSmZQqKQigl0ywRN4yflyr9SUFbWv7nPGjjW17pCtUZU43OS24IFsz8LFsyefmPR3JyDx+vQ9mDB7AcU0WoANZPHzb4MgCouDmkEUrVFg9ODBbNnJeGsI0bvG9zzfzr40p0BVJcUzr7NZX6oq3whAGh2kn/QNO9yDs/S4Pg5IwGoUBfH6LYAlDstS/MIEcwtNyaPm/k81wLLfUbWnVKphFD2K7aIPyVk8nlAVOjcOC/N0+/v6Wn0+eTxT596OCEoKCKQaj0zzxPMn/UUlKciYPSdStCGKchK27EWONJ6Wyn5FWfG6QFP35lCWKuD42bfuG88RWGEZVHRHTon/QdEBEPz+3Su3+YqSti5adyz2XCsRV4tfRoRzxDCth2ZsJRSkjPPSIMHXp5cWPY7ICyPxsDU9+r6orITORkljkxKn5ExnEntOgD4sLhrvO22CyIiApRtOaI/GfXzMoxBE6PJhk8Tou1hNva4j/ZzCQRA3Vw0d1B7YvcMQ0+boZRYPkgriq7NcKxAA1KEZUSlCugDQXGjK9pQo36nJqNqJqXj9z0qH4qZ8p1hWKg911D/w8X36m4uWjU3cOqN63x9T33l4wWkE5w5f4rR0z9b+iP7xWpaYvE6j4p1lqj33xL1qK93lW+9z1oJ15qG4p1T318k8o4A648o0m2Xz63q4v/vQnL1K28741j8T8u1p1z4n5vH5w/w+kP7xT59sO0+p2n5r7JvP71sOqH1t8qXfK840/cqaU/rQ+lK88u9f8z/z/7H/R/s5Jk3A6Z41aQAAAABJRU5ErkJggg==";
-        var LOGO_XTRA = "data:image/png;base64,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";
-        var CHANNEL_LOGOS = {
-            "beIN SPORTS 1": LOGO_BEIN,
-            "beIN SPORTS 2": LOGO_BEIN,
-            "beIN SPORTS 3": LOGO_BEIN,
-            "beIN SPORTS 4": LOGO_BEIN,
-            "beIN SPORTS 5": LOGO_BEIN,
-            "beIN SPORTS 6": LOGO_BEIN,
-            "beIN SPORTS 7": LOGO_BEIN,
-            "beIN SPORTS 8": LOGO_BEIN,
-            "beIN SPORTS 9": LOGO_BEIN,
-            "beIN SPORTS NEWS": LOGO_BEIN,
-            "beIN SPORTS GLOBAL": LOGO_BEIN,
-            "beIN SPORTS MAX 4": LOGO_BEIN,
-            "beIN SPORTS MAX 5": LOGO_BEIN,
-            "beIN SPORTS MAX 6": LOGO_BEIN,
-            "beIN SPORTS MAX 7": LOGO_BEIN,
-            "beIN SPORTS MAX 8": LOGO_BEIN,
-            "beIN SPORTS MAX 9": LOGO_BEIN,
-            "beIN SPORTS MAX 10": LOGO_BEIN,
-            "beIN SPORTS XTRA 1": LOGO_XTRA,
-            "beIN SPORTS XTRA 2": LOGO_XTRA,
-            "beIN SPORTS XTRA 3": LOGO_XTRA,
-            "beIN SPORTS XTRA 4": LOGO_XTRA,
-            "beIN SPORTS XTRA 5": LOGO_XTRA,
-            "beIN SPORTS XTRA 6": LOGO_XTRA,
-            "beIN SPORTS XTRA 7": LOGO_XTRA,
-            "beIN SPORTS XTRA 8": LOGO_XTRA,
-            "beIN SPORTS XTRA 9": LOGO_XTRA,
-            "beIN-SPORTS-XTRA-Espanol": LOGO_XTRA,
-            "Eurosport": "data:image/png;base64,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"
-    };
-
-    var allChannels = [
-        { name: "الوان سبورت 1", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8"] },
-        { name: "الوان سبورت 2", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8"] },
-        { name: "الوان سبورت 3", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8"] },
-        { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"] },
-        { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"] },
-        { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"] },
-        { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1"], urls: ["http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8"] },
-        { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1"], urls: ["http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8"] }
-    ];
-
-    var searchTerm = '';
-    var currentChannelIndex = 0, currentServerIndex = 0, serverAttempts = 0;
-    var hlsInstance = null, tsInstance = null, nativeTried = -1;
-    var tsSeq = 0, tsReconnectAt = 0, tsReconnectCount = 0, tsWatchdog = null;
-    var qualityMap = {}, currentQuality = 'auto';
-
-    function setStatus(msg) {
-        const el = document.getElementById('playerStatus');
-        if (el) el.innerText = msg || '';
-    }
-
-    function onSearchChannel(v) { searchTerm = (v || '').trim(); renderChannels(); }
-
-    function renderChannels() {
-        const listEl = document.getElementById('channelsList');
-        if (!listEl) return;
-        listEl.innerHTML = '';
-        const term = searchTerm.toLowerCase();
-        const shown = allChannels.map((ch, i) => ({ ch, i })).filter(x => x.ch.name.toLowerCase().includes(term));
-        const countEl = document.getElementById('chCount');
-        if (countEl) countEl.innerText = 'عدد القنوات: ' + shown.length;
-        if (!shown.length) { listEl.innerHTML = '<div class="no-ch">لا توجد قنوات مطابقة للبحث</div>'; return; }
-        shown.forEach(({ ch, i }) => {
-            const btn = document.createElement('div');
-            btn.className = 'channel-btn' + (i === currentChannelIndex ? ' active' : '');
-            btn.dataset.idx = i;
-            btn.innerHTML = `<div class="ch-line"><span class="ch-num">${i + 1}</span><div class="ch-name">${ch.name}</div></div><span class="badge">HD</span>`;
-            btn.onclick = function() { selectChannel(i); };
-            listEl.appendChild(btn);
-        });
-    }
-
-    function selectChannel(i) {
-        currentChannelIndex = i; currentServerIndex = 0; serverAttempts = 0; nativeTried = -1; playMode = 0;
-        document.querySelectorAll('.channel-btn').forEach(b => b.classList.toggle('active', +b.dataset.idx === i));
-        const ch = allChannels[i];
-        if (!ch) return;
-        renderServerTabs();
-        setStatus('⏳ جاري الاتصال بقناة: ' + ch.name);
-        playCurrent();
-    }
-
-    function renderServerTabs() {
-        const bar = document.getElementById('serversBar');
-        if (!bar) return;
-        const ch = allChannels[currentChannelIndex];
-        const urls = (ch && ch.urls) ? ch.urls : [];
-        let html = '<span class="servers-title">السيرفرات:</span>';
-        urls.forEach((u, i) => {
-            html += `<div class="server-tab${i === currentServerIndex ? ' active' : ''}" onclick="switchServer(${i}, this)">S${i+1}</div>`;
-        });
-        bar.innerHTML = html;
-    }
-
-    function switchServer(i, el) {
-        currentServerIndex = i; serverAttempts = 0;
-        document.querySelectorAll('.server-tab').forEach(t => t.classList.remove('active'));
-        if (el) el.classList.add('active');
-        playCurrent();
-    }
-
-    function tryNextServer() {
-        const ch = allChannels[currentChannelIndex];
-        if (!ch) return;
-        const urls = ch.urls || [];
-        serverAttempts++;
-        if (serverAttempts >= urls.length) {
-            setStatus('❌ تعذّر تشغيل القناة حالياً');
-            return;
-        }
-        currentServerIndex = (currentServerIndex + 1) % urls.length;
-        renderServerTabs();
-        playCurrent();
-    }
-
-    var playMode = 0;
-    function proxiedUrl(u) { return '/api/hls?url=' + encodeURIComponent(u); }
-
-    function playVideo(video) {
-        const p = video.play();
-        if (p && p.catch) p.catch(function() { video.muted = true; video.play().catch(function(){}); });
-    }
-
-    function playCurrent() {
-        const ch = allChannels[currentChannelIndex];
-        const url = (ch && ch.urls) ? ch.urls[currentServerIndex] : null;
-        if (!url) return;
-        const video = document.getElementById('tvPlayer');
-        if (!video) return;
-        if (hlsInstance) { try { hlsInstance.destroy(); } catch(e) {} hlsInstance = null; }
-        const src = proxiedUrl(url);
-        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-            hlsInstance = new Hls();
-            hlsInstance.loadSource(src);
-            hlsInstance.attachMedia(video);
-            hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
-                setStatus('✅ يبث الآن: ' + ch.name);
-                playVideo(video);
-            });
-            hlsInstance.on(Hls.Events.ERROR, function(evt, data) { if (data && data.fatal) tryNextServer(); });
-        } else {
-            video.src = src;
-            playVideo(video);
-        }
-    }
-
-    function initTV() { renderChannels(); renderServerTabs(); setStatus(''); }
-
-    var currentRole = 'user';
-    function setRole(role) {
-        currentRole = role;
-        const btnU = document.getElementById('btnUserRole');
-        const btnA = document.getElementById('btnAdminRole');
-        const uField = document.getElementById('username');
-        if (btnU) btnU.classList.toggle('active', role === 'user');
-        if (btnA) btnA.classList.toggle('active', role === 'admin');
-        if (uField) uField.placeholder = role === 'user' ? "يوزر المشترك" : "يوزر المدير";
-    }
-
-    async function login() {
-        const userEl = document.getElementById('username');
-        const passEl = document.getElementById('password');
-        const msgBox = document.getElementById('messageBox');
-        if (!userEl || !passEl || !msgBox) return;
-        const user = userEl.value.trim();
-        const pass = passEl.value.trim();
-        msgBox.style.display = 'block'; msgBox.style.color = '#ffd700'; msgBox.innerText = 'جاري التحقق...';
-        if(!user || !pass) { msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ يرجى ادخال اليوزر والباسورد'; return; }
-
-        if (currentRole === 'admin') {
-            if(user === 'bashar@dsc' && pass === 'bashar2000') {
-                const lSec = document.getElementById('loginSection');
-                const aPan = document.getElementById('adminPanel');
-                if (lSec) lSec.style.display = 'none';
-                msgBox.style.display = 'none';
-                if (aPan) aPan.style.display = 'block';
-                loadAllUsers();
-            } else {
-                msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ يوزر أو باسورد المدير غير صحيح';
+        /* توليد معرف خاص بجهاز المشترك لمنع فتح الحساب بجهاز ثاني */
+        function getDeviceId() {
+            var devId = localStorage.getItem('bashar_device_id');
+            if (!devId) {
+                devId = 'DEV-' + Math.random().toString(36).substring(2, 10).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
+                localStorage.setItem('bashar_device_id', devId);
             }
-            return;
+            return devId;
         }
 
-        if (currentRole === 'user') {
+        /* استرجاع اليوزر والباسورد المحفوظين عند فتح التطبيق */
+        window.addEventListener('DOMContentLoaded', function() {
             try {
-                let found = null;
-                if(db) {
-                    const snap = await db.collection('subscribers').where('username', '==', user).get();
-                    snap.forEach(d => { const x = { id: d.id, ...d.data() }; if(String(x.password) === String(pass)) found = x; });
+                var savedU = localStorage.getItem('bashar_saved_user');
+                var savedP = localStorage.getItem('bashar_saved_pass');
+                if (savedU && savedP) {
+                    document.getElementById('username').value = savedU;
+                    document.getElementById('password').value = savedP;
                 }
-                if(found) {
-                    const lSec = document.getElementById('loginSection');
-                    const uPan = document.getElementById('userPanel');
-                    const wTitle = document.getElementById('welcomeTitle');
-                    const sBadge = document.getElementById('resStatusBadge');
-                    const sStart = document.getElementById('resStart');
-                    const sExp = document.getElementById('resExp');
-                    const sDebt = document.getElementById('resDebt');
-
-                    if (lSec) lSec.style.display = 'none';
-                    msgBox.style.display = 'none';
-                    if (wTitle) wTitle.innerText = `👤 أهلاً بك: ${found.name || found.username}`;
-                    if (sBadge) sBadge.innerHTML = `<span class="badge-active">فعال</span>`;
-                    if (sStart) sStart.innerText = found.start_date || '—';
-                    if (sExp) sExp.innerText = found.exp_date || '—';
-                    if (sDebt) sDebt.innerText = found.debt || '0';
-                    if (uPan) uPan.style.display = 'block';
-                    initTV();
-                } else {
-                    msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ خطأ في يوزر أو باسورد المشترك';
-                }
-            } catch(err) { msgBox.style.color = '#ff4d4d'; msgBox.innerText = '⚠️ خطأ بالاتصال بالسحابة'; }
-        }
-    }
-
-    var allUsersCache = [];
-    async function loadAllUsers() {
-        if(!db) return;
-        const snap = await db.collection('subscribers').get();
-        allUsersCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        const tbody = document.getElementById('usersTableBody'); 
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        allUsersCache.forEach(u => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td><b>${u.username}</b></td><td>${u.name || '—'}</td><td>${u.phone || '—'}</td><td>${u.start_date || '—'}</td><td>${u.exp_date || '—'}</td><td style="color:red; font-weight:bold;">${u.debt || 0}</td><td>${u.status || 'متصل'}</td><td><button class="btn-action btn-del" onclick="deleteUser('${u.username}')">حذف</button></td>`;
-            tbody.appendChild(tr);
+            } catch(e) {}
         });
-        const statTot = document.getElementById('statTotal');
-        if (statTot) statTot.innerText = allUsersCache.length;
-    }
 
-    async function addNewUser() {
-        const uIn = document.getElementById('add_user');
-        const pIn = document.getElementById('add_pass');
-        const nIn = document.getElementById('add_name');
-        const phIn = document.getElementById('add_phone');
-        const stIn = document.getElementById('add_start');
-        const exIn = document.getElementById('add_exp');
-        const dIn = document.getElementById('add_debt');
-        const statIn = document.getElementById('add_status');
+        var allChannels = [
+            { name: "الوان سبورت 1", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8"] },
+            { name: "الوان سبورت 2", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8"] },
+            { name: "الوان سبورت 3", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8"] },
+            { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"] },
+            { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"] },
+            { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"] },
+            { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1"], urls: [
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242255&extension=m3u8"
+            ] },
+            { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1"], urls: [
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242254&extension=m3u8"
+            ] }
+        ];
 
-        const data = {
-            username: uIn ? uIn.value.trim() : '',
-            password: pIn ? pIn.value.trim() : '',
-            name: nIn ? nIn.value.trim() : '',
-            phone: phIn ? phIn.value.trim() : '',
-            start_date: stIn ? stIn.value : '',
-            exp_date: exIn ? exIn.value : '',
-            debt: dIn ? dIn.value || 0 : 0,
-            status: statIn ? statIn.value : 'متصل'
-        };
-        if(!data.username || !data.password) { alert('❌ يرجى كتابة اليوزر والباسورد!'); return; }
-        if(db) { await db.collection('subscribers').add(data); alert('✅ تم الحفظ'); loadAllUsers(); }
-    }
+        var searchTerm = '';
+        var currentChannelIndex = 0, currentServerIndex = 0, serverAttempts = 0;
+        var hlsInstance = null;
 
-    async function deleteUser(username) {
-        if(!confirm(`حذف: ${username} ؟`)) return;
-        if(db) {
-            const snap = await db.collection('subscribers').where('username', '==', username).get();
-            snap.forEach(async d => { await d.ref.delete(); });
+        function setStatus(msg) {
+            var el = document.getElementById('playerStatus');
+            if (el) el.innerText = msg || '';
         }
-        loadAllUsers();
-    }
 
-    function switchAdminTab(t) {
-        const uSec = document.getElementById('adminUsersSection');
-        const sSec = document.getElementById('adminStoreSection');
-        const lSec = document.getElementById('adminLinksSection');
-        const mSec = document.getElementById('adminMatchSection');
-        if (uSec) uSec.style.display = t==='users'?'block':'none';
-        if (sSec) sSec.style.display = t==='store'?'block':'none';
-        if (lSec) lSec.style.display = t==='links'?'block':'none';
-        if (mSec) mSec.style.display = t==='matches'?'block':'none';
-    }
-    function toggleTVFullscreen(e) { try { document.querySelector('.tv-container').requestFullscreen(); } catch(err) {} }
-    function openTV(e) { const tv = document.getElementById('tvSection'); if (tv) tv.style.display = 'block'; }
-    function goCinema(e) { location.href = 'https://pucinema.albox.co/'; }
-    function copyPayNumber(n) { navigator.clipboard.writeText(n); alert('✅ تم النسخ: ' + n); }
-    function runSpeedTest() { alert('سرعة الإنترنت ممتازة (~25 Mbps)'); }
-    function logout() { location.reload(); }
-    function unlinkThisDevice() { location.reload(); }
-    function unlinkOtherDevice() { alert('تم فك الارتباط'); }
-    function cancelMyRequest() {}
-    function sendActivateRequest() {}
-</script>
+        function onSearchChannel(v) {
+            searchTerm = (v || '').trim();
+            renderChannels();
+        }
+
+        function renderChannels() {
+            var listEl = document.getElementById('channelsList');
+            if (!listEl) return;
+            listEl.innerHTML = '';
+            var term = searchTerm.toLowerCase();
+            var shown = allChannels.map(function(ch, i) { return { ch: ch, i: i }; }).filter(function(x) { return x.ch.name.toLowerCase().indexOf(term) > -1; });
+            var countEl = document.getElementById('chCount');
+            if (countEl) countEl.innerText = 'عدد القنوات: ' + shown.length;
+            if (!shown.length) {
+                listEl.innerHTML = '<div class="no-ch">لا توجد قنوات مطابقة للبحث</div>';
+                return;
+            }
+            shown.forEach(function(item) {
+                var ch = item.ch, i = item.i;
+                var btn = document.createElement('div');
+                btn.className = 'channel-btn' + (i === currentChannelIndex ? ' active' : '');
+                btn.dataset.idx = i;
+                btn.innerHTML = '<div class="ch-line"><span class="ch-num">' + (i + 1) + '</span><div class="ch-name">' + ch.name + '</div></div><span class="badge-active">HD</span>';
+                btn.onclick = function() { selectChannel(i); };
+                listEl.appendChild(btn);
+            });
+        }
+
+        function selectChannel(i) {
+            currentChannelIndex = i;
+            currentServerIndex = 0;
+            serverAttempts = 0;
+            document.querySelectorAll('.channel-btn').forEach(function(b) {
+                b.classList.toggle('active', +b.dataset.idx === i);
+            });
+            var ch = allChannels[i];
+            if (!ch) return;
+            renderServerTabs();
+            setStatus('⏳ جاري الاتصال بقناة: ' + ch.name);
+            playCurrent();
+        }
+
+        function renderServerTabs() {
+            var bar = document.getElementById('serversBar');
+            if (!bar) return;
+            var ch = allChannels[currentChannelIndex];
+            var urls = (ch && ch.urls) ? ch.urls : [];
+            var html = '<span class="servers-title">السيرفرات:</span>';
+            urls.forEach(function(u, i) {
+                var qName = (ch.quals && ch.quals[i]) ? ch.quals[i] : ('S' + (i + 1));
+                html += '<div class="server-tab' + (i === currentServerIndex ? ' active' : '') + '" onclick="switchServer(' + i + ', this)">' + qName + '</div>';
+            });
+            bar.innerHTML = html;
+        }
+
+        function switchServer(i, el) {
+            currentServerIndex = i;
+            serverAttempts = 0;
+            document.querySelectorAll('.server-tab').forEach(function(t) { t.classList.remove('active'); });
+            if (el) el.classList.add('active');
+            playCurrent();
+        }
+
+        function tryNextServer() {
+            var ch = allChannels[currentChannelIndex];
+            if (!ch) return;
+            var urls = ch.urls || [];
+            serverAttempts++;
+            if (serverAttempts >= urls.length) {
+                setStatus('❌ تعذّر تشغيل القناة حالياً');
+                return;
+            }
+            currentServerIndex = (currentServerIndex + 1) % urls.length;
+            renderServerTabs();
+            playCurrent();
+        }
+
+        function proxiedUrl(u) { return '/api/hls?url=' + encodeURIComponent(u); }
+
+        function playVideo(video) {
+            var p = video.play();
+            if (p && p.catch) p.catch(function() { video.muted = true; video.play().catch(function(){}); });
+        }
+
+        function playCurrent() {
+            var ch = allChannels[currentChannelIndex];
+            var url = (ch && ch.urls) ? ch.urls[currentServerIndex] : null;
+            if (!url) return;
+            var video = document.getElementById('tvPlayer');
+            if (!video) return;
+            if (hlsInstance) { try { hlsInstance.destroy(); } catch(e) {} hlsInstance = null; }
+            var src = proxiedUrl(url);
+            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                hlsInstance = new Hls();
+                hlsInstance.loadSource(src);
+                hlsInstance.attachMedia(video);
+                hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+                    setStatus('✅ يبث الآن: ' + ch.name);
+                    playVideo(video);
+                });
+                hlsInstance.on(Hls.Events.ERROR, function(evt, data) { if (data && data.fatal) tryNextServer(); });
+            } else {
+                video.src = src;
+                playVideo(video);
+            }
+        }
+
+        function initTV() { renderChannels(); renderServerTabs(); setStatus('اختر قناة لبدء المشاهدة'); }
+
+        /* ═══════════ نظام الدخول للمشترك والمدير ═══════════ */
+        var currentRole = 'user';
+        function setRole(role) {
+            currentRole = role;
+            var btnU = document.getElementById('btnUserRole');
+            var btnA = document.getElementById('btnAdminRole');
+            var uField = document.getElementById('username');
+            var pField = document.getElementById('password');
+            if (btnU) btnU.classList.toggle('active', role === 'user');
+            if (btnA) btnA.classList.toggle('active', role === 'admin');
+            if (uField) uField.placeholder = role === 'user' ? "يوزر المشترك" : "يوزر المدير";
+            if (pField) pField.placeholder = role === 'user' ? "باسورد المشترك" : "باسورد المدير";
+        }
+
+        async function login() {
+            var userEl = document.getElementById('username');
+            var passEl = document.getElementById('password');
+            var msgBox = document.getElementById('messageBox');
+            var remEl = document.getElementById('rememberMe');
+            if (!userEl || !passEl || !msgBox) return;
+
+            var user = userEl.value.trim();
+            var pass = passEl.value.trim();
+
+            msgBox.style.display = 'block';
+            msgBox.style.color = '#ffd700';
+            msgBox.innerText = '⏳ جاري التحقق من الحساب...';
+
+            if (!user || !pass) {
+                msgBox.style.color = '#ff4d4d';
+                msgBox.innerText = '❌ يرجى إدخال اليوزر والباسورد';
+                return;
+            }
+
+            /* حفظ أو مسح بيانات الدخول حسب اختيار المستخدم */
+            try {
+                if (remEl && remEl.checked) {
+                    localStorage.setItem('bashar_saved_user', user);
+                    localStorage.setItem('bashar_saved_pass', pass);
+                } else {
+                    localStorage.removeItem('bashar_saved_user');
+                    localStorage.removeItem('bashar_saved_pass');
+                }
+            } catch(e) {}
+
+            /* 1. دخول المدير */
+            if (currentRole === 'admin') {
+                if (user === 'bashar@dsc' && pass === 'bashar2000') {
+                    document.getElementById('loginSection').style.display = 'none';
+                    msgBox.style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadAllUsers();
+                } else {
+                    msgBox.style.color = '#ff4d4d';
+                    msgBox.innerText = '❌ يوزر أو باسورد المدير غير صحيح';
+                }
+                return;
+            }
+
+            /* 2. دخول المشترك مع فحص الارتباط بجهاز واحد */
+            if (currentRole === 'user') {
+                if (!db) {
+                    msgBox.style.color = '#ff4d4d';
+                    msgBox.innerText = '⚠️ تعذر الاتصال بقاعدة البيانات';
+                    return;
+                }
+                try {
+                    var snap = await db.collection('subscribers').where('username', '==', user).get();
+                    var found = null;
+                    snap.forEach(function(d) {
+                        var x = d.data();
+                        x.id = d.id;
+                        if (String(x.password).trim() === String(pass)) {
+                            found = x;
+                        }
+                    });
+
+                    if (!found) {
+                        msgBox.style.color = '#ff4d4d';
+                        msgBox.innerText = '❌ خطأ في يوزر أو باسورد المشترك';
+                        return;
+                    }
+
+                    /* التحقق من قفل الجهاز (يُفك من صفحة المدير فقط) */
+                    var myDevId = getDeviceId();
+                    if (found.device_id && found.device_id !== '' && found.device_id !== myDevId) {
+                        msgBox.style.color = '#ff9800';
+                        msgBox.innerText = '🔒 هذا الحساب مرتبط بجهاز آخر حالياً! يرجى مراسلة المدير لفك الارتباط.';
+                        return;
+                    }
+
+                    /* إذا لم يكن مرتبطاً بجهاز، يتم ربطه بهذا الجهاز تلقائياً */
+                    if (!found.device_id || found.device_id === '') {
+                        try {
+                            await db.collection('subscribers').doc(found.id).update({ device_id: myDevId });
+                        } catch(e) {}
+                    }
+
+                    document.getElementById('loginSection').style.display = 'none';
+                    msgBox.style.display = 'none';
+                    document.getElementById('welcomeTitle').innerText = '👤 أهلاً بك: ' + (found.name || found.username);
+                    document.getElementById('resStatusBadge').innerHTML = '<span class="badge-active">' + (found.status || 'فعال') + '</span>';
+                    document.getElementById('resStart').innerText = found.start_date || '—';
+                    document.getElementById('resExp').innerText = found.exp_date || '—';
+                    document.getElementById('resDebt').innerText = found.debt || '0';
+                    document.getElementById('userPanel').style.display = 'block';
+                    initTV();
+
+                } catch(err) {
+                    console.error("Login Error:", err);
+                    msgBox.style.color = '#ff4d4d';
+                    msgBox.innerText = '⚠️ خطأ بالاتصال بالسحابة — تأكد من الإنترنت أو صلاحيات Firebase';
+                }
+            }
+        }
+
+        /* ═══════════ دوال لوحة المدير وفك ارتباط الأجهزة ═══════════ */
+        var allUsersCache = [];
+        async function loadAllUsers() {
+            if (!db) return;
+            var tbody = document.getElementById('usersTableBody');
+            if (!tbody) return;
+            try {
+                var snap = await db.collection('subscribers').get();
+                allUsersCache = snap.docs.map(function(d) {
+                    var data = d.data();
+                    data.id = d.id;
+                    return data;
+                });
+                tbody.innerHTML = '';
+                var linkedCount = 0;
+
+                if (allUsersCache.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8">لا يوجد مشتركون حالياً</td></tr>';
+                }
+
+                allUsersCache.forEach(function(u) {
+                    var isLocked = u.device_id && String(u.device_id).trim() !== '';
+                    if (isLocked) linkedCount++;
+
+                    var deviceBadge = isLocked
+                        ? '<span class="badge-locked">🔒 مرتبط بجهاز</span>'
+                        : '<span class="badge-free">🟢 غير مرتبط</span>';
+
+                    var tr = document.createElement('tr');
+                    tr.innerHTML =
+                        '<td><b>' + (u.username || '') + '</b></td>' +
+                        '<td>' + (u.password || '') + '</td>' +
+                        '<td>' + (u.name || '—') + '</td>' +
+                        '<td>' + (u.phone || '—') + '</td>' +
+                        '<td>' + (u.exp_date || '—') + '</td>' +
+                        '<td style="color:red; font-weight:bold;">' + (u.debt || 0) + '</td>' +
+                        '<td>' + deviceBadge + '</td>' +
+                        '<td>' +
+                            '<button class="btn-action btn-unlink" onclick="adminUnlinkDevice(\'' + u.id + '\', \'' + u.username + '\')">🔓 فك الارتباط</button>' +
+                            '<button class="btn-action btn-del" onclick="deleteUser(\'' + u.id + '\', \'' + u.username + '\')">🗑️ حذف</button>' +
+                        '</td>';
+                    tbody.appendChild(tr);
+                });
+
+                var statTot = document.getElementById('statTotal');
+                var statLnk = document.getElementById('statLinked');
+                if (statTot) statTot.innerText = allUsersCache.length;
+                if (statLnk) statLnk.innerText = linkedCount;
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="8" style="color:red;">تعذر جلب البيانات من السحابة</td></tr>';
+            }
+        }
+
+        /* دالة فك الارتباط الخاصة بالمدير فقط */
+        async function adminUnlinkDevice(docId, username) {
+            if (!confirm('هل تريد فك ارتباط الجهاز للمشترك (' + username + ') ليتمكن من الدخول بجهاز جديد؟')) return;
+            if (!db) return;
+            try {
+                await db.collection('subscribers').doc(docId).update({ device_id: '' });
+                alert('✅ تم فك ارتباط الجهاز للمشترك: ' + username);
+                loadAllUsers();
+            } catch(e) {
+                alert('⚠️ حدث خطأ أثناء فك الارتباط');
+            }
+        }
+
+        async function addNewUser() {
+            var uIn = document.getElementById('add_user');
+            var pIn = document.getElementById('add_pass');
+            var nIn = document.getElementById('add_name');
+            var phIn = document.getElementById('add_phone');
+            var stIn = document.getElementById('add_start');
+            var exIn = document.getElementById('add_exp');
+            var dIn = document.getElementById('add_debt');
+            var statIn = document.getElementById('add_status');
+
+            var data = {
+                username: uIn ? uIn.value.trim() : '',
+                password: pIn ? pIn.value.trim() : '',
+                name: nIn ? nIn.value.trim() : '',
+                phone: phIn ? phIn.value.trim() : '',
+                start_date: stIn ? stIn.value : '',
+                exp_date: exIn ? exIn.value : '',
+                debt: dIn ? (dIn.value || 0) : 0,
+                status: statIn ? statIn.value : 'فعال',
+                device_id: ''
+            };
+            if (!data.username || !data.password) {
+                alert('❌ يرجى كتابة اليوزر والباسورد!');
+                return;
+            }
+            if (db) {
+                await db.collection('subscribers').add(data);
+                alert('✅ تم إضافة المشترك بنجاح');
+                if (uIn) uIn.value = '';
+                if (pIn) pIn.value = '';
+                if (nIn) nIn.value = '';
+                if (phIn) phIn.value = '';
+                loadAllUsers();
+            }
+        }
+
+        async function deleteUser(docId, username) {
+            if (!confirm('هل أنت متأكد من حذف المشترك: ' + username + ' ؟')) return;
+            if (db) {
+                await db.collection('subscribers').doc(docId).delete();
+                loadAllUsers();
+            }
+        }
+
+        function openReqForm() {
+            var rf = document.getElementById('reqForm');
+            if (rf) rf.style.display = (rf.style.display === 'none' ? 'block' : 'none');
+        }
+
+        function sendActivateRequest() {
+            var name = document.getElementById('req_name').value.trim();
+            var phone = document.getElementById('req_phone').value.trim();
+            if (!name || !phone) { alert('يرجى كتابة الاسم ورقم الهاتف'); return; }
+            alert('✅ تم إرسال طلبك للمدير بنجاح، سيتم التواصل معك قريباً.');
+            document.getElementById('reqForm').style.display = 'none';
+        }
+
+        function toggleTVFullscreen() {
+            var el = document.getElementById('tvContainer');
+            if (!el) return;
+            if (el.requestFullscreen) el.requestFullscreen();
+            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        }
+
+        function openTV() {
+            var tv = document.getElementById('tvSection');
+            if (tv) {
+                tv.style.display = 'block';
+                tv.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function goCinema() { location.href = 'https://pucinema.albox.co/'; }
+        function logout() { location.reload(); }
+    </script>
 </body>
 </html>
