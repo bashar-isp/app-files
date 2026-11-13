@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" href="/icon-192.png">
     <script>
         /* ═══════════ 🔄 التحديث التلقائي عبر GitHub (OTA) ═══════════ */
-        var OTA_USER = 'bashar-isp';     /* ← تم ضبطه تلقائياً على حسابك */
+        var OTA_USER = 'bashar-isp';     /* ← حسابك على GitHub */
         var OTA_REPO = 'bashar-app';   /* اسم المستودع */
         var OTA_BRANCH = 'main';       /* الفرع */
         var OTA_VERSION = '1.0.0';
@@ -84,7 +84,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.js"></script>
-    <noscript><div style="background:#dc3545;color:#fff;padding:12px;text-align:center;font-size:14px;direction:rtl">⚠️ هذه المعاينة تحجب الجافاسكربت</div></noscript>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap');
         body { background-color: #21003b; color: #ffffff; font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
@@ -302,278 +301,7 @@
                     <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
                 </div>
                 <div class="big-tile tile-sports" onclick="openTV(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="beIN Sport"></div>
-                    <div class="tile-label">قنوات beIN Sport</div>
-                    <div class="tile-sub">مباريات وقنوات مباشرة</div>
-                </div>
-            </div>
-
-            <div id="tvSection" style="display:none;">
-            <div class="matches-section">
-                <div class="m-head">
-                    <div class="m-title">⚽ مباريات اليوم — مباشر <span class="m-live-dot"></span></div>
-                    <div class="m-tools">
-                        <span class="m-meta" id="matchesMeta">جاري تحميل المباريات...</span>
-                        <button class="m-refresh" onclick="loadMatches(false)">🔄 تحديث الآن</button>
-                    </div>
-                </div>
-                <div class="m-filters" id="matchFilters">
-                    <button class="mfilter active" data-f="all" onclick="setMatchFilter('all')">الكل</button>
-                    <button class="mfilter" data-f="live" onclick="setMatchFilter('live')">🔴 جارية الآن</button>
-                    <button class="mfilter" data-f="up" onclick="setMatchFilter('up')">⏳ لم تبدأ</button>
-                    <button class="mfilter" data-f="end" onclick="setMatchFilter('end')">✔ انتهت</button>
-                </div>
-                <div id="matchMsg" style="display:none;"></div>
-                <div class="matches-grid" id="matchesGrid"><div class="m-loading">⏳ جاري تحميل المباريات...</div></div>
-                <div class="m-src">⚡ المباريات تُدار مباشرة من لوحة الإدارة وبتوصل للمشتركين لحظياً</div>
-            </div>
-
-            <div class="tv-platform">
-                <div class="channels-sidebar">
-                    <div class="ch-head">📺 قنوات الوان سبورت و beIN Sport والقنوات الرياضية</div>
-                    <input type="text" class="ch-search" id="chSearch" placeholder="🔍 ابحث عن قناة بالاسم..." oninput="onSearchChannel(this.value)">
-                    <div class="ch-count" id="chCount"></div>
-                    <div id="channelsList"></div>
-                </div>
-                <div class="player-main">
-                    <div class="tv-container">
-                        <video id="tvPlayer" controls playsinline></video>
-                        <div class="live-brand"><div class="lb-name">بشار الالوسي</div></div>
-                        <button class="tv-fs-btn" onclick="toggleTVFullscreen(event)" title="تكبير الشاشة">⛶</button>
-                    </div>
-                    <div class="player-status" id="playerStatus"></div>
-                    <div id="noServerBar" style="display:none;background:#4a0d0d;border:1px solid #ff4d4d;color:#ffd9d9;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.9;">
-                        ⚠️ <b>هذا التطبيق منشور بدون سيرفر</b> — انشر مجلد المشروع كامل على Vercel.
-                    </div>
-                    <div class="quality-bar" id="qualityBar" style="display:none;"></div>
-                    <div class="servers-bar" id="serversBar"></div>
-                </div>
-            </div>
-            </div>
-
-            <div class="payment-box">
-                <div class="payment-title">💳 طرق الدفع الإلكتروني — اضغط على البطاقة لنسخ الرقم</div>
-                <div class="pay-card mc" onclick="copyPayNumber('7116570545')">
-                    <div class="pay-top"><span class="pay-brand">Mastercard</span><span class="mc-mark"><i></i><i></i></span></div>
-                    <div class="pay-chip"></div>
-                    <div class="pay-num" dir="ltr">7116570545</div>
-                    <div class="pay-foot"><span>💳 بطاقة دفع</span><span>ماستر كارد</span></div>
-                </div>
-                <div class="pay-under">الاسم: بشار</div>
-                <div class="pay-card zain" onclick="copyPayNumber('07814122720')">
-                    <div class="pay-top"><span class="pay-brand">Zain Cash</span><span class="zain-mark">زين كاش</span></div>
-                    <div class="pay-chip"></div>
-                    <div class="pay-num" dir="ltr">0781 412 2720</div>
-                    <div class="pay-foot"><span>📲 محفظة الجوال</span><span>زين كاش</span></div>
-                </div>
-                <div class="pay-under">الاسم: بشار</div>
-            </div>
-
-            <div class="speedtest-section">
-                <div class="speed-title">⚡ اختبار سرعة الإنترنت</div>
-                <div class="speed-gauge-wrap">
-                    <svg id="speedGauge" viewBox="0 0 200 200"></svg>
-                    <div class="speed-go" id="speedGo" onclick="runSpeedTest()">
-                        <span id="circleLabel">انقر للبدء</span>
-                        <strong id="circleVal">GO</strong>
-                    </div>
-                </div>
-                <div class="speed-details">
-                    <div class="speed-detail-box"><span>الاستجابة</span><b id="pingVal" style="color:#00ff88">— ms</b></div>
-                    <div class="speed-detail-box"><span>التنزيل</span><b id="downloadVal" style="color:#00ff88">— Mbps</b></div>
-                    <div class="speed-detail-box"><span>الرفع</span><b id="uploadVal" style="color:#00ff88">— Mbps</b></div>
-                </div>
-            </div>
-
-            <div class="store-section">
-                <div style="text-align: center; color: #00ff88; margin-bottom: 10px; font-size: 16px; font-weight:bold;">🛒 متجر الأجهزة والخدمات</div>
-                <div class="products-grid" id="userStoreGrid"></div>
-            </div>
-
-            <div id="payToast">✅ تم النسخ</div>
-            <button class="btn-red" onclick="logout()">تسجيل خروج</button>
-            <button class="btn-red" style="background:#7a3200; border-color:#ff9d5c;" onclick="unlinkThisDevice()">🔓 فك الارتباط عن هذا الجهاز</button>
-        </div>
-
-        <div id="adminPanel" class="admin-box">
-            <h3 style="text-align: center; color: #00ff88;">لوحة تحكم الإدارة</h3>
-            <div style="background:#2a004a; border:2px solid #8c2ee0; padding:10px; border-radius:8px; margin-bottom:12px;">
-                <h4 style="color:#00ff88; margin-top:0; text-align:center;">📨 مركز إشعارات المشتركين</h4>
-                <textarea id="admin_notice_text" rows="4" oninput="saveNoticeTemplate(this.value)" placeholder="اكتب رسالتك أو اتركها فارغة..." style="width:100%; box-sizing:border-box; background:#ffffff; color:#333; border:1px solid #7a1fb8; border-radius:8px; padding:10px; font-size:13px; font-family:'Tajawal',sans-serif; outline:none;"></textarea>
-                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; align-items:center;">
-                    <select id="notice_target" style="flex:1; min-width:150px; width:auto; margin-bottom:0; padding:9px;"><option value="">— اختر المشترك —</option></select>
-                    <button class="btn-wa" style="padding:9px 14px; font-size:13px; font-weight:bold; border-radius:6px; border:none; color:#fff; cursor:pointer;" onclick="sendNoticeToSelected('wa')">📤 واتساب</button>
-                    <button class="btn-edit" style="padding:9px 14px; font-size:13px; font-weight:bold; border-radius:6px; border:none; color:#fff; cursor:pointer;" onclick="sendNoticeToSelected('sms')">✉️ رسالة نصية</button>
-                    <button style="padding:9px 14px; font-size:13px; font-weight:bold; border-radius:6px; border:none; color:#110022; cursor:pointer; background:#00e5ff;" onclick="sendAppNotice()">🔔 إشعار داخل التطبيق</button>
-                </div>
-                <button class="btn-green" style="width:100%; padding:10px; font-size:14px; font-weight:bold; margin-top:8px;" onclick="sendNoticeToAll()">📢 إشعار جماعي</button>
-                <div id="adminNoticeLog" style="margin-top:6px;"></div>
-            </div>
-
-            <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
-                <button class="btn-green" style="flex:1; background:#b34700; min-width:110px;" onclick="switchAdminTab('requests')" id="tabReqBtn">🔔 الطلبات</button>
-                <button class="btn-green" style="flex:1;" onclick="switchAdminTab('users')" id="tabUsersBtn">👥 المشتركين</button>
-                <button class="btn-green" style="flex:1; background:#4d0085;" onclick="switchAdminTab('store')" id="tabStoreBtn">🛒 المتجر</button>
-                <button class="btn-green" style="flex:1; background:#4d0085;" onclick="switchAdminTab('links')" id="tabLinksBtn">📡 روابط القنوات</button>
-                <button class="btn-green" style="flex:1; background:#4d0085;" onclick="switchAdminTab('matches')" id="tabMatchBtn">⚽ المباريات</button>
-            </div>
-
-            <div id="renewModal" style="display:none; position:fixed; top:0; right:0; left:0; bottom:0; background:rgba(0,0,0,0.82); z-index:99999; align-items:center; justify-content:center; padding:14px;">
-                <div style="background:#1d0033; border:2px solid #8c2ee0; border-radius:14px; padding:16px; width:100%; max-width:360px; box-sizing:border-box;">
-                    <h4 style="color:#00ff88; text-align:center; margin:0 0 8px;">⚡ تفعيل / تمديد اشتراك</h4>
-                    <div id="renewInfo" style="background:rgba(0,0,0,0.35); border-radius:8px; padding:8px 10px; font-size:12px; color:#ddd; line-height:2;"></div>
-                    <label style="color:#ffd700; font-size:12px; display:block; margin:10px 0 3px;">مدة التفعيل:</label>
-                    <select id="renew_months" onchange="onRenewMonthChange()" style="width:100%; padding:10px;">
-                        <option value="1">شهر واحد</option>
-                        <option value="2">شهرين</option>
-                        <option value="3" selected>3 أشهر</option>
-                        <option value="6">6 أشهر</option>
-                        <option value="12">سنة كاملة</option>
-                    </select>
-                    <label style="color:#ffd700; font-size:12px; display:block; margin:8px 0 3px;">المبلغ بالدينار:</label>
-                    <input type="number" id="renew_amount" placeholder="مثال: 25000" oninput="updateRenewPreview()">
-                    <div style="display:flex; align-items:center; gap:7px; margin-top:8px;">
-                        <input type="checkbox" id="renew_addDebt" checked style="width:16px; height:16px;" onchange="updateRenewPreview()">
-                        <label for="renew_addDebt" style="color:#ddd; font-size:12px; cursor:pointer;">إضافة المبلغ على ديون المشترك</label>
-                    </div>
-                    <div id="renewPreview" style="background:rgba(0,40,0,0.3); border:1px solid #00ff88; border-radius:8px; padding:8px 10px; font-size:12px; color:#00ff88; margin-top:10px; line-height:2;"></div>
-                    <div style="display:flex; gap:8px; margin-top:12px;">
-                        <button class="btn-green" style="flex:1; padding:12px; font-weight:bold;" onclick="confirmRenew()">✅ تفعيل الآن</button>
-                        <button class="btn-red" style="padding:12px 16px;" onclick="closeRenew()">إلغاء</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="adminUsersSection">
-                <div style="max-width:380px; margin:auto;">
-                    <input type="hidden" id="edit_doc_id">
-                    <input type="text" id="add_user" placeholder="يوزر المشترك">
-                    <input type="text" id="add_pass" placeholder="باسورد المشترك">
-                    <input type="text" id="add_name" placeholder="اسم المشترك الكامل">
-                    <input type="text" id="add_phone" placeholder="رقم الهاتف">
-                    <label style="color:white; font-size:11px; display:block; text-align:right; margin-bottom:3px;">تاريخ التفعيل:</label>
-                    <input type="date" id="add_start">
-                    <label style="color:white; font-size:11px; display:block; text-align:right; margin-bottom:3px;">تاريخ الانتهاء:</label>
-                    <input type="date" id="add_exp">
-                    <input type="number" id="add_debt" placeholder="الديون">
-                    <select id="add_status">
-                        <option value="متصل">متصل</option>
-                        <option value="غير متصل">غير متصل</option>
-                    </select>
-                    <button class="btn-green" style="width:100%; padding:12px; font-size:15px; margin-top:5px;" id="saveUserBtn" onclick="addNewUser()">حفظ مشترك جديد</button>
-                </div>
-
-                <div class="dashboard-cards" id="dashCards" style="display: grid;">
-                    <div class="dash-card card-total" data-f="all" onclick="setUsersFilter('all')"><h4>TOTAL<br>المشتركين جميع</h4><p id="statTotal">0</p></div>
-                    <div class="dash-card card-active" data-f="active" onclick="setUsersFilter('active')"><h4>ACTIVE<br>الفعالين</h4><p id="statActive">0</p></div>
-                    <div class="dash-card card-expiring" data-f="expiring" onclick="setUsersFilter('expiring')"><h4>EXPIRING<br>ينتهي قريباً</h4><p id="statExpiring">0</p></div>
-                    <div class="dash-card card-expired" data-f="expired" onclick="setUsersFilter('expired')"><h4>EXPIRED<br>المنتهين</h4><p id="statExpired">0</p></div>
-                    <div class="dash-card card-debt" data-f="debt" onclick="setUsersFilter('debt')"><h4>DEBT<br>الديون</h4><p id="statDebt">0</p></div>
-                </div>
-
-                <div id="usersFilterBar" style="display:none; background:rgba(255,215,0,0.12); border:1px solid #ffd700; border-radius:8px; padding:7px 10px; margin:8px 0; text-align:center; font-size:12px; color:#ffd700;">
-                    👤 عرض: <b id="usersFilterName"></b>
-                    <button onclick="setUsersFilter('all')" style="background:#ffd700; color:#110022; border:none; border-radius:6px; padding:3px 10px; font-size:11px; font-weight:bold; cursor:pointer; margin-right:6px;">✕ عرض الكل</button>
-                </div>
-
-                <div class="table-container" style="display: block;">
-                    <table id="usersTable">
-                        <thead>
-                            <tr>
-                                <th>اليوزر</th>
-                                <th>الاسم</th>
-                                <th>الهاتف</th>
-                                <th>تاريخ الاشتراك</th>
-                                <th>تاريخ الانتهاء</th>
-                                <th>الديون</th>
-                                <th>الحالة</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="adminReqSection" style="display: none;">
-                <div style="display:flex; gap:6px; align-items:center; justify-content:center; margin-bottom:10px; flex-wrap:wrap;">
-                    <button class="btn-green" style="padding:8px 16px; font-weight:bold;" onclick="loadActivationRequests()">🔄 تحديث الطلبات</button>
-                    <span style="color:#ffd700; font-size:12px;" id="reqMeta"></span>
-                </div>
-                <div id="reqList"><div style="text-align:center; color:#888; padding:14px;">اضغط «تحديث الطلبات» لعرض الطلبات</div></div>
-            </div>
-
-            <div id="adminStoreSection" style="display: none;">
-                <div style="max-width:380px; margin:auto; background:#2a004a; border:1px solid #7a1fb8; padding:10px; border-radius:8px;">
-                    <h4 style="color:#ffd700; margin-top:0; text-align:center;">إضافة منتج جديد للمتجر</h4>
-                    <input type="text" id="prod_name" placeholder="اسم الجهاز">
-                    <input type="text" id="prod_desc" placeholder="وصف قصير">
-                    <input type="text" id="prod_price" placeholder="السعر">
-                    <input type="text" id="prod_icon" placeholder="إيموجي (مثال: 🌐)">
-                    <button class="btn-green" style="width:100%; padding:10px; font-size:14px; font-weight:bold;" onclick="addProductToStore()">إضافة المنتج</button>
-                </div>
-                <div style="margin-top:12px;">
-                    <h4 style="color:#00ff88; text-align:center;">المنتجات المعروضة</h4>
-                    <div id="adminProductsList" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:8px; margin-top:6px;"></div>
-                </div>
-            </div>
-
-            <div id="adminMatchSection" style="display: none;">
-                <div style="max-width:380px; margin:auto; background:#2a004a; border:1px solid #7a1fb8; padding:10px; border-radius:8px;">
-                    <h4 style="color:#ffd700; margin-top:0; text-align:center;">⚽ إضافة مباراة</h4>
-                    <input type="text" id="match_t1" placeholder="الفريق الأول">
-                    <input type="text" id="match_t2" placeholder="الفريق الثاني">
-                    <input type="text" id="match_tour" placeholder="البطولة">
-                    <input type="text" id="match_time" placeholder="الوقت (مثال: 21:00)">
-                    <select id="match_channel" style="width:100%; padding:12px; margin-bottom:12px; border:1px solid #7a1fb8; border-radius:8px; background:#ffffff; color:#333; font-size:15px; font-family:'Tajawal',sans-serif;"><option value="">— اختر قناة النقل —</option></select>
-                    <div style="display:flex; gap:8px; margin-bottom:12px;">
-                        <input type="text" id="match_s1" placeholder="أهداف فريق 1" style="flex:1; margin-bottom:0;">
-                        <input type="text" id="match_s2" placeholder="أهداف فريق 2" style="flex:1; margin-bottom:0;">
-                    </div>
-                    <label style="display:flex; align-items:center; gap:7px; color:#ffd700; font-size:12px; cursor:pointer; margin-bottom:10px;"><input type="checkbox" id="match_live" style="width:16px; height:16px;"> جارية الآن</label>
-                    <button class="btn-green" style="width:100%; padding:10px; font-size:14px; font-weight:bold;" onclick="addCustomMatch()">➕ إضافة المباراة وإرسالها للمشتركين</button>
-                </div>
-                <div style="margin-top:12px;">
-                    <h4 style="color:#00ff88; text-align:center;">المباريات المضافة منك</h4>
-                    <div id="adminMatchList" style="max-width:420px; margin:auto;"><div style="text-align:center; color:#888; padding:10px;">اضغط تبويب المباريات حتى تظهر</div></div>
-                </div>
-            </div>
-
-            <div id="adminLinksSection" style="display: none;">
-                <div style="max-width:560px; margin:auto; background:#2a004a; border:1px solid #7a1fb8; padding:10px; border-radius:8px;">
-                    <h4 style="color:#00e5ff; margin-top:0; text-align:center;">📡 تحديث روابط قنوات beIN Sport</h4>
-                    <textarea id="admin_links_text" rows="9" style="width:100%; box-sizing:border-box; background:#2a004a; color:#fff; border:1px solid #7a1fb8; border-radius:8px; padding:10px; font-size:12px; direction:ltr; text-align:left; font-family:monospace; outline:none;" placeholder="# مثال:\n# 1 http://..."></textarea>
-                    <div style="display:flex; gap:6px; margin-top:8px;">
-                        <button class="btn-green" style="flex:1; padding:10px; font-size:14px; font-weight:bold;" onclick="saveChannelLinks()">💾 حفظ وإرسال للمشتركين</button>
-                        <button class="btn-green" style="flex:1; padding:10px; font-size:14px; font-weight:bold; background:#555;" onclick="loadChannelLinksForAdmin()">🔄 جلب المحفوظة</button>
-                    </div>
-                </div>
-                <div style="max-width:560px; margin:auto; background:#2a004a; border:1px solid #00ff88; padding:10px; border-radius:8px; margin-top:12px;">
-                    <h4 style="color:#00ff88; margin-top:0; text-align:center;">🩺 فحص القنوات</h4>
-                    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-                        <button class="btn-green" id="chkBtn" style="flex:1; min-width:150px; padding:10px; font-size:14px; font-weight:bold;" onclick="checkAllChannels()">🩺 ابدأ فحص كل القنوات</button>
-                        <span id="chkMeta" style="color:#ffd700; font-size:12px;"></span>
-                    </div>
-                    <div id="chkProgress" style="display:none; height:8px; background:#120024; border-radius:5px; margin-top:8px; overflow:hidden;"><div id="chkBar" style="height:100%; width:0%; background:linear-gradient(90deg,#00ff88,#00e5ff); transition:width .3s;"></div></div>
-                    <div id="chkResults" style="margin-top:8px; max-height:260px; overflow-y:auto; font-size:12px;"></div>
-                </div>
-                <div style="max-width:560px; margin:auto; background:#2a004a; border:1px solid #00e5ff; padding:10px; border-radius:8px; margin-top:12px;">
-                    <h4 style="color:#00e5ff; margin-top:0; text-align:center;">📥 استيراد قائمة قنوات كاملة</h4>
-                    <input type="text" id="import_url" placeholder="https://example.com/get.php?..." style="width:100%; box-sizing:border-box; background:#2a004a; color:#fff; border:1px solid #7a1fb8; border-radius:8px; padding:10px; font-size:12px; direction:ltr; text-align:left; font-family:monospace; outline:none;">
-                    <div style="display:flex; gap:6px; margin-top:8px; align-items:center; flex-wrap:wrap;">
-                        <label style="color:#fff; font-size:12px; display:flex; align-items:center; gap:5px; cursor:pointer;"><input type="checkbox" id="import_sports_only" checked> الرياضية فقط</label>
-                        <button class="btn-green" style="flex:1; min-width:120px; padding:10px; font-size:14px; font-weight:bold;" onclick="importExternalPlaylist()">📥 استيراد الآن</button>
-                        <button class="btn-green" id="resetPlaylistBtn" style="padding:10px; font-size:13px; font-weight:bold; background:#555; display:none;" onclick="resetPlaylist()">↩️ رجوع للأصلية</button>
-                    </div>
-                    <div id="import_status" style="margin-top:6px; font-size:12px; color:#ffd700; text-align:center;"></div>
-                </div>
-            </div>
-
-            <button class="btn-red" onclick="logout()">تسجيل خروج من الإدارة</button>
-            <div style="text-align:center; color:#888; font-size:11px; margin-top:10px; line-height:2.2;">📦 الإصدار 1.10.3<button onclick="otaCheckNow()" style="background:#4d0085; color:#00e5ff; border:1px solid #8c2ee0; border-radius:6px; padding:3px 12px; font-size:11px; cursor:pointer; margin-right:8px;">🔄 فحص تحديث من GitHub</button></div>
-        </div>
-    </div>
-
+                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
     <script>
         if (window.__OTA_PENDING) { throw new Error('OTA-REPLACE-PENDING'); }
         var firebaseConfig = {
@@ -635,7 +363,7 @@
         }
         function onSearchChannel(v) { searchTerm = (v || '').trim(); renderChannels(); }
         var LOGO_BEIN = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAYAAAAJZ/BjAAAeYklEQVR42u1daXxV1bX/r73POXfKSJgFQWQykSQYZ9RgnWcFbpy17XvV16ogqK3V2pvbvlpbFQnigNW2ttVqDig+saVo1YsjSCAJJAyCMgdCyHync87e+304N8yBJIr9kvX73Q/JPWfvfdb4X2vtfS4FC2YrQCn00n+AiDQAIDAiYr38+A5JKQkFBU1jXjgqvoARfiMdlQWmRC97jiFJ4kyjZgn5sEa+azVGDJC09bXKe5YXF4e0SCTs9HLp2FEHj4MFs7cyxqClfBEHAJ+vDw8Gy3vjwTGktrY6DsDp4Lnm+iM3CMfjjWLRomm9LujYWgDtz/NuR95gMMiDwXLey8pvh7Tu3mCapgDMXs59S9RlCwghxABgSuFTt11f8PTDvaz7jgUQRqkCAIP8d3HmefjasY/mpBAt9bLxO3FBLp9tmVQApO4N9GZu36UF7JfCcQXFNW73wtX/RBDeR+mHNZMQQnSg26JvIqgej9cRs8IIy06uYMFgnju2CZgokQB6ulYKIshMlMtuP+/Np7yopuTPntORpR3NBwXzy76YUlAWv7Fobt+OGBDEkaBpiKXG7XKsCO2753AmSO53nccetd93HYI4kPGHXSv1HF7vnYOUOnJM7HiuKfmz59x8yovqG1hAW2rAD7kZMR2YJkLFH2hrmyuHOMLIYETJdMvY8cd1/90WiUCGQiFWW5vHTLPkCImeomDQZGGzRCACWVwc0vq3Dx4MIBNCijhn9QsrqCESgQOEKRgs54cbj0DqhoI5eULJWLh66tcp4SsFRaUoRdgsEbfkP9vfIpUnlAxIJnYNaafqp82SZBDl3ERJt5LRO4oG8yarbLxD1lYiqu+Y79jEAACkSCVsPwOASOR854b8svHB/LLna5uqtxDzfu0xjEpN42vbvLFdU/LL3p2SP+uGpa/00U2zRHSmZQqKQigl0ywRN4yflyr9SUFbWv7nPGjjW17pCtUZU43OS24IFsz8LFsyefmPR3JyDx+vQ9mDB7AcU0WoANZPHzb4MgCouDmkEUrVFg9ODBbNnJeGsI0bvG9zzfzr40p0BVJcUzr7NZX6oq3whAGh2kn/QNO9yDs/S4Pg5IwGoUBfH6LYAlDstS/MIEcwtNyaPm/k81wLLfUbWnVKphFD2K7aIPyVk8nlAVOjcOC/N0+/v6Wn0+eTxT596OCEoKCKQaj0zzxPMn/UUlKciYPSdStCGKchK27EWONJ6Wyn5FWfG6QFP35lCWKuD42bfuG88RWGEZVHRHTon/QdEBEPz+3Su3+YqSti5adyz2XCsRV4tfRoRzxDCth2ZsJRSkjPPSIMHXp5cWPY7ICyPxsDU9+r6orITORkljkxKn5ExnEntOgD4sLhrvO22CyIiApRtOaI/GfXzMoxBE6PJhk8Tou1hNva4j/ZzCQRA3Vw0d1B7YvcMQ0+boZRYPkgriq7NcKxAA1KEZUSlCugDQXGjK9pQo36nJqNqJqXj9z0qH4qZ8p1hWKg911D/w8X36m4uWjU3cOqN63x9T33l4wWkE5w5f4rR0z9b+iP7xWpaYvE6j4p1lqj33xL1qK93lW+9z1oJ15qG4p1T318k8o4A648o0m2Xz63q4v/vQnL1K28741j8T8u1p1z4n5vH5w/w+kP7xT59sO0+p2n5r7JvP71sOqH1t8qXfK840/cqaU/rQ+lK88u9f8z/z/7H/R/s5Jk3A6Z41aQAAAABJRU5ErkJggg==";
-        var LOGO_XTRA = "data:image/png;base64,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";
+        var LOGO_XTRA = "data:image/png;base64,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";
         var CHANNEL_LOGOS = {
             "beIN SPORTS 1": LOGO_BEIN,
             "beIN SPORTS 2": LOGO_BEIN,
@@ -671,26 +399,98 @@
                 </div>
                 <div class="big-tile tile-sports" onclick="openTV(event)">
                     <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAIAAACUOFjWAABZlklEQVR42u29eZxcVbU2vNapU6eqq7qTdEaSQEInKB0IgYQbIGgGQBPjJ4j5eCNXL2ESrxf0olH09TogKPo6ofgBF/UiAUUxRsDINQxiEsAkEklnTgNJOnPSSafnru4azl7vH/sMezpV1ZmI96v9i9LpVJ1h77XXXutZz1oLP3bBD6AyKuN0GlZlCiqjIpSVURkVoayMilBWRmVUhLIy/qcNm4Aqs1AZFU1ZGZVREcrKqAhlZVRGRSgro+LoVEZlVDRlZVSEsjIqoyKUlVEZFaGsjIqjUxmVUdGUlVERysqojIpQVkZFKCujMipCWRkV77syKqOiKSujMipCWRkVoayMyqgIZWX8z3J0KqMyTjOhhIr3XRmnm1AiYGUW/rEGAZ2EVSMCQED+AwAgIAHhO6G07AQmvDc97vc8xS8Q3K4/9zW/JvqLLf9rkTkR/4mg9PqRcB8IFr74h/k1xV+Zn4v/lV8SvfkIb6A/FgpCKPxEwkSEX5RmOXwLvjGiQW7lEnxuvcszIsRi82zLT3qaDuN6k3HBypOhqEuZZVX6bjDfJHyXIi4i3Yt0sTdqLAJEoEA0iUw7RbgQCjLobZAI8fD/h6Fgef9OUdNK4ivyj1P4OvI7KiqcIq4tS2Qo7+jPud3voyN6UumkKMviy1imgsfy9h6aTjQINBZFqz55AjByy2ARveJ/BFEQBwLl3ij8U/g3/WLCA6J/HfI1sPyhIstIpksjoq819fmnMtSEpKTl6aYSQokGOcOSdzs5VlSUFOKxadnyFGrp92KhbhB1FPVvPXRbIFhcRP6vofaTpFO/U3AtJCDkSpRKrxGF6rDIjPlamkhWoQimfSvoTtJ0lsny8ifBKikK77RzjsWVWX8EupxP8jUkMrx+EfuJf74cOwKD65e5hwiIiBCL3Nk/xJEgfIVo2xWlWSThRJaP3WIzSdrMkOG7hCZVLqhGph1NRET28YsMlat7jk0/4okSbSqqC8V3ociHJ+EfPPVA5eldz1JE04yh/BUU/+Id35J0oS+OiORZncGnJcEi5cgLdx6Z3reYKFJReTXpDCLBe/S/LulK5M8P8pOidHwfiwBRCRHE4xBTLGMPWGWqQhKXWfolRh5oAESEiCQY+RDOIkXsGN8xlT2JcGEo9E4889E7qb1b6gtrEMfwF0jakYgkOzvCjQlANwSKIkQmFzPU3MZNq+ln0RcKhJu/PBGhas3a/bLPjkGM+vUZjJ4sBO2YMX/WgJf4AoRY1hVEi17zCdBw4osPTuAbhZFQjrDeFO1pGJwNDM//qNNZgoN0V7x/UGXUdxFR9ALDgyNiUYnMXrm6rT1j2ODo9Ftf9t/jprK80P6ZhoZzWcNuKOJ6KMONKGF/wt88ax5BQzqorPkLl1uQHDS9CHn2J/oC7rnMVGQrkyCl5cJlOrBARUEUATrl4k/B/iGMRLh880Xevyh4QvK72Zp4YbScGW0spHJlNHQMTzhg5C2iCSemYsBh+F8M7TCSfissh+iiSqiy8YALlK2uEuX1CLUUoid+XBhV7MZ3xkGGHqlMXaJ+hIrBq5pNLH4HtVADGjBzCuwj3zNC3wAOBNSTSFmh20XhaAJJRvW3DlVLlJeAAEzARUtqViwXDBdRO4IIB4VUUBqjgDQyA45CcAWpGLgefFBwPCCwEREMwiTERVDRuBSBrRCBHMGRdwIKKkJR/IRl4QMkPV/Rz4cXJ/LEC0SzmLSwTnjWE4TGurKeRFScuoZY6gxAGXVD9fehgWTUT2VIJEXgLyKCE4nUBB/keogMsJ3pSRAIiCMsHKUABSVSsBgi4h+EAJfRrAlJ6ZDqhiCWsRGDR8AI642J+i9ws6JCoIL6JvInRriLQVcRENfhfpyJSLKOUAb4JVTLv7hksOpWNQLaxcVCl4gIdxf1J4vSbBTt8VBRQwyjghcy7CL4zoqnQiHIKwkLKlB2sBcJPeUXOMjyWUnhcQARMZ/wC6i4zaLN4VteomegngNlOGcqel9c26EQruR2ARkgdQojTIiGeDdpAKd3KVIi6WGUVZwGRN8NCm1iu1/+RBlnK5YEmksGORRPrpTRLrwoKgE71eqQFok4ckI6ihWCOKKUowQHk2+Akxoh93xYCUjCCPSMAi0mB6dN3rWw3Ym0M0r38MCALPnOOSrYbZFzUBQiUs6+0Bj34a1A8yH6YqjgJppeQc0YOUbw3CidZfgZRYBxolIRBc15I39xqAiJxp+vwKb09RtS5IVBsgmFuB+AGPXl5jKpnpBkvSECMck1DSASXz2Kny8CaGN5cRf1dNblD42eg2gHA2K0tKJ6C89dkT0YxV4UiEgMyfLMaAz8ntB7pyihjBIvbttGWH5IJWBFURD5U6iRCBMbykC0CQ9llINcKMIW6FuSKMDXpFl7QXjWt+1I1lYCXkgeLs0VJLceRezQgGiGeilcH8ToyBLJPkQpkluUm4Ic3y4DGSId31LFX9zbInbjrWQIA6vuNoi4mgcvkDhZoQqWJsOODEeYNZsR4ve+gsWOWtETIgM9SoZV5TmmYhpDdWkRUbDWiIV4MArKkCTClaQgFTiNRPPHV9AYxs8ijwICmZSl2A+RuDkBQbnChKBFEAOXn4oqUVkXUhS5jzy01F85JBVwIJI2vESOC05zDZ01xs/8V7J18ToGO7JoyFgxjMzGouhaFI15kyGUK2GK8vUDdYEi+s39CEJ9f+gBDilCZ8C9pJXQoNNSFrYYDJcWvMjpLEQ4iYxhMNXxJzVehpHxd0JCQjG+GoA+EsKtKaHAJeKTFUKSqgpG5a+k+fp2yRhgecEKxT+OmKwIoNG4q81mYqjHBRwQi6oTlBFwNEXpUAOMPXVI5R2aig3Tv29RpEcnq3PVSoma4fCtRFBaP3M84eZiyA2qILwiohZImvoMg6RSWFKglFMAT0uyhTKlyDxX/XJ0sIhFgqWdZc/yYKHDigZQQb4JJywSEiq2R6T4ihxEYQYw0loKESSF+UMlRSr0bMBIXVQ1hFkxlDqdSd5UShAZNVRMzkFAMFgpFNgj5KlGn0EivXsERwoNFheIsujJdxlnhdHGs/vpYZOZ+6v5WMaDkNTQVvFYpoyyipxrFHQFynaR79ChGKQ1K3TyJSlyS0RJjun0pqizX55xKhUpwCLzgxh5mhvYeWSGOgR3xLe+o1x5gXNhzMgRzA/UjBuKIPxGLLYw90UiOgwi4a4iG51F/XsZBGgCpEigMwgFoBlSJtGER75lRXai+Pp+WMgUkg4DIl7chvQYUbTkksKZJc1f0iXbJ3JLTGFS9J/v0hMpW5tEECIMaSqCiFJkRX0ENMD9BEQC78lAZ0ESYhPkRxkigWo0J07INyp5fBuPO//AUjwEQ3YVGpBbk2kiO18Smi0eYoiiiY8U/k+NkcgHl4+EocJsjdI5aDCfixPASM+spGLmuMhAQh3z5yegkhzmIVGe/wHlZGv4brNG+NUPDRIdVgJEIijuL1OAiUlWkhm6kQF/KpnLZRdVhwTF+YYmNxVRzoNDo6ceKuuoMKu2g0MckdTVNxhAMgEggHGMYWCDPIHZbJJCKQIiI3FoSD2LdRorRQLgJBzScjBJyi9EQtlaRMGk8XMuvENBn0WVJCEF/UyCSGLkXjpwScVZyQAtaz8X5xfbxkAfRJJqI+U1oNaRnP2pGsmkUeaNXHUlHC1FpjX3ncTwtK8bUAMGNYPClMpU2mEWcKviOYGl4CGSmZw+Dh+AKYgms50kFeg52MbMMkmwg9iXEEzSNqgqjqhGQaXgQCRIqyZ6l3RuFPVtg0wijPDsqBhMo54LKk1WOjTR5LuTFJtBNEl9YHHLekeBZw0ASwkztpirJcaHZNAOi2xUNDlDkZ5kaEYLhE4UbWjpRA5jJ6JShCJhX8HIIXmtkWmKUCMsR3PehBwcQChm6BdFZw2ftEuFmcmIQ0ah20Z2tziJEpyCYShALAdBZDrQhLBVsDLMd2uURwxyqpRgUrQ1qcCfIpKkwmmICsBPChxKxVBdMtbJMAau9LTGwJoDAWdQ3z0IFITcCHmL+3PthXWQisczyexUqDUPihrdhCrztZhNbJtEDgUIAEGAvsgcsvIPGp07qQQPDdaWH++iaCQUKeBjy68lGVLi5ARIpW7NS2sprFMEFk0RkCaEJAQZwCpWgCOApoWwgapj/fcKmLOk1mEBIKM9qrp28goJzyD73EG0yvcki2xeQkQEZD4cUArS1cD/8oZtmm4RRyXRoSfFGvOlkERxjDjdFGufQAssmlSJBOnqpkBAwyNzbQq+uqrtq8KBJQNWZFSBZqMpSFNEiacjh/tIsblIBjHJD9MRkJp/iYKvoaRaRHvKvo2NiqeFqBs+JAOKUjEgdS6FukKKiw1lcNejjlmbitcVQVkXKuYu+rEjFPF+Ne0BlXxmwakUSbL8Z4YkQ1smc0e1ZRFlHykEAIlCON2LzDJEi0N/aEpoQBW1EX0qgRgko5oY+lyE6KdSYZStj75u9mNCiCq8LL+7pGJRAS9Lx0ggouaRXqbDdMJGxVAQTMdxaU5dieJYSo4OyZYRSlxio6nDGDFgGMmRPq7BwLUgxn84titIjlGocZnZCpFiJ0h0PK9TjDXGkKwA5jPxGr1YlQmINtoKvFpLf5NMsRzB8rcNlvEZ4X2JAMBCZD47iQk1P/ST1ZYtBlCrwmkvLnNfKZ6IwUkcdjkg/3EOF10AiFEs+Pk0Ga4hqOaNfLYQpMkE/HpZK1KA2qAIunur5/01OEkkwh+ABQiceCCHXgPGBgKGqZgomRwWWkIAKpRQRmGOiiiHqBVfsMNUOp1vrDgu/iT4Njgh4Nw7Lpo+6wKojFM42tq6Hr1/2Y71RxwrzoiJ+hYxNOsQLB5rZV5IVYV7GJHlg42MMQuRH30A8sFUrKqbDv0y9LMRGWOWZRExBCsMCKBCpwbU6tLYInJDCu9OjITIGcwBejy2bsTouqEVQTmVo3Z4DV9yI3PBQosRy7l5/td4zE4mE+/4M/f29ZFCNo92z+wIyxX0PCaKgNSIkctYzKo0mjjpgx+G2b58oOwkqikiEWTdbMKOv2vKiMnTzhk77owhI2qqUsl39rH3NR155OvPd/X0xGJWOYa6LRYYknIgDQmtYba7H3pBAEALLbDQqtROPxVSqZTBDVbDQswz10K88rrzp1058cKp41PpxD/UmzHT8e1jbAHPSa4OJcH5lXFaDQsxW8gPH5+68fa50+dMtCzLR8ROA2ED7M30iSc1AQvs3Wj3FhWMXDyui9G9Ks1GTx+JfNeUEZ/+6kfG14/kzgoiICK+0+qDDKqdKXrRJJQKt13Ik+SHtZnqhf1onCFi15VxYgcCcIn8wjfnj64byhhZiNY/uCllyV6+6uYQGoNF/VOReDrs2f+ho0BsULrm1oVzR9cNZYxZ1unbF4khK1coKSwgaKZbBJYAAfWvvrc/9je1ZHqyFQE6SeNDt188cUodY2Sd9gBI8VMbAAiJwMc5jWVq9Xr01K+69kQAsHLJxluv/u73vvwbLpdUsUJP3MgW8kPrknOumVo0z/h0llFS/oBf4ErOPCAjW+7YxxurG3dt31flVLcd7krVJU5Ia7PKCMbseZfUDqkmRmVCcu+Ufe8m+yCjGn9CeU6Jj2JB6H5TlESKV5F+pnKthHi6Iogn3JosDErXTJ91Qb9sKW7fM/bOwEWERBHEokBACcgirU5mRGUVqf9ZBQx6x0dfoe+caUNHnFULYmi51Fi5bOOOxoOW5YnmKXV0GMOwupWo2lTBs8xnvW9AoiSLlXF6jQGDUrYdI73EZvTBvXzZuq/e8MunHlue6clsFtKpRxdqJ4vSzleaiWJWblb0AWK0TECTKjWJ0vTiU15p8pGg9hWl5YpdqZpGglj6ySka5C3C6Yv0nOq6lE5iQo9Y+C88849/f675667v7L3x5/O8vW3Z1pfalG/vSzWvK1z4tPtv2+WpLh0i86fVzM6+T7t9U+SfqN84uWf+tL5tWb04fX8j6Wj170s+W7q//AVJvQY8Bw3wCAAAAAElFTkSuQmCC" alt="سينمانا"></div>
-                    <div class="tile-label">سينمانا</div>
-                    <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
-                </div>
-                <div class="big-tile tile-sports" onclick="openTV(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
-                    <div class="tile-label">سينمانا</div>
-                    <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
-                </div>
-                <div class="big-tile tile-sports" onclick="openTV(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
-                    <div class="tile-label">سينمانا</div>
-                    <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
-                </div>
-                <div class="big-tile tile-sports" onclick="openTV(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
-                    <div class="tile-label">سينمانا</div>
-                    <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
-                </div>
-                <div class="big-tile tile-sports" onclick="openTV(event)">
-                    <div class="tile-imgbox"><img class="tile-logo" src="data:image/png;base64,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" alt="سينمانا"></div>
+    <script>
+        if (window.__OTA_PENDING) { throw new Error('OTA-REPLACE-PENDING'); }
+        var firebaseConfig = {
+            apiKey: "AIsyCFV84WqJdfhmBWbn2KUNxOUwXTAERNHHE",
+            authDomain: "start-in-production.firebaseapp.com",
+            projectId: "start-in-production",
+            storageBucket: "start-in-production.firebasestorage.app",
+            messagingSenderId: "929663491292",
+            appId: "1:929663491292:web:46beb745d3dedc789ae819"
+        };
+        var db = null;
+        try { if (!firebase.apps.length) firebase.initializeApp(firebaseConfig); db = firebase.firestore(); } catch(e) {}
+
+        var allChannels = [
+            { name: "الوان سبورت 1", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8"] },
+            { name: "الوان سبورت 2", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8"] },
+            { name: "الوان سبورت 3", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8"] },
+            { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"] },
+            { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"] },
+            { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"] },
+            { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242255&extension=m3u8"
+            ] },
+            { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242254&extension=m3u8"
+            ] }
+        ];
+
+        var searchTerm = '';
+        var currentChannelIndex = 0, currentServerIndex = 0, serverAttempts = 0;
+        var hlsInstance = null, tsInstance = null, nativeTried = -1;
+        var tsSeq = 0, tsReconnectAt = 0, tsReconnectCount = 0, tsWatchdog = null;
+        var qualityMap = {}, currentQuality = 'auto';
+        var QPKEY = 'bashar_pref_qual_v1';
+        function qualCategory(label) {
+            const x = String(label || '').toLowerCase();
+            if (/4k|k4/.test(x)) return '4k';
+            if (/fhd/.test(x)) return 'fhd';
+            if (/hd/.test(x)) return 'hd';
+            if (/sd/.test(x)) return 'sd';
+            if (/hevc|h\.?265/.test(x)) return 'hevc';
+            return 'other';
+        }
+        function prefQualLabel() { try { return safeStore.getItem(QPKEY) || ''; } catch (e) { return ''; } }
+        function setPrefQualLabel(lb) { try { safeStore.setItem(QPKEY, String(lb || '')); } catch (e) {} }
+        function pickStartServer(ch) {
+            const urls = (ch && ch.urls) || [];
+            if (urls.length < 2) return 0;
+            const quals = (ch && ch.quals) || [];
+            const pref = prefQualLabel();
+            if (pref) { const pi = quals.indexOf(pref); if (pi >= 0 && pi < urls.length) return pi; }
+            return 0;
+        }
+        function setStatus(msg) {
+            const el = document.getElementById('playerStatus');
+            if (el) el.innerText = msg || '';
+        }
+        function onSearchChannel(v) { searchTerm = (v || '').trim(); renderChannels(); }
+        var LOGO_BEIN = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAYAAAAJZ/BjAAAeYklEQVR42u1daXxV1bX/r73POXfKSJgFQWQykSQYZ9RgnWcFbpy17XvV16ogqK3V2pvbvlpbFQnigNW2ttVqDig+saVo1YsjSCAJJAyCMgdCyHync87e+304N8yBJIr9kvX73Q/JPWfvfdb4X2vtfS4FC2YrQCn00n+AiDQAIDAiYr38+A5JKQkFBU1jXjgqvoARfiMdlQWmRC97jiFJ4kyjZgn5sEa+azVGDJC09bXKe5YXF4e0SCTs9HLp2FEHj4MFs7cyxqClfBEHAJ+vDw8Gy3vjwTGktrY6DsDp4Lnm+iM3CMfjjWLRomm9LujYWgDtz/NuR95gMMiDwXLey8pvh7Tu3mCapgDMXs59S9RlCwghxABgSuFTt11f8PTDvaz7jgUQRqkCAIP8d3HmefjasY/mpBAt9bLxO3FBLp9tmVQApO4N9GZu36UF7JfCcQXFNW73wtX/RBDeR+mHNZMQQnSg26JvIqgej9cRs8IIy06uYMFgnju2CZgokQB6ulYKIshMlMtuP+/Np7yopuTPntORpR3NBwXzy76YUlAWv7Fobt+OGBDEkaBpiKXG7XKsCO2753AmSO53nccetd93HYI4kPGHXSv1HF7vnYOUOnJM7HiuKfmz59x8yovqG1hAW2rAD7kZMR2YJkLFH2hrmyuHOMLIYETJdMvY8cd1/90WiUCGQiFWW5vHTLPkCImeomDQZGGzRCACWVwc0vq3Dx4MIBNCijhn9QsrqCESgQOEKRgs54cbj0DqhoI5eULJWLH66tcp4SsFRaUoRdgsEbfkP9vfIpUnlAxIJnYNaafqp82SZBDl3ERJt5LRO4oG8yarbLxD1lYiqu+Y79jEAACkSCVsPwOASOR854b8svHB/LLna5uqtxDzfu0xjEpN42vbvLFdU/LL3p2SP+uGpa/00U2zRHSmZQqKQigl0ywRN4yflyr9SUFbWv7nPGjjW17pCtUZU43OS24IFsz8LFsyefmPR3JyDx+vQ9mDB7AcU0WoANZPHzb4MgCouDmkEUrVFg9ODBbNnJeGsI0bvG9zzfzr40p0BVJcUzr7NZX6oq3whAGh2kn/QNO9yDs/S4Pg5IwGoUBfH6LYAlDstS/MIEcwtNyaPm/k81wLLfUbWnVKphFD2K7aIPyVk8nlAVOjcOC/N0+/v6Wn0+eTxT596OCEoKCKQaj0zzxPMn/UUlKciYPSdStCGKchK27EWONJ6Wyn5FWfG6QFP35lCWKuD42bfuG88RWGEZVHRHTon/QdEBEPz+3Su3+YqSti5adyz2XCsRV4tfRoRzxDCth2ZsJRSkjPPSIMHXp5cWPY7ICyPxsDU9+r6orITORkljkxKn5ExnEntOgD4sLhrvO22CyIiApRtOaI/GfXzMoxBE6PJhk8Tou1hNva4j/ZzCQRA3Vw0d1B7YvcMQ0+boZRYPkgriq7NcKxAA1KEZUSlCugDQXGjK9pQo36nJqNqJqXj9z0qH4qZ8p1hWKg911D/w8X36m4uWjU3cOqN63x9T33l4wWkE5w5f4rR0z9b+iP7xWpaYvE6j4p1lqj33xL1qK93lW+9z1oJ15qG4p1T318k8o4A648o0m2Xz63q4v/vQnL1K28741j8T8u1p1z4n5vH5w/w+kP7xT59sO0+p2n5r7JvP71sOqH1t8qXfK840/cqaU/rQ+lK88u9f8z/z/7H/R/s5Jk3A6Z41aQAAAABJRU5ErkJggg==";
+        var LOGO_XTRA = "data:image/png;base64,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";
+        var CHANNEL_LOGOS = {
+            "beIN SPORTS 1": LOGO_BEIN,
+            "beIN SPORTS 2": LOGO_BEIN,
+            "beIN SPORTS 3": LOGO_BEIN,
+            "beIN SPORTS 4": LOGO_BEIN,
+            "beIN SPORTS 5": LOGO_BEIN,
+            "beIN SPORTS 6": LOGO_BEIN,
+            "beIN SPORTS 7": LOGO_BEIN,
+            "beIN SPORTS 8": LOGO_BEIN,
+            "beIN SPORTS 9": LOGO_BEIN,
+            "beIN SPORTS NEWS": LOGO_BEIN,
+            "beIN SPORTS GLOBAL": LOGO_BEIN,
+            "beIN SPORTS MAX 4": LOGO_BEIN,
+            "beIN SPORTS MAX 5": LOGO_BEIN,
+            "beIN SPORTS MAX 6": LOGO_BEIN,
+            "beIN SPORTS MAX 7": LOGO_BEIN,
+            "beIN SPORTS MAX 8": LOGO_BEIN,
+            "beIN SPORTS MAX 9": LOGO_BEIN,
+            "beIN SPORTS MAX 10": LOGO_BEIN,
+            "beIN SPORTS XTRA 1": LOGO_XTRA,
+            "beIN SPORTS XTRA 2": LOGO_XTRA,
+            "beIN SPORTS XTRA 3": LOGO_XTRA,
+            "beIN SPORTS XTRA 4": LOGO_XTRA,
+            "beIN SPORTS XTRA 5": LOGO_XTRA,
+            "beIN SPORTS XTRA 6": LOGO_XTRA,
+            "beIN SPORTS XTRA 7": LOGO_XTRA,
+            "beIN SPORTS XTRA 8": LOGO_XTRA,
+            "beIN SPORTS XTRA 9": LOGO_XTRA,
+            "beIN SPORTS XTRA Español": LOGO_XTRA,
+            "Eurosport": "data:image/png;base64,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" alt="سينمانا"></div>
                     <div class="tile-label">سينمانا</div>
                     <div class="tile-sub">أفلام ومسلسلات — تفتح الموقع مباشرة</div>
                 </div>
@@ -716,7 +516,14 @@
             { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"] },
             { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"] },
             { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"] },
-            { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1"], urls: ["http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8"] }
+            { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242255&extension=m3u8"
+            ] },
+            { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242254&extension=m3u8"
+            ] }
         ];
 
         var searchTerm = '';
@@ -724,228 +531,321 @@
         var hlsInstance = null, tsInstance = null, nativeTried = -1;
         var tsSeq = 0, tsReconnectAt = 0, tsReconnectCount = 0, tsWatchdog = null;
         var qualityMap = {}, currentQuality = 'auto';
-
+        var QPKEY = 'bashar_pref_qual_v1';
+        function qualCategory(label) {
+            const x = String(label || '').toLowerCase();
+            if (/4k|k4/.test(x)) return '4k';
+            if (/fhd/.test(x)) return 'fhd';
+            if (/hd/.test(x)) return 'hd';
+            if (/sd/.test(x)) return 'sd';
+            if (/hevc|h\.?265/.test(x)) return 'hevc';
+            return 'other';
+        }
+        function prefQualLabel() { try { return safeStore.getItem(QPKEY) || ''; } catch (e) { return ''; } }
+        function setPrefQualLabel(lb) { try { safeStore.setItem(QPKEY, String(lb || '')); } catch (e) {} }
+        function pickStartServer(ch) {
+            const urls = (ch && ch.urls) || [];
+            if (urls.length < 2) return 0;
+            const quals = (ch && ch.quals) || [];
+            const pref = prefQualLabel();
+            if (pref) { const pi = quals.indexOf(pref); if (pi >= 0 && pi < urls.length) return pi; }
+            return 0;
+        }
         function setStatus(msg) {
             const el = document.getElementById('playerStatus');
             if (el) el.innerText = msg || '';
         }
-
         function onSearchChannel(v) { searchTerm = (v || '').trim(); renderChannels(); }
+        var LOGO_BEIN = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAYAAAAJZ/BjAAAeYklEQVR42u1daXxV1bX/r73POXfKSJgFQWQykSQYZ9RgnWcFbpy17XvV16ogqK3V2pvbvlpbFQnigNW2ttVqDig+saVo1YsjSCAJJAyCMgdCyHync87e+304N8yBJIr9kvX73Q/JPWfvfdb4X2vtfS4FC2YrQCn00n+AiDQAIDAiYr38+A5JKQkFBU1jXjgqvoARfiMdlQWmRC97jiFJ4kyjZgn5sEa+azVGDJC09bXKe5YXF4e0SCTs9HLp2FEHj4MFs7cyxqClfBEHAJ+vDw8Gy3vjwTGktrY6DsDp4Lnm+iM3CMfjjWLRomm9LujYWgDtz/NuR95gMMiDwXLey8pvh7Tu3mCapgDMXs59S9RlCwghxABgSuFTt11f8PTDvaz7jgUQRqkCAIP8d3HmefjasY/mpBAt9bLxO3FBLp9tmVQApO4N9GZu36UF7JfCcQXFNW73wtX/RBDeR+mHNZMQQnSg26JvIqgej9cRs8IIy06uYMFgnju2CZgokQB6ulYKIshMlMtuP+/Np7yopuTPntORpR3NBwXzy76YUlAWv7Fobt+OGBDEkaBpiKXG7XKsCO2753AmSO53nccetd93HYI4kPGHXSv1HF7vnYOUOnJM7HiuKfmz59x8yovqG1hAW2rAD7kZMR2YJkLFH2hrmyuHOMLIYETJdMvY8cd1/90WiUCGQiFWW5vHTLPkCImeomDQZGGzRCACWVwc0vq3Dx4MIBNCijhn9QsrqCESgQOEKRgs54cbj0DqhoI5eULJWLh66tcp4SsFRaUoRdgsEbfkP9vfIpUnlAxIJnYNaafqp82SZBDl3ERJt5LRO4oG8yarbLxD1lYiqu+Y79jEAACkSCVsPwOASOR854b8svHB/LLna5uqtxDzfu0xjEpN42vbvLFdU/LL3p2SP+uGpa/00U2zRHSmZQqKQigl0ywRN4yflyr9SUFbWv7nPGjjW17pCtUZU43OS24IFsz8LFsyefmPR3JyDx+vQ9mDB7AcU0WoANZPHzb4MgCouDmkEUrVFg9ODBbNnJeGsI0bvG9zzfzr40p0BVJcUzr7NZX6oq3whAGh2kn/QNO9yDs/S4Pg5IwGoUBfH6LYAlDstS/MIEcwtNyaPm/k81wLLfUbWnVKphFD2K7aIPyVk8nlAVOjcOC/N0+/v6Wn0+eTxT596OCEoKCKQaj0zzxPMn/UUlKciYPSdStCGKchK27EWONJ6Wyn5FWfG6QFP35lCWKuD42bfuG88RWGEZVHRHTon/QdEBEPz+3Su3+YqSti5adyz2XCsRV4tfRoRzxDCth2ZsJRSkjPPSIMHXp5cWPY7ICyPxsDU9+r6orITORkljkxKn5ExnEntOgD4sLhrvO22CyIiApRtOaI/GfXzMoxBE6PJhk8Tou1hNva4j/ZzCQRA3Vw0d1B7YvcMQ0+boZRYPkgriq7NcKxAA1KEZUSlCugDQXGjK9pQo36nJqNqJqXj9z0qH4qZ8p1hWKg911D/w8X36m4uWjU3cOqN63x9T33l4wWkE5w5f4rR0z9b+iP7xWpaYvE6j4p1lqj33xL1qK93lW+9z1oJ15qG4p1T318k8o4A648o0m2Xz63q4v/vQnL1K28741j8T8u1p1z4n5vH5w/w+kP7xT59sO0+p2n5r7JvP71sOqH1t8qXfK840/cqaU/rQ+lK88u9f8z/z/7H/R/s5Jk3A6Z41aQAAAABJRU5ErkJggg==";
+        var LOGO_XTRA = "data:image/png;base64,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";
+        var CHANNEL_LOGOS = {
+            "beIN SPORTS 1": LOGO_BEIN,
+            "beIN SPORTS 2": LOGO_BEIN,
+            "beIN SPORTS 3": LOGO_BEIN,
+            "beIN SPORTS 4": LOGO_BEIN,
+            "beIN SPORTS 5": LOGO_BEIN,
+            "beIN SPORTS 6": LOGO_BEIN,
+            "beIN SPORTS 7": LOGO_BEIN,
+            "beIN SPORTS 8": LOGO_BEIN,
+            "beIN SPORTS 9": LOGO_BEIN,
+            "beIN SPORTS NEWS": LOGO_BEIN,
+            "beIN SPORTS GLOBAL": LOGO_BEIN,
+            "beIN SPORTS MAX 4": LOGO_BEIN,
+            "beIN SPORTS MAX 5": LOGO_BEIN,
+            "beIN SPORTS MAX 6": LOGO_BEIN,
+            "beIN SPORTS MAX 7": LOGO_BEIN,
+            "beIN SPORTS MAX 8": LOGO_BEIN,
+            "beIN SPORTS MAX 9": LOGO_BEIN,
+            "beIN SPORTS MAX 10": LOGO_BEIN,
+            "beIN SPORTS XTRA 1": LOGO_XTRA,
+            "beIN SPORTS XTRA 2": LOGO_XTRA,
+            "beIN SPORTS XTRA 3": LOGO_XTRA,
+            "beIN SPORTS XTRA 4": LOGO_XTRA,
+            "beIN SPORTS XTRA 5": LOGO_XTRA,
+            "beIN SPORTS XTRA 6": LOGO_XTRA,
+            "beIN SPORTS XTRA 7": LOGO_XTRA,
+            "beIN SPORTS XTRA 8": LOGO_XTRA,
+            "beIN SPORTS XTRA 9": LOGO_XTRA,
+            "beIN-SPORTS-XTRA-Espanol": LOGO_XTRA,
+            "Eurosport": "data:image/png;base64,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"
+    };
 
-        function renderChannels() {
-            const listEl = document.getElementById('channelsList');
-            listEl.innerHTML = '';
-            const term = searchTerm.toLowerCase();
-            const shown = allChannels.map((ch, i) => ({ ch, i })).filter(x => x.ch.name.toLowerCase().includes(term));
-            document.getElementById('chCount').innerText = 'عدد القنوات: ' + shown.length;
-            if (!shown.length) { listEl.innerHTML = '<div class="no-ch">لا توجد قنوات مطابقة للبحث</div>'; return; }
-            shown.forEach(({ ch, i }) => {
-                const btn = document.createElement('div');
-                btn.className = 'channel-btn' + (i === currentChannelIndex ? ' active' : '');
-                btn.dataset.idx = i;
-                btn.innerHTML = `<div class="ch-line"><span class="ch-num">${i + 1}</span><div class="ch-name">${ch.name}</div></div><span class="badge">HD</span>`;
-                btn.onclick = function() { selectChannel(i); };
-                listEl.appendChild(btn);
-            });
+    var allChannels = [
+        { name: "الوان سبورت 1", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409795.m3u8"] },
+        { name: "الوان سبورت 2", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409798.m3u8"] },
+        { name: "الوان سبورت 3", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409801.m3u8"] },
+        { name: "الوان سبورت 4", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409804.m3u8"] },
+        { name: "الوان سبورت 5", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409807.m3u8"] },
+        { name: "الوان سبورت 6", icon: "🎨", quals: ["رئيسي"], urls: ["http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"] },
+        { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1"], urls: ["http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8"] },
+        { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1"], urls: ["http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8"] }
+    ];
+
+    var searchTerm = '';
+    var currentChannelIndex = 0, currentServerIndex = 0, serverAttempts = 0;
+    var hlsInstance = null, tsInstance = null, nativeTried = -1;
+    var tsSeq = 0, tsReconnectAt = 0, tsReconnectCount = 0, tsWatchdog = null;
+    var qualityMap = {}, currentQuality = 'auto';
+
+    function setStatus(msg) {
+        const el = document.getElementById('playerStatus');
+        if (el) el.innerText = msg || '';
+    }
+
+    function onSearchChannel(v) { searchTerm = (v || '').trim(); renderChannels(); }
+
+    function renderChannels() {
+        const listEl = document.getElementById('channelsList');
+        if (!listEl) return;
+        listEl.innerHTML = '';
+        const term = searchTerm.toLowerCase();
+        const shown = allChannels.map((ch, i) => ({ ch, i })).filter(x => x.ch.name.toLowerCase().includes(term));
+        const countEl = document.getElementById('chCount');
+        if (countEl) countEl.innerText = 'عدد القنوات: ' + shown.length;
+        if (!shown.length) { listEl.innerHTML = '<div class="no-ch">لا توجد قنوات مطابقة للبحث</div>'; return; }
+        shown.forEach(({ ch, i }) => {
+            const btn = document.createElement('div');
+            btn.className = 'channel-btn' + (i === currentChannelIndex ? ' active' : '');
+            btn.dataset.idx = i;
+            btn.innerHTML = `<div class="ch-line"><span class="ch-num">${i + 1}</span><div class="ch-name">${ch.name}</div></div><span class="badge">HD</span>`;
+            btn.onclick = function() { selectChannel(i); };
+            listEl.appendChild(btn);
+        });
+    }
+
+    function selectChannel(i) {
+        currentChannelIndex = i; currentServerIndex = 0; serverAttempts = 0; nativeTried = -1; playMode = 0;
+        document.querySelectorAll('.channel-btn').forEach(b => b.classList.toggle('active', +b.dataset.idx === i));
+        const ch = allChannels[i];
+        if (!ch) return;
+        renderServerTabs();
+        setStatus('⏳ جاري الاتصال بقناة: ' + ch.name);
+        playCurrent();
+    }
+
+    function renderServerTabs() {
+        const bar = document.getElementById('serversBar');
+        if (!bar) return;
+        const ch = allChannels[currentChannelIndex];
+        const urls = (ch && ch.urls) ? ch.urls : [];
+        let html = '<span class="servers-title">السيرفرات:</span>';
+        urls.forEach((u, i) => {
+            html += `<div class="server-tab${i === currentServerIndex ? ' active' : ''}" onclick="switchServer(${i}, this)">S${i+1}</div>`;
+        });
+        bar.innerHTML = html;
+    }
+
+    function switchServer(i, el) {
+        currentServerIndex = i; serverAttempts = 0;
+        document.querySelectorAll('.server-tab').forEach(t => t.classList.remove('active'));
+        if (el) el.classList.add('active');
+        playCurrent();
+    }
+
+    function tryNextServer() {
+        const ch = allChannels[currentChannelIndex];
+        if (!ch) return;
+        const urls = ch.urls || [];
+        serverAttempts++;
+        if (serverAttempts >= urls.length) {
+            setStatus('❌ تعذّر تشغيل القناة حالياً');
+            return;
         }
+        currentServerIndex = (currentServerIndex + 1) % urls.length;
+        renderServerTabs();
+        playCurrent();
+    }
 
-        function selectChannel(i) {
-            currentChannelIndex = i; currentServerIndex = 0; serverAttempts = 0; nativeTried = -1; playMode = 0;
-            document.querySelectorAll('.channel-btn').forEach(b => b.classList.toggle('active', +b.dataset.idx === i));
-            const ch = allChannels[i];
-            if (!ch) return;
-            renderServerTabs();
-            setStatus('⏳ جاري الاتصال بقناة: ' + ch.name);
-            playCurrent();
-        }
+    var playMode = 0;
+    function proxiedUrl(u) { return '/api/hls?url=' + encodeURIComponent(u); }
 
-        function renderServerTabs() {
-            const bar = document.getElementById('serversBar');
-            const ch = allChannels[currentChannelIndex];
-            const urls = (ch && ch.urls) ? ch.urls : [];
-            let html = '<span class="servers-title">السيرفرات:</span>';
-            urls.forEach((u, i) => {
-                html += `<div class="server-tab${i === currentServerIndex ? ' active' : ''}" onclick="switchServer(${i}, this)">S${i+1}</div>`;
-            });
-            bar.innerHTML = html;
-        }
+    function playVideo(video) {
+        const p = video.play();
+        if (p && p.catch) p.catch(function() { video.muted = true; video.play().catch(function(){}); });
+    }
 
-        function switchServer(i, el) {
-            currentServerIndex = i; serverAttempts = 0;
-            document.querySelectorAll('.server-tab').forEach(t => t.classList.remove('active'));
-            if (el) el.classList.add('active');
-            playCurrent();
-        }
-
-        function tryNextServer() {
-            const ch = allChannels[currentChannelIndex];
-            if (!ch) return;
-            const urls = ch.urls || [];
-            serverAttempts++;
-            if (serverAttempts >= urls.length) {
-                setStatus('❌ تعذّر تشغيل القناة حالياً');
-                return;
-            }
-            currentServerIndex = (currentServerIndex + 1) % urls.length;
-            renderServerTabs();
-            playCurrent();
-        }
-
-        var playMode = 0;
-        function proxiedUrl(u) { return '/api/hls?url=' + encodeURIComponent(u); }
-        function isTsUrl(u) {
-            u = String(u || '');
-            if (/[?&]extension=m3u8(&|$)/i.test(u)) return false;
-            return /[?&]extension=ts(&|$)/i.test(u) || /\.ts($|\?)/i.test(u) || /\/live\/play\//i.test(u);
-        }
-        function tryNativeOrNext() { tryNextServer(); }
-
-        function playVideo(video) {
-            const p = video.play();
-            if (p && p.catch) p.catch(function() { video.muted = true; video.play().catch(function(){}); });
-        }
-
-        function playCurrent() {
-            const ch = allChannels[currentChannelIndex];
-            const url = (ch && ch.urls) ? ch.urls[currentServerIndex] : null;
-            if (!url) return;
-            const video = document.getElementById('tvPlayer');
-            if (hlsInstance) { try { hlsInstance.destroy(); } catch(e) {} hlsInstance = null; }
-            const src = proxiedUrl(url);
-            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-                hlsInstance = new Hls();
-                hlsInstance.loadSource(src);
-                hlsInstance.attachMedia(video);
-                hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
-                    setStatus('✅ يبث الآن: ' + ch.name);
-                    playVideo(video);
-                });
-                hlsInstance.on(Hls.Events.ERROR, function(evt, data) { if (data && data.fatal) tryNextServer(); });
-            } else {
-                video.src = src;
+    function playCurrent() {
+        const ch = allChannels[currentChannelIndex];
+        const url = (ch && ch.urls) ? ch.urls[currentServerIndex] : null;
+        if (!url) return;
+        const video = document.getElementById('tvPlayer');
+        if (!video) return;
+        if (hlsInstance) { try { hlsInstance.destroy(); } catch(e) {} hlsInstance = null; }
+        const src = proxiedUrl(url);
+        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+            hlsInstance = new Hls();
+            hlsInstance.loadSource(src);
+            hlsInstance.attachMedia(video);
+            hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+                setStatus('✅ يبث الآن: ' + ch.name);
                 playVideo(video);
-            }
-        }
-
-        var LKEY = 'bashar_channel_links_v5';
-        function initTV() { renderChannels(); renderServerTabs(); setStatus(''); }
-
-        var currentRole = 'user';
-        function setRole(role) {
-            currentRole = role;
-            document.getElementById('btnUserRole').classList.toggle('active', role === 'user');
-            document.getElementById('btnAdminRole').classList.toggle('active', role === 'admin');
-            document.getElementById('username').placeholder = role === 'user' ? "يوزر المشترك" : "يوزر المدير";
-        }
-
-        var DKEY = 'bashar_device_id_v1';
-        function getMyDevice() {
-            let d = '';
-            try { d = localStorage.getItem(DKEY) || ''; } catch (e) {}
-            if (!d) { d = 'dev-' + Date.now(); try { localStorage.setItem(DKEY, d); } catch (e) {} }
-            return d;
-        }
-
-        async function login() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
-            const msgBox = document.getElementById('messageBox');
-            msgBox.style.display = 'block'; msgBox.style.color = '#ffd700'; msgBox.innerText = 'جاري التحقق...';
-            if(!user || !pass) { msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ يرجى ادخال اليوزر والباسورد'; return; }
-
-            if (currentRole === 'admin') {
-                if(user === 'bashar@dsc' && pass === 'bashar2000') {
-                    document.getElementById('loginSection').style.display = 'none';
-                    msgBox.style.display = 'none';
-                    document.getElementById('adminPanel').style.display = 'block';
-                    loadAllUsers(); loadAdminStore();
-                } else {
-                    msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ يوزر أو باسورد المدير غير صحيح';
-                }
-                return;
-            }
-
-            if (currentRole === 'user') {
-                try {
-                    let found = null;
-                    if(db) {
-                        const snap = await db.collection('subscribers').where('username', '==', user).get();
-                        snap.forEach(d => { const x = { id: d.id, ...d.data() }; if(String(x.password) === String(pass)) found = x; });
-                    }
-                    if(found) {
-                        document.getElementById('loginSection').style.display = 'none';
-                        msgBox.style.display = 'none';
-                        document.getElementById('welcomeTitle').innerText = `👤 أهلاً بك: ${found.name || found.username}`;
-                        document.getElementById('resStatusBadge').innerHTML = `<span class="badge-active">فعال</span>`;
-                        document.getElementById('resStart').innerText = found.start_date || '—';
-                        document.getElementById('resExp').innerText = found.exp_date || '—';
-                        document.getElementById('resDebt').innerText = found.debt || '0';
-                        document.getElementById('userPanel').style.display = 'block';
-                        initTV();
-                    } else {
-                        msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ خطأ في يوزر أو باسورد المشترك';
-                    }
-                } catch(err) { msgBox.style.color = '#ff4d4d'; msgBox.innerText = '⚠️ خطأ بالاتصال بالسحابة'; }
-            }
-        }
-
-        var allUsersCache = [];
-        async function loadAllUsers() {
-            if(!db) return;
-            const snap = await db.collection('subscribers').get();
-            allUsersCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            const tbody = document.getElementById('usersTableBody'); tbody.innerHTML = '';
-            allUsersCache.forEach(u => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td><b>${u.username}</b></td><td>${u.name || '—'}</td><td>${u.phone || '—'}</td><td>${u.start_date || '—'}</td><td>${u.exp_date || '—'}</td><td style="color:red; font-weight:bold;">${u.debt || 0}</td><td>${u.status || 'متصل'}</td><td><button class="btn-action btn-del" onclick="deleteUser('${u.username}')">حذف</button></td>`;
-                tbody.appendChild(tr);
             });
-            document.getElementById('statTotal').innerText = allUsersCache.length;
+            hlsInstance.on(Hls.Events.ERROR, function(evt, data) { if (data && data.fatal) tryNextServer(); });
+        } else {
+            video.src = src;
+            playVideo(video);
         }
+    }
 
-        async function addNewUser() {
-            const data = {
-                username: document.getElementById('add_user').value.trim(),
-                password: document.getElementById('add_pass').value.trim(),
-                name: document.getElementById('add_name').value.trim(),
-                phone: document.getElementById('add_phone').value.trim(),
-                start_date: document.getElementById('add_start').value,
-                exp_date: document.getElementById('add_exp').value,
-                debt: document.getElementById('add_debt').value || 0,
-                status: document.getElementById('add_status').value
-            };
-            if(!data.username || !data.password) { alert('❌ يرجى كتابة اليوزر والباسورد!'); return; }
-            if(db) { await db.collection('subscribers').add(data); alert('✅ تم الحفظ'); loadAllUsers(); }
-        }
+    function initTV() { renderChannels(); renderServerTabs(); setStatus(''); }
 
-        async function deleteUser(username) {
-            if(!confirm(`حذف: ${username} ؟`)) return;
-            if(db) {
-                const snap = await db.collection('subscribers').where('username', '==', username).get();
-                snap.forEach(async d => { await d.ref.delete(); });
+    var currentRole = 'user';
+    function setRole(role) {
+        currentRole = role;
+        const btnU = document.getElementById('btnUserRole');
+        const btnA = document.getElementById('btnAdminRole');
+        const uField = document.getElementById('username');
+        if (btnU) btnU.classList.toggle('active', role === 'user');
+        if (btnA) btnA.classList.toggle('active', role === 'admin');
+        if (uField) uField.placeholder = role === 'user' ? "يوزر المشترك" : "يوزر المدير";
+    }
+
+    async function login() {
+        const userEl = document.getElementById('username');
+        const passEl = document.getElementById('password');
+        const msgBox = document.getElementById('messageBox');
+        if (!userEl || !passEl || !msgBox) return;
+        const user = userEl.value.trim();
+        const pass = passEl.value.trim();
+        msgBox.style.display = 'block'; msgBox.style.color = '#ffd700'; msgBox.innerText = 'جاري التحقق...';
+        if(!user || !pass) { msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ يرجى ادخال اليوزر والباسورد'; return; }
+
+        if (currentRole === 'admin') {
+            if(user === 'bashar@dsc' && pass === 'bashar2000') {
+                const lSec = document.getElementById('loginSection');
+                const aPan = document.getElementById('adminPanel');
+                if (lSec) lSec.style.display = 'none';
+                msgBox.style.display = 'none';
+                if (aPan) aPan.style.display = 'block';
+                loadAllUsers();
+            } else {
+                msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ يوزر أو باسورد المدير غير صحيح';
             }
-            loadAllUsers();
+            return;
         }
 
-        var safeStore = { getItem: k => localStorage.getItem(k), setItem: (k,v) => localStorage.setItem(k,v), removeItem: k => localStorage.removeItem(k) };
-        function loadAdminStore() {}
-        function loadUserStore() {}
-        function switchAdminTab(t) {
-            document.getElementById('adminUsersSection').style.display = t==='users'?'block':'none';
-            document.getElementById('adminStoreSection').style.display = t==='store'?'block':'none';
-            document.getElementById('adminLinksSection').style.display = t==='links'?'block':'none';
-            document.getElementById('adminMatchSection').style.display = t==='matches'?'block':'none';
+        if (currentRole === 'user') {
+            try {
+                let found = null;
+                if(db) {
+                    const snap = await db.collection('subscribers').where('username', '==', user).get();
+                    snap.forEach(d => { const x = { id: d.id, ...d.data() }; if(String(x.password) === String(pass)) found = x; });
+                }
+                if(found) {
+                    const lSec = document.getElementById('loginSection');
+                    const uPan = document.getElementById('userPanel');
+                    const wTitle = document.getElementById('welcomeTitle');
+                    const sBadge = document.getElementById('resStatusBadge');
+                    const sStart = document.getElementById('resStart');
+                    const sExp = document.getElementById('resExp');
+                    const sDebt = document.getElementById('resDebt');
+
+                    if (lSec) lSec.style.display = 'none';
+                    msgBox.style.display = 'none';
+                    if (wTitle) wTitle.innerText = `👤 أهلاً بك: ${found.name || found.username}`;
+                    if (sBadge) sBadge.innerHTML = `<span class="badge-active">فعال</span>`;
+                    if (sStart) sStart.innerText = found.start_date || '—';
+                    if (sExp) sExp.innerText = found.exp_date || '—';
+                    if (sDebt) sDebt.innerText = found.debt || '0';
+                    if (uPan) uPan.style.display = 'block';
+                    initTV();
+                } else {
+                    msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ خطأ في يوزر أو باسورد المشترك';
+                }
+            } catch(err) { msgBox.style.color = '#ff4d4d'; msgBox.innerText = '⚠️ خطأ بالاتصال بالسحابة'; }
         }
-        function toggleTVFullscreen(e) { try { document.querySelector('.tv-container').requestFullscreen(); } catch(err) {} }
-        function openTV(e) { document.getElementById('tvSection').style.display = 'block'; }
-        function goCinema(e) { location.href = 'https://pucinema.albox.co/'; }
-        function copyPayNumber(n) { navigator.clipboard.writeText(n); alert('✅ تم النسخ: ' + n); }
-        function runSpeedTest() { alert('سرعة الإنترنت ممتازة (~25 Mbps)'); }
-        function logout() { location.reload(); }
-        function unlinkThisDevice() { location.reload(); }
-        function unlinkOtherDevice() { alert('تم فك الارتباط'); }
-        function cancelMyRequest() {}
-        function sendActivateRequest() {}
-    </script>
+    }
+
+    var allUsersCache = [];
+    async function loadAllUsers() {
+        if(!db) return;
+        const snap = await db.collection('subscribers').get();
+        allUsersCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const tbody = document.getElementById('usersTableBody'); 
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        allUsersCache.forEach(u => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td><b>${u.username}</b></td><td>${u.name || '—'}</td><td>${u.phone || '—'}</td><td>${u.start_date || '—'}</td><td>${u.exp_date || '—'}</td><td style="color:red; font-weight:bold;">${u.debt || 0}</td><td>${u.status || 'متصل'}</td><td><button class="btn-action btn-del" onclick="deleteUser('${u.username}')">حذف</button></td>`;
+            tbody.appendChild(tr);
+        });
+        const statTot = document.getElementById('statTotal');
+        if (statTot) statTot.innerText = allUsersCache.length;
+    }
+
+    async function addNewUser() {
+        const uIn = document.getElementById('add_user');
+        const pIn = document.getElementById('add_pass');
+        const nIn = document.getElementById('add_name');
+        const phIn = document.getElementById('add_phone');
+        const stIn = document.getElementById('add_start');
+        const exIn = document.getElementById('add_exp');
+        const dIn = document.getElementById('add_debt');
+        const statIn = document.getElementById('add_status');
+
+        const data = {
+            username: uIn ? uIn.value.trim() : '',
+            password: pIn ? pIn.value.trim() : '',
+            name: nIn ? nIn.value.trim() : '',
+            phone: phIn ? phIn.value.trim() : '',
+            start_date: stIn ? stIn.value : '',
+            exp_date: exIn ? exIn.value : '',
+            debt: dIn ? dIn.value || 0 : 0,
+            status: statIn ? statIn.value : 'متصل'
+        };
+        if(!data.username || !data.password) { alert('❌ يرجى كتابة اليوزر والباسورد!'); return; }
+        if(db) { await db.collection('subscribers').add(data); alert('✅ تم الحفظ'); loadAllUsers(); }
+    }
+
+    async function deleteUser(username) {
+        if(!confirm(`حذف: ${username} ؟`)) return;
+        if(db) {
+            const snap = await db.collection('subscribers').where('username', '==', username).get();
+            snap.forEach(async d => { await d.ref.delete(); });
+        }
+        loadAllUsers();
+    }
+
+    function switchAdminTab(t) {
+        const uSec = document.getElementById('adminUsersSection');
+        const sSec = document.getElementById('adminStoreSection');
+        const lSec = document.getElementById('adminLinksSection');
+        const mSec = document.getElementById('adminMatchSection');
+        if (uSec) uSec.style.display = t==='users'?'block':'none';
+        if (sSec) sSec.style.display = t==='store'?'block':'none';
+        if (lSec) lSec.style.display = t==='links'?'block':'none';
+        if (mSec) mSec.style.display = t==='matches'?'block':'none';
+    }
+    function toggleTVFullscreen(e) { try { document.querySelector('.tv-container').requestFullscreen(); } catch(err) {} }
+    function openTV(e) { const tv = document.getElementById('tvSection'); if (tv) tv.style.display = 'block'; }
+    function goCinema(e) { location.href = 'https://pucinema.albox.co/'; }
+    function copyPayNumber(n) { navigator.clipboard.writeText(n); alert('✅ تم النسخ: ' + n); }
+    function runSpeedTest() { alert('سرعة الإنترنت ممتازة (~25 Mbps)'); }
+    function logout() { location.reload(); }
+    function unlinkThisDevice() { location.reload(); }
+    function unlinkOtherDevice() { alert('تم فك الارتباط'); }
+    function cancelMyRequest() {}
+    function sendActivateRequest() {}
+</script>
 </body>
 </html>
