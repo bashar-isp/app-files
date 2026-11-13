@@ -130,6 +130,10 @@
         .tv-container:fullscreen, .tv-container:-webkit-full-screen { padding-top: 0; height: 100%; border-radius: 0; }
         .tv-container:fullscreen video, .tv-container:-webkit-full-screen video { width: 100%; height: 100%; }
         .tv-container:fullscreen .live-brand, .tv-container:-webkit-full-screen .live-brand { top: 12px; right: 16px; z-index: 2147483000; }
+        /* ═══ v1.0.1: شاشة كاملة قسرية بالـ WebView — إذا ماكو دعم أصلي نفرضها بـ CSS مع دوران ═══ */
+        .tv-container.fs-force { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; padding-top: 0 !important; z-index: 2147483000; border-radius: 0; margin: 0; background: #000; }
+        .tv-container.fs-force video { width: 100%; height: 100%; object-fit: contain; }
+        .tv-container.fs-force .live-brand { top: 12px; right: 16px; z-index: 2147483600; }
         .tv-fs-btn { position: absolute; top: 10px; left: 10px; z-index: 7; width: 38px; height: 38px; border-radius: 9px; border: 1px solid rgba(233,192,11,0.55); background: rgba(29,0,51,0.72); color: #ffd700; font-size: 19px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
         .tv-fs-btn:active { background: #8c2ee0; color: #fff; }
 
@@ -692,122 +696,46 @@
                 "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/409810.m3u8"
             ] },
             /* ⭐ قنوات beIN Sport بعدها بالترتيب (beIN SPORTS 1) — بث مباشر TS من المصدر الجديد mdmfista + روابط احتياطية */
-            { name: "beIN SPORTS 1", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242255&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985161&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798828&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985188&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798795&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242268&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985127&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985136&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/3046.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/24416.m3u8"
+            { name: "beIN SPORTS 1", icon: "⭐", quals: ["رئيسي", "رديف", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/7.m3u8",
+                "https://vg162.adcdsd123321.shop/1.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242242&extension=m3u8"
             ] },
-            { name: "beIN SPORTS 2", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242254&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985162&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798829&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985189&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798796&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242267&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985128&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985137&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/24417.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/400057.m3u8"
+            { name: "beIN SPORTS 2", icon: "⭐", quals: ["رئيسي", "رديف", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/8.m3u8",
+                "https://vg162.adcdsd123321.shop/2.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242241&extension=m3u8"
             ] },
-            { name: "beIN SPORTS 3", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242240&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242253&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985163&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798830&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985190&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798797&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242266&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985129&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985138&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/24418.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/27097.m3u8"
+            { name: "beIN SPORTS 3", icon: "⭐", quals: ["رئيسي", "رديف", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/9.m3u8",
+                "https://vg162.adcdsd123321.shop/3.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242240&extension=m3u8"
             ] },
-            { name: "beIN SPORTS 4", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242239&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242252&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985164&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798831&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985191&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798798&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242265&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985130&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985139&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/24419.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/27095.m3u8"
+            { name: "beIN SPORTS 4", icon: "⭐", quals: ["رئيسي", "رديف", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/10.m3u8",
+                "https://vg162.adcdsd123321.shop/4.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242239&extension=m3u8"
             ] },
-            { name: "beIN SPORTS 5", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242238&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242251&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985165&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798833&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985192&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798799&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242264&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985131&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985140&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/24420.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/27094.m3u8"
+            { name: "beIN SPORTS 5", icon: "⭐", quals: ["رئيسي", "رديف", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/11.m3u8",
+                "https://vg162.adcdsd123321.shop/5.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242238&extension=m3u8"
             ] },
-            { name: "beIN SPORTS 6", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242237&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242250&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985166&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798834&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985193&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798800&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242263&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985132&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985141&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/24421.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/27093.m3u8"
+            { name: "beIN SPORTS 6", icon: "⭐", quals: ["رئيسي", "قديم", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/6.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242237&extension=m3u8"
             ] },
-            { name: "beIN SPORTS 7", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242236&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242249&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985167&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798835&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985194&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798802&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242262&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985133&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985142&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/24423.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/27092.m3u8"
+            { name: "beIN SPORTS 7", icon: "⭐", quals: ["رئيسي", "قديم", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/14.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242236&extension=m3u8"
             ] },
-            { name: "beIN SPORTS 8", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242235&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242248&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985168&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798837&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985195&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798804&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242261&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985134&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985143&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/24424.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/27091.m3u8"
+            { name: "beIN SPORTS 8", icon: "⭐", quals: ["رئيسي", "قديم", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/16.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242235&extension=m3u8"
             ] },
-            { name: "beIN SPORTS 9", icon: "⭐", quals: ["FHD", "HD S1", "HD S3", "SD S1", "SD S3", "HEVC", "4K S1", "4K S2", "4K S3", "بديل 1", "بديل 2"], urls: [
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242234&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242247&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985169&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798838&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985196&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=798805&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242260&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985135&extension=m3u8",
-                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985144&extension=m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/29834.m3u8",
-                "http://fr.magtr.cc:8080/live/1244668849566168/1244668849566168/27090.m3u8"
+            { name: "beIN SPORTS 9", icon: "⭐", quals: ["رئيسي", "قديم", "قديم"], urls: [
+                "https://vg162.adcdsd123321.shop/17.m3u8",
+                "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=242234&extension=m3u8"
             ] },
             { name: "beIN SPORTS NEWS", icon: "📰", quals: ["HD", "SD", "4K S1", "4K S2", "بديل 1", "بديل 2", "بديل 3"], urls: [
                 "http://me.mdmfista.com/play/live.php?mac=00:1B:79:49:14:81&stream=985171&extension=m3u8",
@@ -1238,7 +1166,7 @@
 
         // عند فشل طريقة التشغيل: بروكسي السيرفر → رابط مباشر → مشغل أصلي → السيرفر التالي
         // بث TS الخام: بروكسي السيرفر → رابط مباشر → السيرفر التالي (المشغل الأصلي ما يشتغل على TS حي)
-        var playMode = 1; /* مباشر أولاً — البروكسي احتياطي */ // 0 = عبر بروكسي السيرفر /api/hls، 1 = رابط مباشر، 2 = مشغل أصلي (native)
+        var playMode = 0; /* بروكسي أولاً — مزود beIN ما يرسل CORS فالويب يمر عبر /api/hls */ // 0 = عبر بروكسي السيرفر /api/hls، 1 = رابط مباشر، 2 = مشغل أصلي (native)
         function proxiedUrl(u) { return '/api/hls?url=' + encodeURIComponent(u); }
         /* بث TS الخام (روابط extension=ts أو /live/play/) يحتاج مشغل mpegts وليس HLS — روابط extension=m3u8 تشتغل hls */
         function isTsUrl(u) {
@@ -2884,26 +2812,40 @@
             try { location.href = CINEMA_URL; } catch (e) {}
         }
         /* ═══ v1.10.2: تكبير شاشة المشغل — يكبّر المشغل كامل (الفيديو + اسم بشار الالوسي فوقه) ═══ */
+        function lockLand() { try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function(){}); } catch (e) {} }
+        function tryVideoFs() {
+            try { var v = document.getElementById('tvPlayer'); if (v && v.webkitEnterFullscreen) v.webkitEnterFullscreen(); } catch (e) {}
+        }
         function toggleTVFullscreen(ev) {
             if (ev) { try { ev.preventDefault(); ev.stopPropagation(); } catch (e) {} }
             var c = document.querySelector('.tv-container');
             if (!c) return;
             var fsEl = document.fullscreenElement || document.webkitFullscreenElement || null;
-            try {
-                if (fsEl) {
-                    (document.exitFullscreen || document.webkitExitFullscreen || function () {}).call(document);
-                } else {
-                    var rq = c.requestFullscreen || c.webkitRequestFullscreen || c.webkitRequestFullScreen;
-                    if (rq) {
-                        var p = rq.call(c);
-                        if (p && p.catch) p.catch(function () {
-                            try { var v = document.getElementById('tvPlayer'); if (v && v.webkitEnterFullscreen) v.webkitEnterFullscreen(); } catch (e2) {}
-                        });
-                    }
-                }
-            } catch (e) {
-                try { var v2 = document.getElementById('tvPlayer'); if (v2 && v2.webkitEnterFullscreen) v2.webkitEnterFullscreen(); } catch (e3) {}
+            if (fsEl || c.classList.contains('fs-force')) { /* خروج من التكبير بأي صيغة */
+                c.classList.remove('fs-force');
+                try { (document.exitFullscreen || document.webkitExitFullscreen || function () {}).call(document); } catch (e0) {}
+                try { if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock(); } catch (e0b) {}
+                return;
             }
+            /* 1) تكبير أصلي للمشغل كامل */
+            try {
+                var rq = c.requestFullscreen || c.webkitRequestFullscreen || c.webkitRequestFullScreen;
+                if (rq) { var p = rq.call(c); if (p && p.then) { p.then(lockLand).catch(tryVideoFs); } }
+                else { tryVideoFs(); }
+            } catch (e1) { tryVideoFs(); }
+            /* 2) إذا بعد 450ms ما صار تكبير حقيقي (الوعد تعلق بالـ WebView) → تكبير الفيديو الأصلي — الأندرويد يدور الشاشة تلقائياً */
+            setTimeout(function () {
+                var v = document.getElementById('tvPlayer');
+                if (document.fullscreenElement || document.webkitFullscreenElement || (v && v.webkitDisplayingFullscreen)) return;
+                tryVideoFs();
+                /* 3) إذا حتى الفيديو الأصلي ما مشى → شاشة كاملة قسرية بـ CSS (تشتغل بكل جهاز) */
+                setTimeout(function () {
+                    var v2 = document.getElementById('tvPlayer');
+                    if (document.fullscreenElement || document.webkitFullscreenElement || (v2 && v2.webkitDisplayingFullscreen)) return;
+                    c.classList.add('fs-force');
+                    lockLand();
+                }, 350);
+            }, 450);
         }
         /* إذا انكبّر الفيديو لوحده من أزرار المشغل الأصلية — نحوّل التكبير على المشغل كامل حتى يظل اسم بشار الالوسي ظاهراً فوق البث */
         (function () {
