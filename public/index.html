@@ -13,85 +13,7 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/icon-192.png">
     <link rel="apple-touch-icon" href="/icon-192.png">
-    <script>
-        /* ═══════════ 🔄 التحديث التلقائي عبر GitHub (OTA) ═══════════
-           حتى ما تعيد إرسال التطبيق (APK) للكل — التطبيقات تتحدث لحالها:
-           1) سجّل بحساب github.com وأنشئ مستودع عام (Public) باسم bashar-app
-           2) ارفع عليه ملفين: app.html (هذا الملف) و version.json (ملف مكتوب فيه {"version":"1.10.3"})
-           3) اكتب اسم حسابك بسطر OTA_USER تحت (مثال: 'bashar123') — مرة وحدة بس، وبعدها انشر/ابنِ APK مرة أخيرة
-           4) من بعدها كل تحديث جديد: ارفع app.html المحدّث على المستودع وغيّر الرقم بملف version.json
-              → كل تطبيقات المشتركين تنزّل النسخة الجديدة وتفتحها لحالها أول ما يفتحون التطبيق
-           حمايات: إذا نسخة محمّلة فشلت بها — الجهاز يتجاهلها ويرجع للنسخة الشغالة تلقائياً */
-        var OTA_USER = '';             /* ← اكتب هنا اسم حسابك بـ GitHub حتى يشتغل التحديث التلقائي */
-        var OTA_REPO = 'bashar-app';   /* اسم المستودع */
-        var OTA_BRANCH = 'main';       /* الفرع */
-        var OTA_VERSION = '1.0.0';
-        var OTA_KEY = 'bashar_ota_v1';
-        var OTA_FLAG = 'bashar_ota_boot_v1';
-        var OTA_REJECT = 'bashar_ota_reject_v1';
-        (function () {
-            function vNum(v) { var m = String(v || '').match(/(\d+)\.(\d+)\.(\d+)/); return m ? ((+m[1]) * 1000000) + ((+m[2]) * 1000) + (+m[3]) : 0; }
-            function otaBase() { return 'https://raw.githubusercontent.com/' + OTA_USER + '/' + OTA_REPO + '/' + OTA_BRANCH + '/'; }
-            function otaValid(code) { return code && code.length > 20000 && String(code).indexOf('</html>') > -1 && String(code).indexOf('بشار الالوسي') > -1; }
-            var st = null, flag = null, isWritten = false;
-            try { st = JSON.parse(localStorage.getItem(OTA_KEY) || 'null'); } catch (e) {}
-            try { flag = localStorage.getItem(OTA_FLAG); } catch (e) {}
-            /* إذا هذا أول إقلاع للكود المكتوب (المحمّل من GitHub) — علّمه شغّال */
-            if (window.__OTA_WROTE) { flag = String(window.__OTA_WROTE); isWritten = true; try { localStorage.setItem(OTA_FLAG, flag); } catch (e) {} try { delete window.__OTA_WROTE; } catch (e) { window.__OTA_WROTE = undefined; } }
-            try {
-                if (st && st.code && otaValid(st.code) && vNum(st.v) > vNum(OTA_VERSION) && !isWritten) {
-                    if (flag === 'try:' + st.v) {
-                        /* هذي النسخة جربناها من قبل وما أقلعت — نحذفها ونعطّلها ويرجع الجهاز للنسخة الشغالة */
-                        try { localStorage.removeItem(OTA_KEY); localStorage.removeItem(OTA_FLAG); localStorage.setItem(OTA_REJECT, String(st.v)); } catch (e) {}
-                    } else {
-                        /* نسخة أحدث محمّلة من GitHub — نستبدل الصفحة بيها بعد اكتمال التحميل */
-                        window.__OTA_PENDING = st;
-                        if (flag !== st.v) { try { localStorage.setItem(OTA_FLAG, 'try:' + st.v); } catch (e) {} }
-                        document.addEventListener('DOMContentLoaded', function () {
-                            try {
-                                var code = window.__OTA_PENDING ? window.__OTA_PENDING.code : null;
-                                if (!code) return;
-                                window.__OTA_PENDING = null;
-                                window.__OTA_WROTE = st.v; /* حتى يعرف الكود الجديد أنه اشتغل بنجاح */
-                                document.open(); document.write(code); document.close();
-                            } catch (e) {}
-                        });
-                        return;
-                    }
-                } else if (st && !isWritten && vNum(st.v) <= vNum(OTA_VERSION)) {
-                    try { localStorage.removeItem(OTA_KEY); } catch (e) {}
-                }
-            } catch (e) {}
-            try { if (!flag || vNum(flag) < vNum(OTA_VERSION)) localStorage.setItem(OTA_FLAG, OTA_VERSION); } catch (e) {}
-            /* النسخة الشغالة حالياً من المخزن (حتى ما يعيد تنزيلها كل مرة) */
-            var runningStoredV = (st && String(flag) === String(st.v)) ? String(st.v) : null;
-            window.otaCheckNow = function (silent) {
-                if (!OTA_USER) { if (!silent) alert('خطوة ناقصة: اكتب اسم حسابك بـ GitHub بسطر OTA_USER بأول الكود (الشرح كامل بملف README-DEPLOY)'); return Promise.resolve(); }
-                return fetch(otaBase() + 'version.json?t=' + Date.now(), { cache: 'no-store' })
-                    .then(function (r) { return r.json(); })
-                    .then(function (j) {
-                        if (!j || !j.version) { if (!silent) alert('⚠️ ملف version.json بالـ GitHub غير سليم — لازم يكون مثال: {"version":"1.10.3"}'); return; }
-                        var rej = null; try { rej = localStorage.getItem(OTA_REJECT); } catch (e) {}
-                        if (rej && String(j.version) === rej) { if (!silent) alert('⚠️ نسخة ' + j.version + ' فشلت بهذا الجهاز من قبل — أصلح ملف app.html وارفعها برقم أحدث'); return; }
-                        if (String(j.version) === runningStoredV) { if (!silent) alert('✅ التطبيق محدّث لآخر إصدار (' + OTA_VERSION + ') — ماكو تحديث جديد'); return; }
-                        if (vNum(j.version) > vNum(OTA_VERSION)) {
-                            return fetch(otaBase() + 'app.html?t=' + Date.now(), { cache: 'no-store' })
-                                .then(function (r) { return r.text(); })
-                                .then(function (code) {
-                                    if (otaValid(code)) {
-                                        try { localStorage.setItem(OTA_KEY, JSON.stringify({ v: j.version, code: code, at: Date.now() })); } catch (e) {}
-                                        if (!silent) alert('✅ وصل تحديث جديد (' + j.version + ') — التطبيق بيتحدث ويعيد الفتح لحاله');
-                                        location.reload();
-                                    } else if (!silent) alert('⚠️ ملف التحديث بالـ GitHub غير سليم — تأكد رفعت ملف app.html كامل وما انقطع');
-                                });
-                        } else if (!silent) alert('✅ التطبيق محدّث لآخر إصدار (' + OTA_VERSION + ') — ماكو تحديث جديد');
-                    })
-                    .catch(function () { if (!silent) alert('ما كدرت أوصل للـ GitHub — تأكد من الإنترنت ومن اسم الحساب والمستودع (لازم Public)'); });
-            };
-            /* فحص تلقائي بالخلفية بعد 5 ثواني من فتح التطبيق */
-            setTimeout(function () { try { window.otaCheckNow(true); } catch (e) {} }, 5000);
-        })();
-    </script>
+    
     <!-- Firebase السحابي لمزامنة بيانات المشتركين وروابط القنوات -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -363,8 +285,7 @@
             <label style="display:flex; align-items:center; gap:7px; color:#ffd700; font-size:12px; margin:-4px auto 12px; cursor:pointer; max-width:350px;"><input type="checkbox" id="rememberMe" checked style="width:16px; height:16px; margin:0; flex:0 0 auto;"> حفظ اليوزر والباسورد على هذا الجهاز</label>
             <button class="btn-primary" onclick="login()">دخول إلى التطبيق</button>
 
-            <!-- ═══ v1.10.3: فك الارتباط — إذا الحساب محجوز بجهاز ثاني، المشترك يحرره بنفسه من هنا (يتحقق من اليوزر والباسورد أولاً) ═══ -->
-            <button type="button" class="btn-req" style="background:rgba(80,25,0,0.45); border-color:#ff9d5c; color:#ffc79c;" onclick="unlinkOtherDevice()">🔓 حسابي محجوز بجهاز ثاني؟ اضغط هنا لفك الارتباط</button>
+            
 
             <!-- 🆕 طلب تفعيل اشتراك جديد — الطلب يوصل للمدير بلوحة الإدارة وهو يفعّل ويحدد الديون -->
             <button type="button" class="btn-req" onclick="openReqForm()">🆕 ما عندي يوزر — اطلب تفعيل اشتراك</button>
@@ -521,8 +442,7 @@
             <div id="payToast">✅ تم النسخ</div>
 
             <button class="btn-red" onclick="logout()">تسجيل خروج</button>
-            <!-- ═══ v1.10.3: فك الارتباط — خروج + حذف اليوزر والباسورد المحفوظ + تحرير الحساب من هذا الجهاز فوراً ═══ -->
-            <button class="btn-red" style="background:#7a3200; border-color:#ff9d5c;" onclick="unlinkThisDevice()">🔓 فك الارتباط عن هذا الجهاز</button>
+            
         </div>
 
         <!-- لوحة تحكم الإدارة -->
@@ -717,13 +637,12 @@
 
             <button class="btn-red" onclick="logout()">تسجيل خروج من الإدارة</button>
 
-            <div style="text-align:center; color:#888; font-size:11px; margin-top:10px; line-height:2.2;">📦 الإصدار 1.10.3<button onclick="otaCheckNow()" style="background:#4d0085; color:#00e5ff; border:1px solid #8c2ee0; border-radius:6px; padding:3px 12px; font-size:11px; cursor:pointer; margin-right:8px;">🔄 فحص تحديث من GitHub</button></div>
+            <div style="text-align:center; color:#888; font-size:11px; margin-top:10px;">📦 الإصدار 1.0</div>
         </div>
     </div>
 
     <script>
-        /* حارس التحديث التلقائي: إذا كو نسخة أحدث محمّلة من GitHub راح تستبدل الصفحة — ما نشغل التطبيق القديم */
-        if (window.__OTA_PENDING) { throw new Error('OTA-REPLACE-PENDING'); }
+        
         var firebaseConfig = {
             apiKey: "AIsyCFV84WqJdfhmBWbn2KUNxOUwXTAERNHHE",
             authDomain: "start-in-production.firebaseapp.com",
@@ -3093,36 +3012,7 @@
             setTimeout(function () { location.reload(); }, 700);
         }
 
-        /* ═══════════ v1.10.3: فك الارتباط — تحرير الحساب من قفل الجهاز الواحد ═══════════
-           1) شاشة الدخول: المشترك يفك ارتباط حسابه عن الجهاز الثاني (يتحقق من اليوزر والباسورد أولاً)
-           2) داخل التطبيق: فك الارتباط = خروج + حذف الحفظ + تحرير الحساب من هذا الجهاز
-           3) لوحة الإدارة: المدير يفك ارتباط أي مشترك بضغطة وحدة */
-        async function unlinkOtherDevice() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
-            const msgBox = document.getElementById('messageBox');
-            if (!user || !pass) { msgBox.style.display = 'block'; msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ اكتب اليوزر والباسورد أولاً وبعدها اضغط فك الارتباط'; return; }
-            if (!db) { msgBox.style.display = 'block'; msgBox.style.color = '#ff4d4d'; msgBox.innerText = '⚠️ ماكو اتصال بالسحابة — تأكد من الإنترنت'; return; }
-            msgBox.style.display = 'block'; msgBox.style.color = '#ffd700'; msgBox.innerText = 'جاري فك الارتباط...';
-            try {
-                const snap = await db.collection('subscribers').where('username', '==', user).get();
-                let found = null;
-                snap.forEach(d => { const x = d.data(); if (String(x.password) === String(pass)) found = { id: d.id }; });
-                if (!found) { msgBox.style.color = '#ff4d4d'; msgBox.innerText = '❌ يوزر أو باسورد غير صحيح — ما نقدر نفك الارتباط بدون التحقق'; return; }
-                await db.collection('subscribers').doc(found.id).update({ dev: '', hb: 0 });
-                msgBox.style.color = '#00ff88';
-                msgBox.innerText = '✅ تم فك الارتباط — الحساب تحرر من الجهاز الثاني، هسه اضغط «دخول إلى التطبيق»';
-            } catch (e) { msgBox.style.color = '#ff4d4d'; msgBox.innerText = '⚠️ صار خطأ بالاتصال — جرب مرة ثانية'; }
-        }
-        function unlinkThisDevice() {
-            if (!confirm('فك الارتباط عن هذا الجهاز؟\n\n• يسجل خروجك\n• يحذف اليوزر والباسورد المحفوظ على هذا الجهاز\n• يحرر حسابك حتى تدخل من أي جهاز ثاني فوراً')) return;
-            try { localStorage.removeItem(SKEY); } catch (e) {}
-            try { localStorage.removeItem(DKEY); } catch (e) {}
-            stopNotifListener();
-            releaseSession();
-            alert('✅ تم فك الارتباط عن هذا الجهاز');
-            setTimeout(function () { location.reload(); }, 700);
-        }
+        /* فك الارتباط: من لوحة الإدارة فقط */
         async function unlinkDevice(username) {
             const u = allUsersCache.find(x => String(x.username) === String(username));
             if (!u) { alert('المشترك غير موجود — حدّث القائمة'); return; }
